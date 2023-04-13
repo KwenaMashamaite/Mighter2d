@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
-// IME - Infinite Motion Engine
+// Mighter2d
 //
-// Copyright (c) 2020-2022 Kwena Mashamaite (kwena.mashamaite1@gmail.com)
+// Copyright (c) 2023 Kwena Mashamaite
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,13 +22,13 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "IME/core/input/Keyboard.h"
-#include "IME/core/event/Event.h"
+#include "Mighter2d/core/input/Keyboard.h"
+#include "Mighter2d/core/event/Event.h"
 #include <doctest.h>
 
-using Keyboard = ime::input::Keyboard;
+using Keyboard = mighter2d::input::Keyboard;
 
-TEST_CASE("ime::input::Keyboard class")
+TEST_CASE("mighter2d::input::Keyboard class")
 {
     SUBCASE("Constructors")
     {
@@ -65,8 +65,8 @@ TEST_CASE("ime::input::Keyboard class")
                 upKey = key;
             });
 
-            ime::Event event;
-            event.type = ime::Event::KeyReleased;
+            mighter2d::Event event;
+            event.type = mighter2d::Event::KeyReleased;
             event.key.code = Keyboard::Key::W;
 
             REQUIRE(keyboard.isEnabled());
@@ -75,7 +75,7 @@ TEST_CASE("ime::input::Keyboard class")
             CHECK(isInvoked);
             CHECK_EQ(upKey, Keyboard::Key::W);
 
-            WHEN("A ime::input::Keyboard is disabled")
+            WHEN("A mighter2d::input::Keyboard is disabled")
             {
                 keyboard.setEnable(false);
                 REQUIRE_FALSE(keyboard.isEnabled());
@@ -100,8 +100,8 @@ TEST_CASE("ime::input::Keyboard class")
                 downKey = key;
             });
 
-            ime::Event event;
-            event.type = ime::Event::KeyPressed;
+            mighter2d::Event event;
+            event.type = mighter2d::Event::KeyPressed;
             event.key.code = Keyboard::Key::V;
 
             REQUIRE(keyboard.isEnabled());
@@ -110,7 +110,7 @@ TEST_CASE("ime::input::Keyboard class")
             CHECK(isInvoked);
             CHECK_EQ(downKey, Keyboard::Key::V);
 
-            WHEN("A ime::input::Keyboard is disabled")
+            WHEN("A mighter2d::input::Keyboard is disabled")
             {
                 keyboard.setEnable(false);
                 REQUIRE_FALSE(keyboard.isEnabled());
@@ -135,8 +135,8 @@ TEST_CASE("ime::input::Keyboard class")
                 heldKey = key;
             });
 
-            ime::Event event;
-            event.type = ime::Event::KeyPressed;
+            mighter2d::Event event;
+            event.type = mighter2d::Event::KeyPressed;
             event.key.code = Keyboard::Key::K;
 
             // key press event triggered multiple times in the same frame
@@ -147,7 +147,7 @@ TEST_CASE("ime::input::Keyboard class")
             CHECK(isInvoked);
             CHECK_EQ(heldKey, Keyboard::Key::K);
 
-            SUBCASE("A disabled ime::input::Keyboard does not dispatch key held events")
+            SUBCASE("A disabled mighter2d::input::Keyboard does not dispatch key held events")
             {
                 keyboard.setEnable(false);
                 REQUIRE_FALSE(keyboard.isEnabled());
@@ -166,9 +166,9 @@ TEST_CASE("ime::input::Keyboard class")
     {
         SUBCASE("Removing a non-existent event listener returns false")
         {
-            CHECK_FALSE(Keyboard().unsubscribe(ime::KeyboardEvent::KeyUp, -1));
-            CHECK_FALSE(Keyboard().unsubscribe(ime::KeyboardEvent::KeyDown, -1));
-            CHECK_FALSE(Keyboard().unsubscribe(ime::KeyboardEvent::KeyHeld, -1));
+            CHECK_FALSE(Keyboard().unsubscribe(mighter2d::KeyboardEvent::KeyUp, -1));
+            CHECK_FALSE(Keyboard().unsubscribe(mighter2d::KeyboardEvent::KeyDown, -1));
+            CHECK_FALSE(Keyboard().unsubscribe(mighter2d::KeyboardEvent::KeyHeld, -1));
         }
 
         SUBCASE("Removing an existing event listener returns true")
@@ -179,9 +179,9 @@ TEST_CASE("ime::input::Keyboard class")
             int keyDownListener = keyboard.onKeyDown([](Keyboard::Key) {});
             int keyHeldListener = keyboard.onKeyHeld([](Keyboard::Key) {});
 
-            CHECK(keyboard.unsubscribe(ime::KeyboardEvent::KeyUp, keyUpListener));
-            CHECK(keyboard.unsubscribe(ime::KeyboardEvent::KeyDown, keyDownListener));
-            CHECK(keyboard.unsubscribe(ime::KeyboardEvent::KeyHeld, keyHeldListener));
+            CHECK(keyboard.unsubscribe(mighter2d::KeyboardEvent::KeyUp, keyUpListener));
+            CHECK(keyboard.unsubscribe(mighter2d::KeyboardEvent::KeyDown, keyDownListener));
+            CHECK(keyboard.unsubscribe(mighter2d::KeyboardEvent::KeyHeld, keyHeldListener));
         }
 
         SUBCASE("Removing an existing event listener from an event its not listening for returns false")
@@ -189,8 +189,8 @@ TEST_CASE("ime::input::Keyboard class")
             Keyboard keyboard;
             int keyUpListener = keyboard.onKeyUp([](Keyboard::Key) {});
 
-            CHECK_FALSE(keyboard.unsubscribe(ime::KeyboardEvent::KeyDown, keyUpListener));
-            CHECK_FALSE(keyboard.unsubscribe(ime::KeyboardEvent::KeyHeld, keyUpListener));
+            CHECK_FALSE(keyboard.unsubscribe(mighter2d::KeyboardEvent::KeyDown, keyUpListener));
+            CHECK_FALSE(keyboard.unsubscribe(mighter2d::KeyboardEvent::KeyHeld, keyUpListener));
         }
     }
 

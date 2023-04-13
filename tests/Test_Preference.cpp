@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
-// IME - Infinite Motion Engine
+// Mighter2d
 //
-// Copyright (c) 2020-2022 Kwena Mashamaite (kwena.mashamaite1@gmail.com)
+// Copyright (c) 2023 Kwena Mashamaite
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,40 +22,40 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "IME/common/Preference.h"
+#include "Mighter2d/common/Preference.h"
 #include <doctest.h>
 
-TEST_CASE("ime::Preference class")
+TEST_CASE("mighter2d::Preference class")
 {
     SUBCASE("Constructors")
     {
         SUBCASE("(key, type) constructor")
         {
-            ime::Preference preference("VOLUME", ime::PrefType::Float);
+            mighter2d::Preference preference("VOLUME", mighter2d::PrefType::Float);
 
             CHECK_EQ(preference.getKey(), "VOLUME");
-            CHECK_EQ(preference.getType(), ime::PrefType::Float);
+            CHECK_EQ(preference.getType(), mighter2d::PrefType::Float);
             CHECK_EQ(preference.getDescription(), "");
             CHECK_FALSE(preference.hasValue());
         }
 
         SUBCASE("(key, type, value) constructor")
         {
-            ime::Preference preference("NAME", ime::PrefType::String, std::string("IME"));
+            mighter2d::Preference preference("NAME", mighter2d::PrefType::String, std::string("Mighter2d"));
 
             CHECK_EQ(preference.getKey(), "NAME");
-            CHECK_EQ(preference.getType(), ime::PrefType::String);
+            CHECK_EQ(preference.getType(), mighter2d::PrefType::String);
             CHECK_EQ(preference.getDescription(), "");
             CHECK(preference.hasValue());
-            CHECK_EQ(preference.getValue<std::string>(), std::string("IME"));
+            CHECK_EQ(preference.getValue<std::string>(), std::string("Mighter2d"));
         }
 
         SUBCASE("(key, type, value, description) constructor")
         {
-            ime::Preference preference("FULL_SCREEN", ime::PrefType::Bool, true, "Game window full screen option");
+            mighter2d::Preference preference("FULL_SCREEN", mighter2d::PrefType::Bool, true, "Game window full screen option");
 
             CHECK_EQ(preference.getKey(), "FULL_SCREEN");
-            CHECK_EQ(preference.getType(), ime::PrefType::Bool);
+            CHECK_EQ(preference.getType(), mighter2d::PrefType::Bool);
             CHECK_EQ(preference.getDescription(), "Game window full screen option");
             CHECK(preference.hasValue());
             CHECK_EQ(preference.getValue<bool>(), true);
@@ -66,20 +66,20 @@ TEST_CASE("ime::Preference class")
     {
         SUBCASE("setValue()")
         {
-            ime::Preference preference("VOLUME", ime::PrefType::Float);
+            mighter2d::Preference preference("VOLUME", mighter2d::PrefType::Float);
             preference.setValue(10.0f);
 
             CHECK_EQ(preference.getValue<float>(), 10.0f);
 
-            SUBCASE("getValue() throws ime::InvalidArgument when the template argument does not match the contained type")
+            SUBCASE("getValue() throws mighter2d::InvalidArgument when the template argument does not match the contained type")
             {
-                CHECK_THROWS_AS(preference.getValue<bool>(), ime::InvalidArgumentException);
+                CHECK_THROWS_AS(preference.getValue<bool>(), mighter2d::InvalidArgumentException);
             }
         }
 
         SUBCASE("setDescription()")
         {
-            ime::Preference preference("VOLUME", ime::PrefType::Float);
+            mighter2d::Preference preference("VOLUME", mighter2d::PrefType::Float);
             preference.setDescription("The master volume");
 
             CHECK_EQ(preference.getDescription(), "The master volume");

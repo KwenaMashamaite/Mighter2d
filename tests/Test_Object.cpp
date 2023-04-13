@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
-// IME - Infinite Motion Engine
+// Mighter2d
 //
-// Copyright (c) 2020-2022 Kwena Mashamaite (kwena.mashamaite1@gmail.com)
+// Copyright (c) 2023 Kwena Mashamaite
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,19 +22,19 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "IME/core/object/Object.h"
+#include "Mighter2d/core/object/Object.h"
 #include <doctest.h>
 
-class TestObject : public ime::Object {
+class TestObject : public mighter2d::Object {
 public:
-    using ime::Object::emitDestruction;
+    using mighter2d::Object::emitDestruction;
 
     std::string getClassName() const override {
         return "TestObject";
     }
 };
 
-TEST_CASE("ime::Object class")
+TEST_CASE("mighter2d::Object class")
 {
     SUBCASE("Constructors")
     {
@@ -124,7 +124,7 @@ TEST_CASE("ime::Object class")
             std::string propertyValue;
             std::string propertyName;
 
-            object.onPropertyChange("tag", [&](const ime::Property& property) {
+            object.onPropertyChange("tag", [&](const mighter2d::Property& property) {
                 isInvoked = true;
                 propertyName = property.getName();
                 propertyValue = property.getValue<std::string>();
@@ -145,7 +145,7 @@ TEST_CASE("ime::Object class")
             std::string propertyValue;
             std::string propertyName;
 
-            object.onPropertyChange("tag", [&](const ime::Property& property) {
+            object.onPropertyChange("tag", [&](const mighter2d::Property& property) {
                 isInvoked = true;
                 propertyName = property.getName();
                 propertyValue = property.getValue<std::string>();
@@ -165,7 +165,7 @@ TEST_CASE("ime::Object class")
             TestObject object;
             bool isInvoked = false;
 
-            int tagChangeListener = object.onPropertyChange("tag", [&isInvoked](const ime::Property&) {
+            int tagChangeListener = object.onPropertyChange("tag", [&isInvoked](const mighter2d::Property&) {
                 isInvoked = true;
             });
 
@@ -198,7 +198,7 @@ TEST_CASE("ime::Object class")
             {
                 TestObject object;
 
-                int tagChangeListener = object.onPropertyChange("tag", [](const ime::Property&) {});
+                int tagChangeListener = object.onPropertyChange("tag", [](const mighter2d::Property&) {});
 
                 CHECK(object.removeEventListener(tagChangeListener));
             }
@@ -208,7 +208,7 @@ TEST_CASE("ime::Object class")
                 TestObject object;
                 bool isInvoked = false;
 
-                int tagChangeListener = object.onPropertyChange("tag", [&isInvoked](const ime::Property&) {
+                int tagChangeListener = object.onPropertyChange("tag", [&isInvoked](const mighter2d::Property&) {
                     isInvoked = true;
                 });
 

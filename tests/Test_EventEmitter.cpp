@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
-// IME - Infinite Motion Engine
+// Mighter2d
 //
-// Copyright (c) 2020-2022 Kwena Mashamaite (kwena.mashamaite1@gmail.com)
+// Copyright (c) 2023 Kwena Mashamaite
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,17 +22,17 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "IME/core/event/EventEmitter.h"
+#include "Mighter2d/core/event/EventEmitter.h"
 #include <doctest.h>
 #include <algorithm>
 
-TEST_CASE("ime::EventEmitter class")
+TEST_CASE("mighter2d::EventEmitter class")
 {
     SUBCASE("Constructors")
     {
         SUBCASE("Default constructor")
         {
-            ime::EventEmitter eventEmitter;
+            mighter2d::EventEmitter eventEmitter;
 
             CHECK(eventEmitter.isActive());
             CHECK_EQ(eventEmitter.getEventsCount(), 0);
@@ -43,7 +43,7 @@ TEST_CASE("ime::EventEmitter class")
     {
         SUBCASE("setActive()")
         {
-            ime::EventEmitter eventEmitter;
+            mighter2d::EventEmitter eventEmitter;
 
             eventEmitter.setActive(false);
             CHECK_FALSE(eventEmitter.isActive());
@@ -54,11 +54,11 @@ TEST_CASE("ime::EventEmitter class")
 
         SUBCASE("getEvents()")
         {
-            ime::EventEmitter eventEmitter;
+            mighter2d::EventEmitter eventEmitter;
 
-            eventEmitter.addEventListener("event1", ime::Callback<>([] {}));
-            eventEmitter.addEventListener("event2", ime::Callback<>([] {}));
-            eventEmitter.addEventListener("event3", ime::Callback<>([] {}));
+            eventEmitter.addEventListener("event1", mighter2d::Callback<>([] {}));
+            eventEmitter.addEventListener("event2", mighter2d::Callback<>([] {}));
+            eventEmitter.addEventListener("event3", mighter2d::Callback<>([] {}));
 
             REQUIRE(eventEmitter.hasEvent("event1"));
             REQUIRE(eventEmitter.hasEvent("event2"));
@@ -78,9 +78,9 @@ TEST_CASE("ime::EventEmitter class")
     {
         SUBCASE("addEventListener()")
         {
-            ime::EventEmitter eventEmitter;
-            eventEmitter.addEventListener("event", ime::Callback<>([] {}));
-            eventEmitter.addEventListener("event", ime::Callback<>([] {}));
+            mighter2d::EventEmitter eventEmitter;
+            eventEmitter.addEventListener("event", mighter2d::Callback<>([] {}));
+            eventEmitter.addEventListener("event", mighter2d::Callback<>([] {}));
 
             CHECK(eventEmitter.hasEvent("event"));
             CHECK_EQ(eventEmitter.getEventsCount(), 1);
@@ -88,9 +88,9 @@ TEST_CASE("ime::EventEmitter class")
 
             SUBCASE("Event listeners have unique identification numbers")
             {
-                int handler1Id = eventEmitter.addEventListener("event", ime::Callback<>([] {}));
-                int handler2Id = eventEmitter.addEventListener("event", ime::Callback<>([] {}));
-                int handler3Id = eventEmitter.addEventListener("event", ime::Callback<>([] {}));
+                int handler1Id = eventEmitter.addEventListener("event", mighter2d::Callback<>([] {}));
+                int handler2Id = eventEmitter.addEventListener("event", mighter2d::Callback<>([] {}));
+                int handler3Id = eventEmitter.addEventListener("event", mighter2d::Callback<>([] {}));
 
                 CHECK_NE(handler1Id, handler2Id);
                 CHECK_NE(handler1Id, handler3Id);
@@ -100,8 +100,8 @@ TEST_CASE("ime::EventEmitter class")
 
         SUBCASE("on()")
         {
-            ime::EventEmitter eventEmitter;
-            int id = eventEmitter.on("event", ime::Callback<>([] {}));
+            mighter2d::EventEmitter eventEmitter;
+            int id = eventEmitter.on("event", mighter2d::Callback<>([] {}));
 
             CHECK(eventEmitter.hasEvent("event"));
             CHECK(eventEmitter.hasEventListener("event", id));
@@ -111,8 +111,8 @@ TEST_CASE("ime::EventEmitter class")
 
         SUBCASE("addOnceEventListener()")
         {
-            ime::EventEmitter eventEmitter;
-            int id = eventEmitter.addOnceEventListener("event", ime::Callback<>([] {}));
+            mighter2d::EventEmitter eventEmitter;
+            int id = eventEmitter.addOnceEventListener("event", mighter2d::Callback<>([] {}));
 
             CHECK(eventEmitter.hasEvent("event"));
             CHECK(eventEmitter.hasEventListener("event", id));
@@ -125,7 +125,7 @@ TEST_CASE("ime::EventEmitter class")
     {
         SUBCASE("removeEventListener(event, id)")
         {
-            ime::EventEmitter eventEmitter;
+            mighter2d::EventEmitter eventEmitter;
 
             SUBCASE("Removing a non-existent event listener returns 'false'")
             {
@@ -134,8 +134,8 @@ TEST_CASE("ime::EventEmitter class")
 
             SUBCASE("Removing an existing event listener returns 'true'")
             {
-                int handler1Id = eventEmitter.addEventListener("event", ime::Callback<>([] {}));
-                int handler2Id = eventEmitter.addEventListener("event", ime::Callback<>([] {}));
+                int handler1Id = eventEmitter.addEventListener("event", mighter2d::Callback<>([] {}));
+                int handler2Id = eventEmitter.addEventListener("event", mighter2d::Callback<>([] {}));
 
                 CHECK(eventEmitter.removeEventListener("event", handler1Id));
                 CHECK(eventEmitter.removeEventListener("event", handler2Id));
@@ -143,8 +143,8 @@ TEST_CASE("ime::EventEmitter class")
 
             SUBCASE("The event listener count decreases by the number or removed listeners")
             {
-                int handler1Id = eventEmitter.addEventListener("event", ime::Callback<>([] {}));
-                int handler2Id = eventEmitter.addEventListener("event", ime::Callback<>([] {}));
+                int handler1Id = eventEmitter.addEventListener("event", mighter2d::Callback<>([] {}));
+                int handler2Id = eventEmitter.addEventListener("event", mighter2d::Callback<>([] {}));
 
                 REQUIRE_EQ(eventEmitter.getEventListenerCount("event"), 2);
 
@@ -158,10 +158,10 @@ TEST_CASE("ime::EventEmitter class")
 
         SUBCASE("removeEventListener(id)")
         {
-            ime::EventEmitter eventEmitter;
-            int handler1Id = eventEmitter.addEventListener("event", ime::Callback<>([] {}));
-            int handler2Id = eventEmitter.addEventListener("event", ime::Callback<>([] {}));
-            int handler3Id = eventEmitter.addEventListener("event", ime::Callback<>([] {}));
+            mighter2d::EventEmitter eventEmitter;
+            int handler1Id = eventEmitter.addEventListener("event", mighter2d::Callback<>([] {}));
+            int handler2Id = eventEmitter.addEventListener("event", mighter2d::Callback<>([] {}));
+            int handler3Id = eventEmitter.addEventListener("event", mighter2d::Callback<>([] {}));
 
             REQUIRE_EQ(eventEmitter.getEventListenerCount("event"), 3);
             CHECK(eventEmitter.removeEventListener(handler1Id));
@@ -174,10 +174,10 @@ TEST_CASE("ime::EventEmitter class")
 
         SUBCASE("removeAllEventListeners(event)")
         {
-            ime::EventEmitter eventEmitter;
-            eventEmitter.addEventListener("event", ime::Callback<>([] {}));
-            eventEmitter.addEventListener("event", ime::Callback<>([] {}));
-            eventEmitter.addEventListener("event", ime::Callback<>([] {}));
+            mighter2d::EventEmitter eventEmitter;
+            eventEmitter.addEventListener("event", mighter2d::Callback<>([] {}));
+            eventEmitter.addEventListener("event", mighter2d::Callback<>([] {}));
+            eventEmitter.addEventListener("event", mighter2d::Callback<>([] {}));
 
             REQUIRE_EQ(eventEmitter.getEventListenerCount("event"), 3);
             eventEmitter.removeAllEventListeners("event");
@@ -186,12 +186,12 @@ TEST_CASE("ime::EventEmitter class")
 
         SUBCASE("clear()")
         {
-            ime::EventEmitter eventEmitter;
-            eventEmitter.addEventListener("event1", ime::Callback<>([] {}));
-            eventEmitter.addEventListener("event2", ime::Callback<>([] {}));
-            eventEmitter.addEventListener("event3", ime::Callback<>([] {}));
-            eventEmitter.addEventListener("event4", ime::Callback<>([] {}));
-            eventEmitter.addEventListener("event5", ime::Callback<>([] {}));
+            mighter2d::EventEmitter eventEmitter;
+            eventEmitter.addEventListener("event1", mighter2d::Callback<>([] {}));
+            eventEmitter.addEventListener("event2", mighter2d::Callback<>([] {}));
+            eventEmitter.addEventListener("event3", mighter2d::Callback<>([] {}));
+            eventEmitter.addEventListener("event4", mighter2d::Callback<>([] {}));
+            eventEmitter.addEventListener("event5", mighter2d::Callback<>([] {}));
 
             REQUIRE_EQ(eventEmitter.getEventsCount(), 5);
             eventEmitter.clear();
@@ -205,11 +205,11 @@ TEST_CASE("ime::EventEmitter class")
         {
             SUBCASE("An event listener is invoked every time its event is emitted")
             {
-                ime::EventEmitter eventEmitter;
+                mighter2d::EventEmitter eventEmitter;
 
                 bool isInvoked = false;
                 int invokeCount = 0;
-                eventEmitter.addEventListener("event", ime::Callback<>([&isInvoked, &invokeCount] {
+                eventEmitter.addEventListener("event", mighter2d::Callback<>([&isInvoked, &invokeCount] {
                     isInvoked = true;
                     invokeCount++;
                 }));
@@ -225,13 +225,13 @@ TEST_CASE("ime::EventEmitter class")
 
             SUBCASE("Emitting an event, invokes all its event listeners")
             {
-                ime::EventEmitter eventEmitter;
+                mighter2d::EventEmitter eventEmitter;
                 int counter = 0;
 
-                eventEmitter.addEventListener("increaseCounter", ime::Callback<>([&counter]() { counter += 1; }));
-                eventEmitter.addEventListener("increaseCounter", ime::Callback<>([&counter]() { counter += 5; }));
-                eventEmitter.addEventListener("increaseCounter", ime::Callback<>([&counter]() { counter += 4; }));
-                eventEmitter.addEventListener("increaseCounter", ime::Callback<>([&counter]() { counter += 10; }));
+                eventEmitter.addEventListener("increaseCounter", mighter2d::Callback<>([&counter]() { counter += 1; }));
+                eventEmitter.addEventListener("increaseCounter", mighter2d::Callback<>([&counter]() { counter += 5; }));
+                eventEmitter.addEventListener("increaseCounter", mighter2d::Callback<>([&counter]() { counter += 4; }));
+                eventEmitter.addEventListener("increaseCounter", mighter2d::Callback<>([&counter]() { counter += 10; }));
 
                 REQUIRE_EQ(eventEmitter.getEventListenerCount("increaseCounter"), 4);
                 eventEmitter.emit("increaseCounter");
@@ -241,15 +241,15 @@ TEST_CASE("ime::EventEmitter class")
 
             SUBCASE("An event listener is only invoked if its parameter list matches that of the event arguments")
             {
-                ime::EventEmitter eventEmitter;
+                mighter2d::EventEmitter eventEmitter;
 
                 bool isListenerOneInvoked = false;
-                eventEmitter.addEventListener("event", ime::Callback<int, bool>([&isListenerOneInvoked](int, bool) {
+                eventEmitter.addEventListener("event", mighter2d::Callback<int, bool>([&isListenerOneInvoked](int, bool) {
                     isListenerOneInvoked = true;
                 }));
 
                 bool isListenerTwoInvoked = false;
-                eventEmitter.addEventListener("event", ime::Callback<double, float>([&isListenerTwoInvoked](double, float) {
+                eventEmitter.addEventListener("event", mighter2d::Callback<double, float>([&isListenerTwoInvoked](double, float) {
                     isListenerTwoInvoked = true;
                 }));
 
@@ -266,13 +266,13 @@ TEST_CASE("ime::EventEmitter class")
 
             SUBCASE("Event listeners receive correct event arguments")
             {
-                ime::EventEmitter eventEmitter;
+                mighter2d::EventEmitter eventEmitter;
 
                 int age = -1;
                 double speed = -1.0;
                 std::string name;
 
-                eventEmitter.addEventListener("event", ime::Callback<int, double, std::string>([&](int x, double y, std::string z) {
+                eventEmitter.addEventListener("event", mighter2d::Callback<int, double, std::string>([&](int x, double y, std::string z) {
                     age = x;
                     speed = y;
                     name = z;
@@ -287,15 +287,15 @@ TEST_CASE("ime::EventEmitter class")
 
             SUBCASE("Event listener parameter list matching ignores references")
             {
-                ime::EventEmitter eventEmitter;
+                mighter2d::EventEmitter eventEmitter;
 
                 int num1, num2 = -1;
 
-                eventEmitter.addEventListener("event", ime::Callback<int>([&num1](int num) {
+                eventEmitter.addEventListener("event", mighter2d::Callback<int>([&num1](int num) {
                     num1 = num;
                 }));
 
-                eventEmitter.addEventListener("event", ime::Callback<int&>([&num2](int& num) {
+                eventEmitter.addEventListener("event", mighter2d::Callback<int&>([&num2](int& num) {
                     num2 = num;
                 }));
 
@@ -307,11 +307,11 @@ TEST_CASE("ime::EventEmitter class")
 
             SUBCASE("A 'once' event listener is invoked only once")
             {
-                ime::EventEmitter eventEmitter;
+                mighter2d::EventEmitter eventEmitter;
 
                 bool isInvoked = false;
                 int invokeCount = 0;
-                eventEmitter.addOnceEventListener("event", ime::Callback<>([&isInvoked, &invokeCount] {
+                eventEmitter.addOnceEventListener("event", mighter2d::Callback<>([&isInvoked, &invokeCount] {
                     isInvoked = true;
                     invokeCount++;
                 }));
@@ -327,10 +327,10 @@ TEST_CASE("ime::EventEmitter class")
 
             SUBCASE("A 'once' event listener is immediately removed from the event list after its execution")
             {
-                ime::EventEmitter eventEmitter;
+                mighter2d::EventEmitter eventEmitter;
 
                 bool isInvoked = false;
-                int onceListener = eventEmitter.addOnceEventListener("event", ime::Callback<>([&isInvoked] {
+                int onceListener = eventEmitter.addOnceEventListener("event", mighter2d::Callback<>([&isInvoked] {
                     isInvoked = true;
                 }));
 
@@ -343,10 +343,10 @@ TEST_CASE("ime::EventEmitter class")
 
             SUBCASE("A suspended event listener is not invoked when its event is emitted")
             {
-                ime::EventEmitter eventEmitter;
+                mighter2d::EventEmitter eventEmitter;
 
                 bool isInvoked = false;
-                int handlerId = eventEmitter.addEventListener("event", ime::Callback<>([&isInvoked] {
+                int handlerId = eventEmitter.addEventListener("event", mighter2d::Callback<>([&isInvoked] {
                     isInvoked = true;
                 }));
 
@@ -359,10 +359,10 @@ TEST_CASE("ime::EventEmitter class")
 
             SUBCASE("A 'disabled' event emitter does not emit events")
             {
-                ime::EventEmitter eventEmitter;
+                mighter2d::EventEmitter eventEmitter;
 
                 bool isInvoked = false;
-                eventEmitter.addEventListener("event", ime::Callback<>([&isInvoked] {
+                eventEmitter.addEventListener("event", mighter2d::Callback<>([&isInvoked] {
                     isInvoked = true;
                 }));
 

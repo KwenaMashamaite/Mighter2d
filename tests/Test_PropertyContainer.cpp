@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
-// IME - Infinite Motion Engine
+// Mighter2d
 //
-// Copyright (c) 2020-2022 Kwena Mashamaite (kwena.mashamaite1@gmail.com)
+// Copyright (c) 2023 Kwena Mashamaite
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,17 +22,17 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "IME/common/PropertyContainer.h"
+#include "Mighter2d/common/PropertyContainer.h"
 #include <string>
 #include <doctest.h>
 
-TEST_CASE("ime::PropertyContainer class")
+TEST_CASE("mighter2d::PropertyContainer class")
 {
     SUBCASE("Constructors")
     {
         SUBCASE("Default constructor")
         {
-            ime::PropertyContainer propertyContainer;
+            mighter2d::PropertyContainer propertyContainer;
 
             CHECK_EQ(propertyContainer.getCount(), 0);
         }
@@ -42,16 +42,16 @@ TEST_CASE("ime::PropertyContainer class")
     {
         SUBCASE("setValue()")
         {
-            ime::PropertyContainer propertyContainer;
-            propertyContainer.addProperty(ime::Property("data"));
+            mighter2d::PropertyContainer propertyContainer;
+            propertyContainer.addProperty(mighter2d::Property("data"));
 
             REQUIRE(propertyContainer.hasProperty("data"));
 
             propertyContainer.setValue("data", 100);
             CHECK_EQ(propertyContainer.getValue<int>("data"), 100);
 
-            propertyContainer.setValue("data", std::string("IME"));
-            CHECK_EQ(propertyContainer.getValue<std::string>("data"), std::string("IME"));
+            propertyContainer.setValue("data", std::string("Mighter2d"));
+            CHECK_EQ(propertyContainer.getValue<std::string>("data"), std::string("Mighter2d"));
 
             propertyContainer.setValue("data", 10.0f);
             CHECK_EQ(propertyContainer.getValue<float>("data"), 10.0f);
@@ -63,10 +63,10 @@ TEST_CASE("ime::PropertyContainer class")
 
     SUBCASE("addProperty()")
     {
-        ime::PropertyContainer propertyContainer;
-        propertyContainer.addProperty(ime::Property("Master_Volume"));
-        propertyContainer.addProperty(ime::Property("Player_Name"));
-        propertyContainer.addProperty(ime::Property("V_Sync"));
+        mighter2d::PropertyContainer propertyContainer;
+        propertyContainer.addProperty(mighter2d::Property("Master_Volume"));
+        propertyContainer.addProperty(mighter2d::Property("Player_Name"));
+        propertyContainer.addProperty(mighter2d::Property("V_Sync"));
 
         CHECK_EQ(propertyContainer.getCount(), 3);
         CHECK(propertyContainer.hasProperty("Master_Volume"));
@@ -80,10 +80,10 @@ TEST_CASE("ime::PropertyContainer class")
             propertyContainer.clear();
             REQUIRE_EQ(propertyContainer.getCount(), 0);
 
-            propertyContainer.addProperty(ime::Property("Master_Volume"));
-            propertyContainer.addProperty(ime::Property("Master_Volume"));
-            propertyContainer.addProperty(ime::Property("Master_Volume"));
-            propertyContainer.addProperty(ime::Property("Master_Volume"));
+            propertyContainer.addProperty(mighter2d::Property("Master_Volume"));
+            propertyContainer.addProperty(mighter2d::Property("Master_Volume"));
+            propertyContainer.addProperty(mighter2d::Property("Master_Volume"));
+            propertyContainer.addProperty(mighter2d::Property("Master_Volume"));
 
             CHECK_EQ(propertyContainer.getCount(), 1);
         }
@@ -91,10 +91,10 @@ TEST_CASE("ime::PropertyContainer class")
 
     SUBCASE("removeProperty()")
     {
-        ime::PropertyContainer propertyContainer;
-        propertyContainer.addProperty(ime::Property("Master_Volume"));
-        propertyContainer.addProperty(ime::Property("Player_Name"));
-        propertyContainer.addProperty(ime::Property("V_Sync"));
+        mighter2d::PropertyContainer propertyContainer;
+        propertyContainer.addProperty(mighter2d::Property("Master_Volume"));
+        propertyContainer.addProperty(mighter2d::Property("Player_Name"));
+        propertyContainer.addProperty(mighter2d::Property("V_Sync"));
 
         REQUIRE(propertyContainer.hasProperty("Master_Volume"));
         REQUIRE_EQ(propertyContainer.getCount(), 3);
@@ -106,10 +106,10 @@ TEST_CASE("ime::PropertyContainer class")
 
     SUBCASE("clear()")
     {
-        ime::PropertyContainer propertyContainer;
-        propertyContainer.addProperty(ime::Property("Master_Volume"));
-        propertyContainer.addProperty(ime::Property("Player_Name"));
-        propertyContainer.addProperty(ime::Property("V_Sync"));
+        mighter2d::PropertyContainer propertyContainer;
+        propertyContainer.addProperty(mighter2d::Property("Master_Volume"));
+        propertyContainer.addProperty(mighter2d::Property("Player_Name"));
+        propertyContainer.addProperty(mighter2d::Property("V_Sync"));
 
         REQUIRE_EQ(propertyContainer.getCount(), 3);
 
@@ -119,8 +119,8 @@ TEST_CASE("ime::PropertyContainer class")
 
     SUBCASE("propertyHasValue()")
     {
-        ime::PropertyContainer propertyContainer;
-        propertyContainer.addProperty(ime::Property("data"));
+        mighter2d::PropertyContainer propertyContainer;
+        propertyContainer.addProperty(mighter2d::Property("data"));
 
         REQUIRE(propertyContainer.hasProperty("data"));
         CHECK_FALSE(propertyContainer.propertyHasValue("data"));
@@ -131,14 +131,14 @@ TEST_CASE("ime::PropertyContainer class")
 
     SUBCASE("forEachProperty()")
     {
-        ime::PropertyContainer propertyContainer;
-        propertyContainer.addProperty(ime::Property("data1", 10));
-        propertyContainer.addProperty(ime::Property("data2", 20));
-        propertyContainer.addProperty(ime::Property("data3", 40));
+        mighter2d::PropertyContainer propertyContainer;
+        propertyContainer.addProperty(mighter2d::Property("data1", 10));
+        propertyContainer.addProperty(mighter2d::Property("data2", 20));
+        propertyContainer.addProperty(mighter2d::Property("data3", 40));
 
         REQUIRE_EQ(propertyContainer.getCount(), 3);
 
-        propertyContainer.forEachProperty([](ime::Property& property) {
+        propertyContainer.forEachProperty([](mighter2d::Property& property) {
             property.setValue(100);
         });
 
@@ -149,12 +149,12 @@ TEST_CASE("ime::PropertyContainer class")
 
     SUBCASE("onValueChange()")
     {
-        ime::PropertyContainer propertyContainer;
-        propertyContainer.addProperty(ime::Property("Master_Volume"));
+        mighter2d::PropertyContainer propertyContainer;
+        propertyContainer.addProperty(mighter2d::Property("Master_Volume"));
 
         bool isInvoked = false;
         int newValue = -1;
-        propertyContainer.onValueChange("Master_Volume", [&isInvoked, &newValue](ime::Property* const p) {
+        propertyContainer.onValueChange("Master_Volume", [&isInvoked, &newValue](mighter2d::Property* const p) {
             isInvoked = true;
             newValue = p->getValue<int>();
         });
@@ -167,12 +167,12 @@ TEST_CASE("ime::PropertyContainer class")
 
     SUBCASE("unsubscribe()")
     {
-        ime::PropertyContainer propertyContainer;
-        propertyContainer.addProperty(ime::Property("Master_Volume"));
+        mighter2d::PropertyContainer propertyContainer;
+        propertyContainer.addProperty(mighter2d::Property("Master_Volume"));
 
         bool isInvoked = false;
         int newValue = -1;
-        int valueChangeListener = propertyContainer.onValueChange("Master_Volume", [&isInvoked, &newValue](ime::Property* const p) {
+        int valueChangeListener = propertyContainer.onValueChange("Master_Volume", [&isInvoked, &newValue](mighter2d::Property* const p) {
             isInvoked = true;
             newValue = p->getValue<int>();
         });

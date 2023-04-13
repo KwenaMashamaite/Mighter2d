@@ -1,0 +1,104 @@
+////////////////////////////////////////////////////////////////////////////////
+// Mighter2d
+//
+// Copyright (c) 2023 Kwena Mashamaite
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+////////////////////////////////////////////////////////////////////////////////
+
+#include "Mighter2d/core/physics/grid/CyclicGridMover.h"
+
+namespace mighter2d {
+    CyclicGridMover::CyclicGridMover(Grid2D &grid, GridObject *target) :
+        GridMover(Type::Cyclic, grid, target),
+        direction_{CycleDirection::Clockwise},
+        isMovementStarted_{false}
+    {
+        // Automatically move the target in the next possible direction
+        onMoveEnd([this](mighter2d::Index) {
+            static auto swapValues = [](const Vector2i& dir) {
+                return Vector2i{dir.y, dir.x};
+            };
+
+            Vector2i currentDir = getDirection();
+            if (direction_ == CycleDirection::Clockwise)
+                moveTarget(getDirection(), currentDir.x == 0 ? swapValues(currentDir) * -1 : swapValues(currentDir));
+            else
+                moveTarget(getDirection(), std::abs(currentDir.x) == 1 ? swapValues(currentDir) * -1 : swapValues(currentDir));
+        });
+
+        // Automatically move the new target if the previous target was moving
+        onPropertyChange("target", [this](const Property& property) {
+            if (property.getValue<GridObject*>() && isMovementStarted_) {
+                isMovementStarted_ = false;
+                startMovement();
+            }
+        });
+    }
+
+    CyclicGridMover::Ptr CyclicGridMover::create(Grid2D &grid, GridObject *target) {
+        return std::make_unique<CyclicGridMover>(grid, target);
+    }
+
+    void CyclicGridMover::setCycleDirection(CyclicGridMover::CycleDirection direction) {
+        if (direction_ != direction) {
+            direction_ = direction;
+            emitChange(Property{"cycleDirection", direction});
+        }
+    }
+
+    CyclicGridMover::CycleDirection CyclicGridMover::getCycleDirection() const {
+        return direction_;
+    }
+
+    std::string CyclicGridMover::getClassName() const {
+        return "WallFollowerGridMover";
+    }
+
+    void CyclicGridMover::startMovement() {
+        MIGHTER2D_ASSERT(getTarget(), "A grid mover target is required before starting movement")
+
+        if (!isMovementStarted_) {
+            isMovementStarted_ = true;
+            requestMove(direction_ == CycleDirection::Clockwise ? mighter2d::Right : mighter2d::Left);
+        }
+    }
+
+    void CyclicGridMover::stopMovement() {
+        if (isMovementStarted_) {
+            isMovementStarted_ = false;
+        }
+    }
+
+    void CyclicGridMover::moveTarget(const Vector2i &curDir, const Vector2i &newDir) {
+        if (!isMovementStarted_)
+            return;
+
+        if (!isBlockedInDirection(newDir).first)
+            requestMove(newDir);
+        else if (!isBlockedInDirection(curDir).first)
+            requestMove(curDir);
+        else
+            requestMove(newDir * -1);
+    }
+
+    CyclicGridMover::~CyclicGridMover() {
+        emitDestruction();
+    }
+}

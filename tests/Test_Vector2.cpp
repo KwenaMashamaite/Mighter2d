@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
-// IME - Infinite Motion Engine
+// Mighter2d
 //
-// Copyright (c) 2020-2022 Kwena Mashamaite (kwena.mashamaite1@gmail.com)
+// Copyright (c) 2023 Kwena Mashamaite
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,16 +22,16 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "IME/common/Vector2.h"
+#include "Mighter2d/common/Vector2.h"
 #include <doctest.h>
 
-TEST_CASE("ime::Vector2 class template")
+TEST_CASE("mighter2d::Vector2 class template")
 {
     SUBCASE("Constructors")
     {
         SUBCASE("Default constructor")
         {
-            ime::Vector2i vector;
+            mighter2d::Vector2i vector;
 
             CHECK(vector.x == 0);
             CHECK(vector.y == 0);
@@ -39,7 +39,7 @@ TEST_CASE("ime::Vector2 class template")
 
         SUBCASE("(x, y) coordinate constructor")
         {
-            ime::Vector2i vector(1, 2);
+            mighter2d::Vector2i vector(1, 2);
 
             CHECK(vector.x == 1);
             CHECK(vector.y == 2);
@@ -47,8 +47,8 @@ TEST_CASE("ime::Vector2 class template")
 
         SUBCASE("Conversion constructor")
         {
-            ime::Vector2f v1(1.0f, 2.0f);
-            ime::Vector2i v2(v1);
+            mighter2d::Vector2f v1(1.0f, 2.0f);
+            mighter2d::Vector2i v2(v1);
 
             CHECK(v1.x == static_cast<int>(v2.x));
             CHECK(v1.y == static_cast<int>(v2.y));
@@ -59,8 +59,8 @@ TEST_CASE("ime::Vector2 class template")
     {
         SUBCASE("Negation operator")
         {
-            ime::Vector2i v1(7, 11);
-            ime::Vector2i v2 = -v1;
+            mighter2d::Vector2i v1(7, 11);
+            mighter2d::Vector2i v2 = -v1;
 
             CHECK_EQ(v2.x, -7);
             CHECK_EQ(v2.y, -11);
@@ -68,52 +68,52 @@ TEST_CASE("ime::Vector2 class template")
 
         SUBCASE("operator+")
         {
-            ime::Vector2i v1(5, 5);
-            ime::Vector2i v2(10, 3);
+            mighter2d::Vector2i v1(5, 5);
+            mighter2d::Vector2i v2(10, 3);
 
-            CHECK_EQ(v1 + v2, ime::Vector2i(15, 8));
+            CHECK_EQ(v1 + v2, mighter2d::Vector2i(15, 8));
         }
 
         SUBCASE("operator-")
         {
-            ime::Vector2i v1(5, 5);
-            ime::Vector2i v2(10, 3);
+            mighter2d::Vector2i v1(5, 5);
+            mighter2d::Vector2i v2(10, 3);
 
-            CHECK_EQ(v1 - v2, ime::Vector2i(-5, 2));
+            CHECK_EQ(v1 - v2, mighter2d::Vector2i(-5, 2));
         }
 
         SUBCASE("operator+=")
         {
-            ime::Vector2i vector(2, 7);
-            vector += ime::Vector2i(1, 15);
+            mighter2d::Vector2i vector(2, 7);
+            vector += mighter2d::Vector2i(1, 15);
 
-            CHECK_EQ(vector, ime::Vector2i(3, 22));
+            CHECK_EQ(vector, mighter2d::Vector2i(3, 22));
         }
 
         SUBCASE("operator-=")
         {
-            ime::Vector2i vector(15, 2);
-            vector -= ime::Vector2i(10, 10);
+            mighter2d::Vector2i vector(15, 2);
+            vector -= mighter2d::Vector2i(10, 10);
 
-            CHECK_EQ(vector, ime::Vector2i(5, -8));
+            CHECK_EQ(vector, mighter2d::Vector2i(5, -8));
         }
 
         SUBCASE("operator==")
         {
-            CHECK(ime::Vector2i(10, 5) == ime::Vector2i(10, 5));
-            CHECK_FALSE(ime::Vector2i(3, 7) == ime::Vector2i(5, 2));
+            CHECK(mighter2d::Vector2i(10, 5) == mighter2d::Vector2i(10, 5));
+            CHECK_FALSE(mighter2d::Vector2i(3, 7) == mighter2d::Vector2i(5, 2));
         }
 
         SUBCASE("operator!=")
         {
-            CHECK(ime::Vector2i(10, 5) != ime::Vector2i(5, 5));
-            CHECK_FALSE(ime::Vector2i(7, 4) != ime::Vector2i(7, 4));
+            CHECK(mighter2d::Vector2i(10, 5) != mighter2d::Vector2i(5, 5));
+            CHECK_FALSE(mighter2d::Vector2i(7, 4) != mighter2d::Vector2i(7, 4));
         }
 
         SUBCASE("operator<")
         {
-            ime::Vector2i v1(1, 2);
-            ime::Vector2i v2(3, 4);
+            mighter2d::Vector2i v1(1, 2);
+            mighter2d::Vector2i v2(3, 4);
 
             CHECK(v1 < v2);
             CHECK_FALSE(v2 < v1);
@@ -121,8 +121,8 @@ TEST_CASE("ime::Vector2 class template")
 
         SUBCASE("operator>")
         {
-            ime::Vector2i v1(1, 2);
-            ime::Vector2i v2(3, 4);
+            mighter2d::Vector2i v1(1, 2);
+            mighter2d::Vector2i v2(3, 4);
 
             CHECK(v2 > v1);
             CHECK_FALSE(v1 > v2);
@@ -130,8 +130,8 @@ TEST_CASE("ime::Vector2 class template")
 
         SUBCASE("operator<=")
         {
-            ime::Vector2i v1(1, 2);
-            ime::Vector2i v2(3, 4);
+            mighter2d::Vector2i v1(1, 2);
+            mighter2d::Vector2i v2(3, 4);
 
             CHECK(v1 <= v1);
             CHECK(v1 <= v2);
@@ -140,8 +140,8 @@ TEST_CASE("ime::Vector2 class template")
 
         SUBCASE("operator>=")
         {
-            ime::Vector2i v1(1, 2);
-            ime::Vector2i v2(3, 4);
+            mighter2d::Vector2i v1(1, 2);
+            mighter2d::Vector2i v2(3, 4);
 
             CHECK(v1 >= v1);
             CHECK(v2 >= v1);
@@ -155,8 +155,8 @@ TEST_CASE("ime::Vector2 class template")
         {
             SUBCASE("vector * scalar")
             {
-                ime::Vector2i v1(2, 4);
-                ime::Vector2i v2 = v1 * 10;
+                mighter2d::Vector2i v1(2, 4);
+                mighter2d::Vector2i v2 = v1 * 10;
 
                 CHECK_EQ(v2.x, 20);
                 CHECK_EQ(v2.y, 40);
@@ -164,8 +164,8 @@ TEST_CASE("ime::Vector2 class template")
             
             SUBCASE("scalar * vector")
             {
-                ime::Vector2i v1(3, 6);
-                ime::Vector2i v2 = 3 * v1;
+                mighter2d::Vector2i v1(3, 6);
+                mighter2d::Vector2i v2 = 3 * v1;
 
                 CHECK_EQ(v2.x, 9);
                 CHECK_EQ(v2.y, 18);
@@ -174,8 +174,8 @@ TEST_CASE("ime::Vector2 class template")
 
         SUBCASE("operator/")
         {
-            ime::Vector2i v1(9, 15);
-            ime::Vector2i v2 = v1 / 3;
+            mighter2d::Vector2i v1(9, 15);
+            mighter2d::Vector2i v2 = v1 / 3;
 
             CHECK(v2.x == 3);
             CHECK(v2.y == 5);
@@ -183,7 +183,7 @@ TEST_CASE("ime::Vector2 class template")
 
         SUBCASE("operator*=")
         {
-            ime::Vector2i vector(2, 8);
+            mighter2d::Vector2i vector(2, 8);
             vector *= 5;
 
             CHECK_EQ(vector.x, 10);
@@ -192,7 +192,7 @@ TEST_CASE("ime::Vector2 class template")
 
         SUBCASE("vector /= scalar")
         {
-            ime::Vector2i v1(50, 100);
+            mighter2d::Vector2i v1(50, 100);
             v1 /= 10;
 
             CHECK_EQ(v1.x, 5);
@@ -202,14 +202,14 @@ TEST_CASE("ime::Vector2 class template")
 
     SUBCASE("magnitude()")
     {
-        ime::Vector2i vector(-3, 4);
+        mighter2d::Vector2i vector(-3, 4);
         CHECK_EQ(vector.magnitude(), 5.0f);
     }
 
     SUBCASE("dot()")
     {
-        ime::Vector2i v1(-3, 4);
-        ime::Vector2i v2(5, 10);
+        mighter2d::Vector2i v1(-3, 4);
+        mighter2d::Vector2i v2(5, 10);
 
         CHECK_EQ(v1.dot(v2), 25.0f);
         CHECK_EQ(v2.dot(v1), 25.0f);
@@ -217,8 +217,8 @@ TEST_CASE("ime::Vector2 class template")
 
     SUBCASE("cross()")
     {
-        ime::Vector2i v1(-3, 4);
-        ime::Vector2i v2(5, 10);
+        mighter2d::Vector2i v1(-3, 4);
+        mighter2d::Vector2i v2(5, 10);
 
         CHECK_EQ(v1.cross(v2), -50);
         CHECK_EQ(v2.cross(v1), 50);
@@ -226,8 +226,8 @@ TEST_CASE("ime::Vector2 class template")
 
     SUBCASE("distanceTo()")
     {
-        ime::Vector2i v1(-4, -3);
-        ime::Vector2i v2(4, 3);
+        mighter2d::Vector2i v1(-4, -3);
+        mighter2d::Vector2i v2(4, 3);
 
         CHECK_EQ(v1.distanceTo(v2), 10.0f);
         CHECK_EQ(v2.distanceTo(v1), 10.0f);
@@ -235,23 +235,23 @@ TEST_CASE("ime::Vector2 class template")
 
     SUBCASE("angle()")
     {
-        CHECK_EQ(static_cast<int>(ime::Vector2i(0, 0).angle()), 0);
-        CHECK_EQ(static_cast<int>(ime::Vector2i(7, 0).angle()), 0);
-        CHECK_EQ(static_cast<int>(ime::Vector2i(0, 3).angle()), 90);
-        CHECK_EQ(static_cast<int>(ime::Vector2i(-10, 0).angle()), 180);
-        CHECK_EQ(static_cast<int>(ime::Vector2i(0, -30).angle()), 270);
-        CHECK_EQ(static_cast<int>(ime::Vector2i(4, 4).angle()), 45);
-        CHECK_EQ(static_cast<int>(ime::Vector2i(-4, -4).angle()), 225);
-        CHECK_EQ(static_cast<int>(ime::Vector2i(-7, 10).angle()), 124);
-        CHECK_EQ(static_cast<int>(ime::Vector2i(15, -3).angle()), 348);
+        CHECK_EQ(static_cast<int>(mighter2d::Vector2i(0, 0).angle()), 0);
+        CHECK_EQ(static_cast<int>(mighter2d::Vector2i(7, 0).angle()), 0);
+        CHECK_EQ(static_cast<int>(mighter2d::Vector2i(0, 3).angle()), 90);
+        CHECK_EQ(static_cast<int>(mighter2d::Vector2i(-10, 0).angle()), 180);
+        CHECK_EQ(static_cast<int>(mighter2d::Vector2i(0, -30).angle()), 270);
+        CHECK_EQ(static_cast<int>(mighter2d::Vector2i(4, 4).angle()), 45);
+        CHECK_EQ(static_cast<int>(mighter2d::Vector2i(-4, -4).angle()), 225);
+        CHECK_EQ(static_cast<int>(mighter2d::Vector2i(-7, 10).angle()), 124);
+        CHECK_EQ(static_cast<int>(mighter2d::Vector2i(15, -3).angle()), 348);
     }
 
     SUBCASE("angleTo()")
     {
-        ime::Vector2i v1(0, 7);
-        ime::Vector2i v2(10, 0);
-        ime::Vector2i v3(2, 2);
-        ime::Vector2i v4(0, 3);
+        mighter2d::Vector2i v1(0, 7);
+        mighter2d::Vector2i v2(10, 0);
+        mighter2d::Vector2i v3(2, 2);
+        mighter2d::Vector2i v4(0, 3);
 
         CHECK_EQ(static_cast<int>(v1.angleTo(v2)), 90);
         CHECK_EQ(static_cast<int>(v2.angleTo(v1)), 90);
@@ -261,8 +261,8 @@ TEST_CASE("ime::Vector2 class template")
 
     SUBCASE("asUnitVector()")
     {
-        ime::Vector2i originalVector(5, 11);
-        ime::Vector2f unitVector = originalVector.asUnitVector();
+        mighter2d::Vector2i originalVector(5, 11);
+        mighter2d::Vector2f unitVector = originalVector.asUnitVector();
 
         CHECK_EQ(unitVector.x, originalVector.x / originalVector.magnitude());
         CHECK_EQ(unitVector.y, originalVector.y / originalVector.magnitude());

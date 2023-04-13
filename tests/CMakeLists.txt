@@ -2,7 +2,7 @@
 include_directories("${PROJECT_SOURCE_DIR}/extlibs/doctest")
 
 # Set unit tests source files
-set(IME_TEST_SRC
+set(MIGHTER2D_TEST_SRC
         Test_Main.cpp
         Test_Colour.cpp
         Test_Vector2.cpp
@@ -22,9 +22,9 @@ set(IME_TEST_SRC
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 # Create test executable
-add_executable(tests ${IME_TEST_SRC})
+add_executable(tests ${MIGHTER2D_TEST_SRC})
 target_include_directories(tests PRIVATE "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(tests PRIVATE ime)
+target_link_libraries(tests PRIVATE mighter2d)
 
 ime_set_global_compile_flags(tests)
 ime_set_stdlib(tests)

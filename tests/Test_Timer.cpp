@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
-// IME - Infinite Motion Engine
+// Mighter2d
 //
-// Copyright (c) 2020-2022 Kwena Mashamaite (kwena.mashamaite1@gmail.com)
+// Copyright (c) 2023 Kwena Mashamaite
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,21 +22,21 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "IME/core/time/Timer.h"
+#include "Mighter2d/core/time/Timer.h"
 #include <doctest.h>
 
-TEST_CASE("ime::Timer class")
+TEST_CASE("mighter2d::Timer class")
 {
     SUBCASE("Constructors")
     {
         SUBCASE("Default constructor")
         {
-            ime::Timer timer;
+            mighter2d::Timer timer;
 
-            CHECK_EQ(timer.getStatus(), ime::Timer::Status::Stopped);
-            CHECK_EQ(timer.getInterval(), ime::Time::Zero);
-            CHECK_EQ(timer.getElapsedTime(), ime::Time::Zero);
-            CHECK_EQ(timer.getRemainingDuration(), ime::Time::Zero);
+            CHECK_EQ(timer.getStatus(), mighter2d::Timer::Status::Stopped);
+            CHECK_EQ(timer.getInterval(), mighter2d::Time::Zero);
+            CHECK_EQ(timer.getElapsedTime(), mighter2d::Time::Zero);
+            CHECK_EQ(timer.getRemainingDuration(), mighter2d::Time::Zero);
             CHECK_EQ(timer.getRepeatCount(), 0);
             CHECK_EQ(timer.getDispatchCount(), 0);
             CHECK_EQ(timer.getTimescale(), 1);
@@ -53,9 +53,9 @@ TEST_CASE("ime::Timer class")
     {
         SUBCASE("setInterval()")
         {
-            ime::Timer timer;
-            timer.setInterval(ime::seconds(5));
-            CHECK_EQ(timer.getInterval(), ime::seconds(5));
+            mighter2d::Timer timer;
+            timer.setInterval(mighter2d::seconds(5));
+            CHECK_EQ(timer.getInterval(), mighter2d::seconds(5));
 
             SUBCASE("The remaining duration is the same as the interval")
             {
@@ -65,7 +65,7 @@ TEST_CASE("ime::Timer class")
 
         SUBCASE("setRepeatCount()")
         {
-            ime::Timer timer;
+            mighter2d::Timer timer;
             timer.setRepeatCount(75);
             CHECK_EQ(timer.getRepeatCount(), 75);
 
@@ -78,7 +78,7 @@ TEST_CASE("ime::Timer class")
 
         SUBCASE("setLoop()")
         {
-            ime::Timer timer;
+            mighter2d::Timer timer;
 
             timer.setLoop(true);
             CHECK(timer.isLooped());
@@ -96,7 +96,7 @@ TEST_CASE("ime::Timer class")
 
         SUBCASE("setTimescale()")
         {
-            ime::Timer timer;
+            mighter2d::Timer timer;
 
             timer.setTimescale(3.0f);
             CHECK_EQ(timer.getTimescale(), 3.0f);
@@ -121,60 +121,60 @@ TEST_CASE("ime::Timer class")
     {
         SUBCASE("Updating a 'running' timer increases the elapsed time by the delta time")
         {
-            ime::Timer timer;
-            timer.setInterval(ime::seconds(10));
+            mighter2d::Timer timer;
+            timer.setInterval(mighter2d::seconds(10));
             timer.onTimeout([]{});
 
             timer.start();
             REQUIRE(timer.isRunning());
             REQUIRE_EQ(timer.getElapsedTime().asSeconds(), 0);
 
-            timer.update(ime::seconds(1));
+            timer.update(mighter2d::seconds(1));
             CHECK_EQ(timer.getElapsedTime().asSeconds(), 1);
 
-            timer.update(ime::seconds(1));
+            timer.update(mighter2d::seconds(1));
             CHECK_EQ(timer.getElapsedTime().asSeconds(), 2);
 
-            timer.update(ime::seconds(3));
+            timer.update(mighter2d::seconds(3));
             CHECK_EQ(timer.getElapsedTime().asSeconds(), 5);
         }
 
         SUBCASE("A 'stopped' timer does not update")
         {
-            ime::Timer timer;
+            mighter2d::Timer timer;
 
-            REQUIRE_EQ(timer.getStatus(), ime::Timer::Status::Stopped);
+            REQUIRE_EQ(timer.getStatus(), mighter2d::Timer::Status::Stopped);
             REQUIRE_EQ(timer.getElapsedTime().asSeconds(), 0.0f);
 
-            timer.update(ime::seconds(2));
+            timer.update(mighter2d::seconds(2));
             CHECK_EQ(timer.getElapsedTime().asSeconds(), 0.0f);
         }
 
         SUBCASE("A 'paused' timer does not update")
         {
-            ime::Timer timer;
-            timer.setInterval(ime::seconds(5));
+            mighter2d::Timer timer;
+            timer.setInterval(mighter2d::seconds(5));
 
             // The timer cannot start without a registered timeout callback
             timer.onTimeout([]{});
 
-            // A ime::Timer can ony be paused if it was previously running
+            // A Mighter2d::Timer can ony be paused if it was previously running
             timer.start();
-            REQUIRE_EQ(timer.getStatus(), ime::Timer::Status::Running);
+            REQUIRE_EQ(timer.getStatus(), mighter2d::Timer::Status::Running);
 
             timer.pause();
-            REQUIRE_EQ(timer.getStatus(), ime::Timer::Status::Paused);
+            REQUIRE_EQ(timer.getStatus(), mighter2d::Timer::Status::Paused);
 
             REQUIRE_EQ(timer.getElapsedTime().asSeconds(), 0);
-            timer.update(ime::seconds(7));
+            timer.update(mighter2d::seconds(7));
 
             CHECK_EQ(timer.getElapsedTime().asSeconds(), 0);
         }
 
         SUBCASE("Updating a 'running' timer decreases the remaining duration by the delta time")
         {
-            ime::Timer timer;
-            timer.setInterval(ime::seconds(7));
+            mighter2d::Timer timer;
+            timer.setInterval(mighter2d::seconds(7));
 
             // The timer cannot start without a registered timeout callback
             timer.onTimeout([]{});
@@ -182,23 +182,23 @@ TEST_CASE("ime::Timer class")
 
             REQUIRE_EQ(timer.getRemainingDuration().asSeconds(), 7.0f);
 
-            timer.update(ime::seconds(1));
+            timer.update(mighter2d::seconds(1));
             CHECK_EQ(timer.getRemainingDuration().asSeconds(), 6.0f);
 
-            timer.update(ime::seconds(3));
+            timer.update(mighter2d::seconds(3));
             CHECK_EQ(timer.getRemainingDuration().asSeconds(), 3.0f);
 
-            timer.update(ime::seconds(2));
+            timer.update(mighter2d::seconds(2));
             CHECK_EQ(timer.getRemainingDuration().asSeconds(), 1.0f);
         }
 
         SUBCASE("Updating a 'running' timer with a timescale that is not 1 (real-time)")
         {
-            ime::Timer timer;
-            timer.setInterval(ime::seconds(5));
+            mighter2d::Timer timer;
+            timer.setInterval(mighter2d::seconds(5));
             timer.onTimeout([] {}); // Timer cannot start without a timout callback
             timer.start();
-            REQUIRE_EQ(timer.getStatus(), ime::Timer::Status::Running);
+            REQUIRE_EQ(timer.getStatus(), mighter2d::Timer::Status::Running);
 
             WHEN("The timescale is greater than 1")
             {
@@ -208,7 +208,7 @@ TEST_CASE("ime::Timer class")
                 THEN("The timer counts down faster than real time")
                 {
                     REQUIRE_EQ(timer.getElapsedTime().asSeconds(), 0.0f);
-                    timer.update(ime::seconds(1));
+                    timer.update(mighter2d::seconds(1));
                     REQUIRE_EQ(timer.getElapsedTime().asSeconds(), 4.0f);
 
                 }
@@ -222,7 +222,7 @@ TEST_CASE("ime::Timer class")
                 THEN("The timer counts down slower than real timer")
                 {
                     REQUIRE_EQ(timer.getElapsedTime().asSeconds(), 0.0f);
-                    timer.update(ime::seconds(1));
+                    timer.update(mighter2d::seconds(1));
                     REQUIRE_EQ(timer.getElapsedTime().asSeconds(), 0.5f);
                 }
             }
@@ -230,18 +230,18 @@ TEST_CASE("ime::Timer class")
 
         WHEN("The countdown of a non repeating timer reaches zero")
         {
-            ime::Timer timer;
-            timer.setInterval(ime::seconds(2.0f));
+            mighter2d::Timer timer;
+            timer.setInterval(mighter2d::seconds(2.0f));
             REQUIRE_EQ(timer.getRemainingDuration().asSeconds(), 2.0f);
 
             bool isInvoked = false;
-            timer.onTimeout([&isInvoked] (ime::Timer&) {
+            timer.onTimeout([&isInvoked] (mighter2d::Timer&) {
                 isInvoked = true;
             });
 
             timer.start();
-            REQUIRE_EQ(timer.getStatus(), ime::Timer::Status::Running);;
-            timer.update(ime::seconds(2.0f));
+            REQUIRE_EQ(timer.getStatus(), mighter2d::Timer::Status::Running);;
+            timer.update(mighter2d::seconds(2.0f));
 
             THEN("The timeout callback is invoked")
             {
@@ -262,12 +262,12 @@ TEST_CASE("ime::Timer class")
     {
         SUBCASE("onStart()")
         {
-            ime::Timer timer;
-            timer.setInterval(ime::seconds(3.0f));
+            mighter2d::Timer timer;
+            timer.setInterval(mighter2d::seconds(3.0f));
             timer.onTimeout([] {}); // Timer cannot start without a timeout callback
 
             bool isInvoked = false;
-            timer.onStart([&isInvoked] (ime::Timer&) {
+            timer.onStart([&isInvoked] (mighter2d::Timer&) {
                 isInvoked = true;
             });
 
@@ -277,15 +277,15 @@ TEST_CASE("ime::Timer class")
 
         SUBCASE("onPause()")
         {
-            ime::Timer timer;
-            timer.setInterval(ime::seconds(3.0f));
+            mighter2d::Timer timer;
+            timer.setInterval(mighter2d::seconds(3.0f));
             timer.onTimeout([] {}); // Timer cannot start without a timeout callback
 
             timer.start();
-            REQUIRE_EQ(timer.getStatus(), ime::Timer::Status::Running);
+            REQUIRE_EQ(timer.getStatus(), mighter2d::Timer::Status::Running);
 
             bool isInvoked = false;
-            timer.onPause([&isInvoked] (ime::Timer&) {
+            timer.onPause([&isInvoked] (mighter2d::Timer&) {
                 isInvoked = true;
             });
 
@@ -295,17 +295,17 @@ TEST_CASE("ime::Timer class")
 
         SUBCASE("onResume()")
         {
-            ime::Timer timer;
-            timer.setInterval(ime::seconds(3.0f));
+            mighter2d::Timer timer;
+            timer.setInterval(mighter2d::seconds(3.0f));
             timer.onTimeout([] {}); // Timer cannot start without a timeout callback
 
             timer.start();
-            REQUIRE_EQ(timer.getStatus(), ime::Timer::Status::Running);
+            REQUIRE_EQ(timer.getStatus(), mighter2d::Timer::Status::Running);
             timer.pause();
-            REQUIRE_EQ(timer.getStatus(), ime::Timer::Status::Paused);
+            REQUIRE_EQ(timer.getStatus(), mighter2d::Timer::Status::Paused);
 
             bool isInvoked = false;
-            timer.onResume([&isInvoked] (ime::Timer&) {
+            timer.onResume([&isInvoked] (mighter2d::Timer&) {
                 isInvoked = true;
             });
 
@@ -315,15 +315,15 @@ TEST_CASE("ime::Timer class")
 
         SUBCASE("onRestart()")
         {
-            ime::Timer timer;
-            timer.setInterval(ime::seconds(3.0f));
+            mighter2d::Timer timer;
+            timer.setInterval(mighter2d::seconds(3.0f));
             timer.onTimeout([] {}); // Timer cannot start without a timeout callback
 
             timer.start();
-            REQUIRE_EQ(timer.getStatus(), ime::Timer::Status::Running);
+            REQUIRE_EQ(timer.getStatus(), mighter2d::Timer::Status::Running);
 
             bool isInvoked = false;
-            timer.onRestart([&isInvoked] (ime::Timer&) {
+            timer.onRestart([&isInvoked] (mighter2d::Timer&) {
                 isInvoked = true;
             });
 
@@ -333,15 +333,15 @@ TEST_CASE("ime::Timer class")
 
         SUBCASE("onStop()")
         {
-            ime::Timer timer;
-            timer.setInterval(ime::seconds(3.0f));
+            mighter2d::Timer timer;
+            timer.setInterval(mighter2d::seconds(3.0f));
             timer.onTimeout([] {}); // Timer cannot start without a timeout callback
 
             timer.start();
-            REQUIRE_EQ(timer.getStatus(), ime::Timer::Status::Running);
+            REQUIRE_EQ(timer.getStatus(), mighter2d::Timer::Status::Running);
 
             bool isInvoked = false;
-            timer.onStop([&isInvoked] (ime::Timer&) {
+            timer.onStop([&isInvoked] (mighter2d::Timer&) {
                 isInvoked = true;
             });
 
@@ -351,19 +351,19 @@ TEST_CASE("ime::Timer class")
 
         SUBCASE("onUpdate()")
         {
-            ime::Timer timer;
-            timer.setInterval(ime::seconds(3.0f));
+            mighter2d::Timer timer;
+            timer.setInterval(mighter2d::seconds(3.0f));
             timer.onTimeout([] {}); // Timer cannot start without a timeout callback
 
             timer.start();
-            REQUIRE_EQ(timer.getStatus(), ime::Timer::Status::Running);
+            REQUIRE_EQ(timer.getStatus(), mighter2d::Timer::Status::Running);
 
             bool isInvoked = false;
-            timer.onUpdate([&isInvoked] (ime::Timer&) {
+            timer.onUpdate([&isInvoked] (mighter2d::Timer&) {
                 isInvoked = true;
             });
 
-            timer.update(ime::seconds(1));
+            timer.update(mighter2d::seconds(1));
             CHECK(isInvoked);
         }
     }

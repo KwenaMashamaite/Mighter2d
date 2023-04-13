@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
-// IME - Infinite Motion Engine
+// Mighter2d
 //
-// Copyright (c) 2020-2022 Kwena Mashamaite (kwena.mashamaite1@gmail.com)
+// Copyright (c) 2023 Kwena Mashamaite
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,16 +22,16 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "IME/common/Transform.h"
+#include "Mighter2d/common/Transform.h"
 #include <doctest.h>
 
-TEST_CASE("ime::Transform class")
+TEST_CASE("mighter2d::Transform class")
 {
     SUBCASE("Constructors")
     {
         SUBCASE("Default constructor")
         {
-            ime::Transform transform;
+            mighter2d::Transform transform;
 
             CHECK_EQ(transform.getPosition().x, 0.0f);
             CHECK_EQ(transform.getPosition().y, 0.0f);
@@ -50,7 +50,7 @@ TEST_CASE("ime::Transform class")
     {
         SUBCASE("setPosition(float, float)")
         {
-            ime::Transform transform;
+            mighter2d::Transform transform;
             transform.setPosition(2.0f, 3.0f);
 
             CHECK_EQ(transform.getPosition().x, 2.0f);
@@ -59,8 +59,8 @@ TEST_CASE("ime::Transform class")
 
         SUBCASE("setPosition(Vector2f)")
         {
-            ime::Transform transform;
-            transform.setPosition(ime::Vector2f(2.0f, 3.0f));
+            mighter2d::Transform transform;
+            transform.setPosition(mighter2d::Vector2f(2.0f, 3.0f));
 
             CHECK_EQ(transform.getPosition().x, 2.0f);
             CHECK_EQ(transform.getPosition().y, 3.0f);
@@ -68,7 +68,7 @@ TEST_CASE("ime::Transform class")
 
         SUBCASE("setScale(float, float)")
         {
-            ime::Transform transform;
+            mighter2d::Transform transform;
             transform.setScale(2.0f, 3.0f);
 
             CHECK_EQ(transform.getScale().x, 2.0f);
@@ -77,8 +77,8 @@ TEST_CASE("ime::Transform class")
 
         SUBCASE("setScale(Vector2f)")
         {
-            ime::Transform transform;
-            transform.setScale(ime::Vector2f(5.0f, 10.0f));
+            mighter2d::Transform transform;
+            transform.setScale(mighter2d::Vector2f(5.0f, 10.0f));
 
             CHECK_EQ(transform.getScale().x, 5.0f);
             CHECK_EQ(transform.getScale().y, 10.0f);
@@ -86,7 +86,7 @@ TEST_CASE("ime::Transform class")
 
         SUBCASE("setOrigin(float, float)")
         {
-            ime::Transform transform;
+            mighter2d::Transform transform;
             transform.setOrigin(2.0f, 3.0f);
 
             CHECK_EQ(transform.getOrigin().x, 2.0f);
@@ -95,8 +95,8 @@ TEST_CASE("ime::Transform class")
 
         SUBCASE("setOrigin(Vector2f)")
         {
-            ime::Transform transform;
-            transform.setOrigin(ime::Vector2f(5.0f, 10.0f));
+            mighter2d::Transform transform;
+            transform.setOrigin(mighter2d::Vector2f(5.0f, 10.0f));
 
             CHECK_EQ(transform.getOrigin().x, 5.0f);
             CHECK_EQ(transform.getOrigin().y, 10.0f);
@@ -104,7 +104,7 @@ TEST_CASE("ime::Transform class")
 
         SUBCASE("setRotation()")
         {
-            ime::Transform transform;
+            mighter2d::Transform transform;
             transform.setRotation(60.0f);
 
             CHECK_EQ(transform.getRotation(), 60.0f);
@@ -113,7 +113,7 @@ TEST_CASE("ime::Transform class")
 
     SUBCASE("scale(float, float)")
     {
-        ime::Transform transform;
+        mighter2d::Transform transform;
         transform.setScale(2.0f, 3.0f);
 
         REQUIRE_EQ(transform.getScale().x, 2.0f);
@@ -126,12 +126,12 @@ TEST_CASE("ime::Transform class")
 
     SUBCASE("scale(Vector2f)")
     {
-        ime::Transform transform;
+        mighter2d::Transform transform;
         transform.setScale(2.0f, 3.0f);
 
         REQUIRE_EQ(transform.getScale().x, 2.0f);
         REQUIRE_EQ(transform.getScale().y, 3.0f);
-        transform.scale(ime::Vector2f(3.0f, 4.0f));
+        transform.scale(mighter2d::Vector2f(3.0f, 4.0f));
 
         CHECK_EQ(transform.getScale().x, 6.0f);
         CHECK_EQ(transform.getScale().y, 12.0f);
@@ -139,7 +139,7 @@ TEST_CASE("ime::Transform class")
 
     SUBCASE("rotate()")
     {
-        ime::Transform transform;
+        mighter2d::Transform transform;
         transform.setRotation(60.0f);
 
         REQUIRE_EQ(transform.getRotation(), 60.0f);
@@ -149,7 +149,7 @@ TEST_CASE("ime::Transform class")
 
     SUBCASE("move(float, float)")
     {
-        ime::Transform transform;
+        mighter2d::Transform transform;
         transform.setPosition(5.0f, 10.0f);
 
         CHECK_EQ(transform.getPosition().x, 5.0f);
@@ -163,13 +163,13 @@ TEST_CASE("ime::Transform class")
 
     SUBCASE("move(Vector2f)")
     {
-        ime::Transform transform;
+        mighter2d::Transform transform;
         transform.setPosition(5.0f, 10.0f);
 
         CHECK_EQ(transform.getPosition().x, 5.0f);
         CHECK_EQ(transform.getPosition().y, 10.0f);
 
-        transform.move(ime::Vector2f(20.0f, -50.0f));
+        transform.move(mighter2d::Vector2f(20.0f, -50.0f));
 
         CHECK_EQ(transform.getPosition().x, 25.0f);
         CHECK_EQ(transform.getPosition().y, -40.0f);
@@ -177,10 +177,10 @@ TEST_CASE("ime::Transform class")
 
     SUBCASE("onPropertyChange()")
     {
-        ime::Transform transform;
+        mighter2d::Transform transform;
 
         bool isInvoked = false;
-        transform.onPropertyChange([&isInvoked](const ime::Property&) {
+        transform.onPropertyChange([&isInvoked](const mighter2d::Property&) {
             isInvoked = true;
         });
 

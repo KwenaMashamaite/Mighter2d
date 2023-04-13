@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
-// IME - Infinite Motion Engine
+// Mighter2d
 //
-// Copyright (c) 2020-2022 Kwena Mashamaite (kwena.mashamaite1@gmail.com)
+// Copyright (c) 2023 Kwena Mashamaite
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,13 +22,13 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "IME/core/input/Mouse.h"
-#include "IME/core/event/Event.h"
+#include "Mighter2d/core/input/Mouse.h"
+#include "Mighter2d/core/event/Event.h"
 #include <doctest.h>
 
-using Mouse = ime::input::Mouse;
+using Mouse = mighter2d::input::Mouse;
 
-TEST_CASE("ime::input::Mouse class")
+TEST_CASE("mighter2d::input::Mouse class")
 {
     SUBCASE("Constructors")
     {
@@ -55,7 +55,7 @@ TEST_CASE("ime::input::Mouse class")
         SUBCASE("setPosition()")
         {
             Mouse mouse;
-            Mouse::setPosition(ime::Vector2i(100, 50));
+            Mouse::setPosition(mighter2d::Vector2i(100, 50));
 
             CHECK_EQ(mouse.getPosition().x, 100);
             CHECK_EQ(mouse.getPosition().y, 50);
@@ -68,7 +68,7 @@ TEST_CASE("ime::input::Mouse class")
         {
             Mouse mouse;
             bool isInvoked = false;
-            ime::Vector2i mousePos(-1, -1);
+            mighter2d::Vector2i mousePos(-1, -1);
 
             mouse.onButtonUp([&isInvoked, &mousePos](Mouse::Button button, int x, int y) {
                 isInvoked = true;
@@ -76,8 +76,8 @@ TEST_CASE("ime::input::Mouse class")
                 mousePos.y = y;
             });
 
-            ime::Event event;
-            event.type = ime::Event::MouseButtonReleased;
+            mighter2d::Event event;
+            event.type = mighter2d::Event::MouseButtonReleased;
             event.mouseButton.x = 14;
             event.mouseButton.y = 88;
 
@@ -93,7 +93,7 @@ TEST_CASE("ime::input::Mouse class")
         {
             Mouse mouse;
             bool isInvoked = false;
-            ime::Vector2i mousePos(-1, -1);
+            mighter2d::Vector2i mousePos(-1, -1);
 
             mouse.onButtonDown([&isInvoked, &mousePos](Mouse::Button button, int x, int y) {
                 isInvoked = true;
@@ -101,8 +101,8 @@ TEST_CASE("ime::input::Mouse class")
                 mousePos.y = y;
             });
 
-            ime::Event event;
-            event.type = ime::Event::MouseButtonPressed;
+            mighter2d::Event event;
+            event.type = mighter2d::Event::MouseButtonPressed;
             event.mouseButton.x = 52;
             event.mouseButton.y = 37;
 
@@ -118,7 +118,7 @@ TEST_CASE("ime::input::Mouse class")
         {
             Mouse mouse;
             bool isInvoked = false;
-            ime::Vector2i newPos(-1, -1);
+            mighter2d::Vector2i newPos(-1, -1);
 
             mouse.onMouseMove([&isInvoked, &newPos](int x, int y) {
                 isInvoked = true;
@@ -126,8 +126,8 @@ TEST_CASE("ime::input::Mouse class")
                 newPos.y = y;
             });
 
-            ime::Event event;
-            event.type = ime::Event::MouseMoved;
+            mighter2d::Event event;
+            event.type = mighter2d::Event::MouseMoved;
             event.mouseMove.x = 300;
             event.mouseMove.y = 87;
 
@@ -145,7 +145,7 @@ TEST_CASE("ime::input::Mouse class")
             Mouse::Wheel scrolledWheel;
             bool isInvoked = false;
             float wheelOffset = 0;
-            ime::Vector2i mousePos(-1, -1);
+            mighter2d::Vector2i mousePos(-1, -1);
 
             mouse.onWheelScroll([&](Mouse::Wheel wheel, float offset, int x, int y) {
                 isInvoked = true;
@@ -155,8 +155,8 @@ TEST_CASE("ime::input::Mouse class")
                 mousePos.y = y;
             });
 
-            ime::Event event;
-            event.type = ime::Event::MouseWheelScrolled;
+            mighter2d::Event event;
+            event.type = mighter2d::Event::MouseWheelScrolled;
             event.mouseWheelScroll.wheel = Mouse::Wheel::VerticalWheel;
             event.mouseWheelScroll.delta = 0.75f;
             event.mouseWheelScroll.x = 247;
@@ -177,10 +177,10 @@ TEST_CASE("ime::input::Mouse class")
     {
         SUBCASE("Removing a non-existent event listener returns false")
         {
-            CHECK_FALSE(Mouse().unsubscribe(ime::MouseEvent::MouseUp, -1));
-            CHECK_FALSE(Mouse().unsubscribe(ime::MouseEvent::MouseDown, -1));
-            CHECK_FALSE(Mouse().unsubscribe(ime::MouseEvent::MouseMove, -1));
-            CHECK_FALSE(Mouse().unsubscribe(ime::MouseEvent::MouseWheelScroll, -1));
+            CHECK_FALSE(Mouse().unsubscribe(mighter2d::MouseEvent::MouseUp, -1));
+            CHECK_FALSE(Mouse().unsubscribe(mighter2d::MouseEvent::MouseDown, -1));
+            CHECK_FALSE(Mouse().unsubscribe(mighter2d::MouseEvent::MouseMove, -1));
+            CHECK_FALSE(Mouse().unsubscribe(mighter2d::MouseEvent::MouseWheelScroll, -1));
         }
 
         SUBCASE("Removing an existing event listener returns true")
@@ -192,10 +192,10 @@ TEST_CASE("ime::input::Mouse class")
             int mouseMoveListener = mouse.onMouseMove([](int, int) {});
             int wheelScrollListener = mouse.onWheelScroll([](Mouse::Wheel, float, int, int) {});
 
-            CHECK(mouse.unsubscribe(ime::MouseEvent::MouseUp, buttonUpListener));
-            CHECK(mouse.unsubscribe(ime::MouseEvent::MouseDown, buttonDownListener));
-            CHECK(mouse.unsubscribe(ime::MouseEvent::MouseMove, mouseMoveListener));
-            CHECK(mouse.unsubscribe(ime::MouseEvent::MouseWheelScroll, wheelScrollListener));
+            CHECK(mouse.unsubscribe(mighter2d::MouseEvent::MouseUp, buttonUpListener));
+            CHECK(mouse.unsubscribe(mighter2d::MouseEvent::MouseDown, buttonDownListener));
+            CHECK(mouse.unsubscribe(mighter2d::MouseEvent::MouseMove, mouseMoveListener));
+            CHECK(mouse.unsubscribe(mighter2d::MouseEvent::MouseWheelScroll, wheelScrollListener));
         }
 
         SUBCASE("Removing an existing event listener from an event its not listening for returns false")
@@ -204,9 +204,9 @@ TEST_CASE("ime::input::Mouse class")
 
             int buttonUpListener = mouse.onButtonUp([](Mouse::Button) {});
 
-            CHECK_FALSE(mouse.unsubscribe(ime::MouseEvent::MouseDown, buttonUpListener));
-            CHECK_FALSE(mouse.unsubscribe(ime::MouseEvent::MouseMove, buttonUpListener));
-            CHECK_FALSE(mouse.unsubscribe(ime::MouseEvent::MouseWheelScroll, buttonUpListener));
+            CHECK_FALSE(mouse.unsubscribe(mighter2d::MouseEvent::MouseDown, buttonUpListener));
+            CHECK_FALSE(mouse.unsubscribe(mighter2d::MouseEvent::MouseMove, buttonUpListener));
+            CHECK_FALSE(mouse.unsubscribe(mighter2d::MouseEvent::MouseWheelScroll, buttonUpListener));
         }
     }
 

@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
-// IME - Infinite Motion Engine
+// Mighter2d
 //
-// Copyright (c) 2020-2022 Kwena Mashamaite (kwena.mashamaite1@gmail.com)
+// Copyright (c) 2023 Kwena Mashamaite
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,16 +22,16 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "IME/common/Rect.h"
+#include "Mighter2d/common/Rect.h"
 #include <doctest.h>
 
-TEST_CASE("ime::Rect class template")
+TEST_CASE("mighter2d::Rect class template")
 {
     SUBCASE("Constructors")
     {
         SUBCASE("Default constructor")
         {
-            ime::IntRect rectangle;
+            mighter2d::IntRect rectangle;
             CHECK_EQ(rectangle.left, 0);
             CHECK_EQ(rectangle.top, 0);
             CHECK_EQ(rectangle.width, 0);
@@ -40,7 +40,7 @@ TEST_CASE("ime::Rect class template")
 
         SUBCASE("(left, top, width, height) constructor")
         {
-            ime::IntRect rectangle({1, 2}, {3, 4});
+            mighter2d::IntRect rectangle({1, 2}, {3, 4});
             CHECK_EQ(rectangle.left, 1);
             CHECK_EQ(rectangle.top, 2);
             CHECK_EQ(rectangle.width, 3);
@@ -49,9 +49,9 @@ TEST_CASE("ime::Rect class template")
 
         SUBCASE("(Vector2, Vector2) constructor")
         {
-            ime::Vector2i position(1, 2);
-            ime::Vector2i dimension(3, 4);
-            ime::IntRect rectangle(position, dimension);
+            mighter2d::Vector2i position(1, 2);
+            mighter2d::Vector2i dimension(3, 4);
+            mighter2d::IntRect rectangle(position, dimension);
 
             CHECK_EQ(rectangle.left, 1);
             CHECK_EQ(rectangle.top, 2);
@@ -61,8 +61,8 @@ TEST_CASE("ime::Rect class template")
 
         SUBCASE("Conversion constructor")
         {
-            ime::FloatRect sourceRectangle({1.0f, 2.0f}, {3.0f, 4.0f});
-            ime::IntRect rectangle(sourceRectangle);
+            mighter2d::FloatRect sourceRectangle({1.0f, 2.0f}, {3.0f, 4.0f});
+            mighter2d::IntRect rectangle(sourceRectangle);
 
             CHECK_EQ(rectangle.left, static_cast<int>(sourceRectangle.left));
             CHECK_EQ(rectangle.top, static_cast<int>(sourceRectangle.top));
@@ -75,7 +75,7 @@ TEST_CASE("ime::Rect class template")
     {
         SUBCASE("getPosition()")
         {
-            ime::IntRect rectangle({4, 5}, {7, 9});
+            mighter2d::IntRect rectangle({4, 5}, {7, 9});
 
             CHECK_EQ(rectangle.getPosition().x, 4);
             CHECK_EQ(rectangle.getPosition().y, 5);
@@ -83,7 +83,7 @@ TEST_CASE("ime::Rect class template")
 
         SUBCASE("getSize()")
         {
-            ime::IntRect rectangle({4, 5}, {7, 9});
+            mighter2d::IntRect rectangle({4, 5}, {7, 9});
 
             CHECK_EQ(rectangle.getSize().x, 7);
             CHECK_EQ(rectangle.getSize().y, 9);
@@ -94,8 +94,8 @@ TEST_CASE("ime::Rect class template")
     {
         SUBCASE("operator==")
         {
-            ime::IntRect rect1({1, 3}, {2, 5});
-            ime::IntRect rect2({7, 11}, {2, 5});
+            mighter2d::IntRect rect1({1, 3}, {2, 5});
+            mighter2d::IntRect rect2({7, 11}, {2, 5});
 
             CHECK(rect1 == rect1);
             CHECK_FALSE(rect1 == rect2);
@@ -103,8 +103,8 @@ TEST_CASE("ime::Rect class template")
 
         SUBCASE("operator!=")
         {
-            ime::IntRect rect1({1, 3}, {2, 5});
-            ime::IntRect rect2({7, 11}, {2, 5});
+            mighter2d::IntRect rect1({1, 3}, {2, 5});
+            mighter2d::IntRect rect2({7, 11}, {2, 5});
 
             CHECK(rect1 != rect2);
             CHECK_FALSE(rect1 != rect1);
@@ -115,21 +115,21 @@ TEST_CASE("ime::Rect class template")
     {
         SUBCASE("contains(Vector2)")
         {
-            ime::IntRect rectangle({0, 0}, {10, 10});
+            mighter2d::IntRect rectangle({0, 0}, {10, 10});
 
-            CHECK(rectangle.contains(ime::Vector2i(0, 0)));
-            CHECK(rectangle.contains(ime::Vector2i(9, 0)));
-            CHECK(rectangle.contains(ime::Vector2i(0, 9)));
-            CHECK(rectangle.contains(ime::Vector2i(9, 9)));
-            CHECK_FALSE(rectangle.contains(ime::Vector2i(9, 10)));
-            CHECK_FALSE(rectangle.contains(ime::Vector2i(10, 9)));
-            CHECK_FALSE(rectangle.contains(ime::Vector2i(10, 10)));
-            CHECK_FALSE(rectangle.contains(ime::Vector2i(15, 15)));
+            CHECK(rectangle.contains(mighter2d::Vector2i(0, 0)));
+            CHECK(rectangle.contains(mighter2d::Vector2i(9, 0)));
+            CHECK(rectangle.contains(mighter2d::Vector2i(0, 9)));
+            CHECK(rectangle.contains(mighter2d::Vector2i(9, 9)));
+            CHECK_FALSE(rectangle.contains(mighter2d::Vector2i(9, 10)));
+            CHECK_FALSE(rectangle.contains(mighter2d::Vector2i(10, 9)));
+            CHECK_FALSE(rectangle.contains(mighter2d::Vector2i(10, 10)));
+            CHECK_FALSE(rectangle.contains(mighter2d::Vector2i(15, 15)));
         }
 
         SUBCASE("contains(point, point)")
         {
-            ime::IntRect rectangle({0, 0}, {10, 10});
+            mighter2d::IntRect rectangle({0, 0}, {10, 10});
 
             CHECK(rectangle.contains(0, 0));
             CHECK(rectangle.contains(9, 0));
@@ -146,9 +146,9 @@ TEST_CASE("ime::Rect class template")
     {
         SUBCASE("intersects(Rect)")
         {
-            ime::IntRect rectangle({0, 0}, {10, 10});
-            ime::IntRect intersectingRectangle({5, 5}, {10, 10});
-            ime::IntRect nonIntersectingRectangle({-5, -5}, {5, 5});
+            mighter2d::IntRect rectangle({0, 0}, {10, 10});
+            mighter2d::IntRect intersectingRectangle({5, 5}, {10, 10});
+            mighter2d::IntRect nonIntersectingRectangle({-5, -5}, {5, 5});
 
             CHECK(rectangle.intersects(intersectingRectangle));
             CHECK_FALSE(rectangle.intersects(nonIntersectingRectangle));
@@ -156,10 +156,10 @@ TEST_CASE("ime::Rect class template")
 
         SUBCASE("intersects(Rect, Rect)")
         {
-            ime::IntRect rectangle({0, 0}, {10, 10});
-            ime::IntRect intersectingRectangle({5, 5}, {10, 10});
-            ime::IntRect nonIntersectingRectangle({-5, -5}, {5, 5});
-            ime::IntRect intersectionResult;
+            mighter2d::IntRect rectangle({0, 0}, {10, 10});
+            mighter2d::IntRect intersectingRectangle({5, 5}, {10, 10});
+            mighter2d::IntRect nonIntersectingRectangle({-5, -5}, {5, 5});
+            mighter2d::IntRect intersectionResult;
 
             CHECK(rectangle.intersects(intersectingRectangle, intersectionResult));
             CHECK_EQ(intersectionResult.top, 5);

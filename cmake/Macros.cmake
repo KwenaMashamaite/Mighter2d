@@ -1,5 +1,5 @@
 # Macro that helps defining an option
-macro(ime_set_option var default type docstring)
+macro(mighter2d_set_option var default type docstring)
     if(NOT DEFINED ${var})
         set(${var} ${default})
     endif()
@@ -7,8 +7,8 @@ macro(ime_set_option var default type docstring)
 endmacro()
 
 # Set the compile options used by all targets
-function(ime_set_global_compile_flags target)
-    if(IME_COMPILER_MSVC)
+function(mighter2d_set_global_compile_flags target)
+    if(MIGHTER2D_COMPILER_MSVC)
         target_compile_options(${target} PRIVATE /W4)
     else()
         target_compile_options(${target}
@@ -28,54 +28,54 @@ function(ime_set_global_compile_flags target)
     endif()
 
     set_target_properties(${target} PROPERTIES CXX_EXTENSIONS OFF)
-    target_compile_features(${target} PUBLIC cxx_std_${IME_CXX_STANDARD})
+    target_compile_features(${target} PUBLIC cxx_std_${MIGHTER2D_CXX_STANDARD})
 endfunction()
 
 # Set the appropriate standard library on each platform for the given target
-function(ime_set_stdlib target)
+function(mighter2d_set_stdlib target)
 
-    # Apply the IME_USE_STATIC_STD_LIBS option on windows when using GCC (already done earlier when using VC++ which requires a global change)
-    if(IME_OS_WINDOWS AND IME_COMPILER_GCC)
-        if(IME_USE_STATIC_STD_LIBS AND NOT IME_COMPILER_GCC_TDM)
+    # Apply the MIGHTER2D_USE_STATIC_STD_LIBS option on windows when using GCC (already done earlier when using VC++ which requires a global change)
+    if(MIGHTER2D_OS_WINDOWS AND MIGHTER2D_COMPILER_GCC)
+        if(MIGHTER2D_USE_STATIC_STD_LIBS AND NOT MIGHTER2D_COMPILER_GCC_TDM)
             target_link_libraries(${target} PRIVATE "-static-libgcc" "-static-libstdc++")
-        elseif(NOT IME_USE_STATIC_STD_LIBS AND IME_COMPILER_GCC_TDM)
+        elseif(NOT MIGHTER2D_USE_STATIC_STD_LIBS AND MIGHTER2D_COMPILER_GCC_TDM)
             target_link_libraries(${target} PRIVATE "-shared-libgcc" "-shared-libstdc++")
         endif()
     endif()
 endfunction()
 
-# Generate a IMEConfig.cmake file (and associated files)
-function(ime_export_target export_name)
+# Generate a MIGHTER2DConfig.cmake file (and associated files)
+function(mighter2d_export_target export_name)
     include(CMakePackageConfigHelpers)
     if(CMAKE_VERSION VERSION_LESS 3.11)
-        set(CVF_VERSION ${IME_VERSION_MAJOR}.${IME_VERSION_MINOR}.${IME_VERSION_PATCH})
-        configure_file("${PROJECT_SOURCE_DIR}/cmake/IMEConfigVersion.cmake.in" "${PROJECT_BINARY_DIR}/IMEConfigVersion.cmake" @ONLY)
+        set(CVF_VERSION ${MIGHTER2D_VERSION_MAJOR}.${MIGHTER2D_VERSION_MINOR}.${MIGHTER2D_VERSION_PATCH})
+        configure_file("${PROJECT_SOURCE_DIR}/cmake/MIGHTER2DConfigVersion.cmake.in" "${PROJECT_BINARY_DIR}/MIGHTER2DConfigVersion.cmake" @ONLY)
     else()
-        write_basic_package_version_file("${PROJECT_BINARY_DIR}/IMEConfigVersion.cmake"
-        VERSION ${IME_VERSION_MAJOR}.${IME_VERSION_MINOR}.${IME_VERSION_PATCH}
+        write_basic_package_version_file("${PROJECT_BINARY_DIR}/MIGHTER2DConfigVersion.cmake"
+        VERSION ${MIGHTER2D_VERSION_MAJOR}.${MIGHTER2D_VERSION_MINOR}.${MIGHTER2D_VERSION_PATCH}
         COMPATIBILITY SameMinorVersion)
     endif()
 
-    if (IME_SHARED_LIBS)
-        set(targets_config_filename IMESharedTargets.cmake)
+    if (MIGHTER2D_SHARED_LIBS)
+        set(targets_config_filename MIGHTER2DSharedTargets.cmake)
     else()
-        set(targets_config_filename IMEStaticTargets.cmake)
+        set(targets_config_filename MIGHTER2DStaticTargets.cmake)
     endif()
 
     export(EXPORT ${export_name}
             FILE "${PROJECT_BINARY_DIR}/${targets_config_filename}")
 
-    set(config_package_location ${CMAKE_INSTALL_LIBDIR}/cmake/IME)
+    set(config_package_location ${CMAKE_INSTALL_LIBDIR}/cmake/MIGHTER2D)
 
-    configure_package_config_file("${PROJECT_SOURCE_DIR}/cmake/IMEConfig.cmake.in" "${PROJECT_BINARY_DIR}/IMEConfig.cmake"
+    configure_package_config_file("${PROJECT_SOURCE_DIR}/cmake/MIGHTER2DConfig.cmake.in" "${PROJECT_BINARY_DIR}/MIGHTER2DConfig.cmake"
         INSTALL_DESTINATION "${config_package_location}")
 
     install(EXPORT ${export_name}
             FILE ${targets_config_filename}
             DESTINATION ${config_package_location})
 
-    install(FILES "${PROJECT_BINARY_DIR}/IMEConfig.cmake"
-            "${PROJECT_BINARY_DIR}/IMEConfigVersion.cmake"
+    install(FILES "${PROJECT_BINARY_DIR}/MIGHTER2DConfig.cmake"
+            "${PROJECT_BINARY_DIR}/MIGHTER2DConfigVersion.cmake"
             DESTINATION ${config_package_location}
             COMPONENT devel)
 endfunction()

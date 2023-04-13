@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
-// IME - Infinite Motion Engine
+// Mighter2d
 //
-// Copyright (c) 2020-2022 Kwena Mashamaite (kwena.mashamaite1@gmail.com)
+// Copyright (c) 2023 Kwena Mashamaite
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,25 +22,25 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "IME/common/Property.h"
-#include "IME/core/exceptions/Exceptions.h"
+#include "Mighter2d/common/Property.h"
+#include "Mighter2d/core/exceptions/Exceptions.h"
 #include <doctest.h>
 #include <string>
 
-TEST_CASE("ime::Property class")
+TEST_CASE("mighter2d::Property class")
 {
     SUBCASE("Constructors")
     {
         SUBCASE("(name) constructor")
         {
-            ime::Property property("WINDOW_TITLE");
+            mighter2d::Property property("WINDOW_TITLE");
             CHECK_EQ(property.getName(), "WINDOW_TITLE");
             CHECK_FALSE(property.hasValue());
         }
 
         SUBCASE("(name, value) constructor")
         {
-            ime::Property property("WINDOW_SIZE", 800);
+            mighter2d::Property property("WINDOW_SIZE", 800);
             CHECK_EQ(property.getName(), "WINDOW_SIZE");
             CHECK(property.hasValue());
         }
@@ -50,7 +50,7 @@ TEST_CASE("ime::Property class")
     {
         SUBCASE("setValue()")
         {
-            ime::Property property("");
+            mighter2d::Property property("");
 
             property.setValue(100);
             CHECK_EQ(property.getValue<int>(), 100);
@@ -67,23 +67,23 @@ TEST_CASE("ime::Property class")
             property.setValue(true);
             CHECK_EQ(property.getValue<bool>(), true);
 
-            property.setValue(std::string("IME"));
-            CHECK_EQ(property.getValue<std::string>(), std::string("IME"));
+            property.setValue(std::string("Mighter2d"));
+            CHECK_EQ(property.getValue<std::string>(), std::string("Mighter2d"));
 
-            SUBCASE("getValue() throws ime::InvalidArgument when the template argument does not match the contained type")
+            SUBCASE("getValue() throws mighter2d::InvalidArgument when the template argument does not match the contained type")
             {
                 property.setValue(25);
-                CHECK_THROWS_AS(property.getValue<bool>(), ime::InvalidArgumentException);
+                CHECK_THROWS_AS(property.getValue<bool>(), mighter2d::InvalidArgumentException);
             }
         }
 
         SUBCASE("onValueChange()")
         {
-            ime::Property property("");
+            mighter2d::Property property("");
             int value = -1;
             bool isInvoked = false;
 
-            property.onValueChange([&value, &isInvoked](ime::Property* p) {
+            property.onValueChange([&value, &isInvoked](mighter2d::Property* p) {
                 isInvoked = true;
                 value = p->getValue<int>();
             });
@@ -97,16 +97,16 @@ TEST_CASE("ime::Property class")
         {
             SUBCASE("Removing a non-existent event listener returns false")
             {
-                ime::Property property("");
+                mighter2d::Property property("");
                 CHECK_FALSE(property.unsubscribe(-1));
             }
 
             SUBCASE("Removing an existing event listener returns true")
             {
-                ime::Property property("");
+                mighter2d::Property property("");
 
                 bool isInvoked = false;
-                int valueChangeListener = property.onValueChange([&isInvoked](ime::Property*) {
+                int valueChangeListener = property.onValueChange([&isInvoked](mighter2d::Property*) {
                     isInvoked = true;
                 });
 

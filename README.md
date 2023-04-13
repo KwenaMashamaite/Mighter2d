@@ -50,11 +50,11 @@ If you extracted IME to a location known to *CMAKE*, you don't have to
 set `IME_DIR`, *CMake* will automatically find the library
 
 ```cmake
-# Find IME
-set(IME_DIR "your_path_to_IME_directory_here/lib/cmake/IME") # Skip if IME installed in known location
+# Find Mighter2d
+set(IME_DIR "your_path_to_IME_directory_here/lib/cmake/Mighter2d") # Skip if Mighter2d installed in known location
 find_package(ime 3.2.0 REQUIRED)
 
-# Link IME
+# Link Mighter2d
 target_link_libraries(myGame PRIVATE ime)
 ```
 <br>

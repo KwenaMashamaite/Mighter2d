@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
-// IME - Infinite Motion Engine
+// Mighter2d
 //
-// Copyright (c) 2020-2022 Kwena Mashamaite (kwena.mashamaite1@gmail.com)
+// Copyright (c) 2023 Kwena Mashamaite
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,16 +22,16 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "IME/common/PrefContainer.h"
+#include "Mighter2d/common/PrefContainer.h"
 #include <doctest.h>
 
-TEST_CASE("ime::PrefContainer class")
+TEST_CASE("mighter2d::PrefContainer class")
 {
     SUBCASE("Constructors")
     {
         SUBCASE("Default constructor")
         {
-            ime::PrefContainer prefContainer;
+            mighter2d::PrefContainer prefContainer;
 
             CHECK_EQ(prefContainer.getCount(), 0);
         }
@@ -39,10 +39,10 @@ TEST_CASE("ime::PrefContainer class")
 
     SUBCASE("addPref()")
     {
-        ime::PrefContainer prefContainer;
-        prefContainer.addPref(ime::Preference{"Master_Volume", ime::PrefType::Int});
-        prefContainer.addPref(ime::Preference{"Player_Name", ime::PrefType::String});
-        prefContainer.addPref(ime::Preference{"V_Sync", ime::PrefType::Bool});
+        mighter2d::PrefContainer prefContainer;
+        prefContainer.addPref(mighter2d::Preference{"Master_Volume", mighter2d::PrefType::Int});
+        prefContainer.addPref(mighter2d::Preference{"Player_Name", mighter2d::PrefType::String});
+        prefContainer.addPref(mighter2d::Preference{"V_Sync", mighter2d::PrefType::Bool});
 
         CHECK_EQ(prefContainer.getCount(), 3);
         CHECK(prefContainer.hasPref("Master_Volume"));
@@ -54,10 +54,10 @@ TEST_CASE("ime::PrefContainer class")
 
     SUBCASE("removePref()")
     {
-        ime::PrefContainer prefContainer;
-        prefContainer.addPref(ime::Preference{"Master_Volume", ime::PrefType::Int});
-        prefContainer.addPref(ime::Preference{"Player_Name", ime::PrefType::String});
-        prefContainer.addPref(ime::Preference{"V_Sync", ime::PrefType::Bool});
+        mighter2d::PrefContainer prefContainer;
+        prefContainer.addPref(mighter2d::Preference{"Master_Volume", mighter2d::PrefType::Int});
+        prefContainer.addPref(mighter2d::Preference{"Player_Name", mighter2d::PrefType::String});
+        prefContainer.addPref(mighter2d::Preference{"V_Sync", mighter2d::PrefType::Bool});
 
         REQUIRE(prefContainer.hasPref("Master_Volume"));
         REQUIRE_EQ(prefContainer.getCount(), 3);
@@ -69,10 +69,10 @@ TEST_CASE("ime::PrefContainer class")
 
     SUBCASE("clear()")
     {
-        ime::PrefContainer prefContainer;
-        prefContainer.addPref(ime::Preference{"Master_Volume", ime::PrefType::Int});
-        prefContainer.addPref(ime::Preference{"Player_Name", ime::PrefType::String});
-        prefContainer.addPref(ime::Preference{"V_Sync", ime::PrefType::Bool});
+        mighter2d::PrefContainer prefContainer;
+        prefContainer.addPref(mighter2d::Preference{"Master_Volume", mighter2d::PrefType::Int});
+        prefContainer.addPref(mighter2d::Preference{"Player_Name", mighter2d::PrefType::String});
+        prefContainer.addPref(mighter2d::Preference{"V_Sync", mighter2d::PrefType::Bool});
 
         REQUIRE_EQ(prefContainer.getCount(), 3);
 
@@ -82,15 +82,15 @@ TEST_CASE("ime::PrefContainer class")
 
     SUBCASE("Preferences can be Saved/loaded to/from the disk")
     {
-        ime::PrefContainer prefContainer;
-        prefContainer.addPref(ime::Preference{"Master_Volume", ime::PrefType::UInt, 15u, "The master volume"});
-        prefContainer.addPref(ime::Preference{"Player_Name", ime::PrefType::String, std::string("Kwena"), "The name of the player"});
-        prefContainer.addPref(ime::Preference{"V_Sync", ime::PrefType::Bool, false, "Vertical sync enable option"});
+        mighter2d::PrefContainer prefContainer;
+        prefContainer.addPref(mighter2d::Preference{"Master_Volume", mighter2d::PrefType::UInt, 15u, "The master volume"});
+        prefContainer.addPref(mighter2d::Preference{"Player_Name", mighter2d::PrefType::String, std::string("Kwena"), "The name of the player"});
+        prefContainer.addPref(mighter2d::Preference{"V_Sync", mighter2d::PrefType::Bool, false, "Vertical sync enable option"});
 
         const std::string saveFile = "test_prefContainer.txt";
         prefContainer.save(saveFile);
 
-        ime::PrefContainer loadedPreferences;
+        mighter2d::PrefContainer loadedPreferences;
         REQUIRE_EQ(loadedPreferences.getCount(), 0);
         loadedPreferences.load(saveFile);
 
@@ -99,15 +99,15 @@ TEST_CASE("ime::PrefContainer class")
         CHECK(loadedPreferences.hasPref("Player_Name"));
         CHECK(loadedPreferences.hasPref("V_Sync"));
 
-        ime::Preference masterVolume = loadedPreferences.getPref("Master_Volume");
+        mighter2d::Preference masterVolume = loadedPreferences.getPref("Master_Volume");
         CHECK_EQ(masterVolume.getKey(), "Master_Volume");
-        CHECK_EQ(masterVolume.getType(), ime::PrefType::UInt);
+        CHECK_EQ(masterVolume.getType(), mighter2d::PrefType::UInt);
         CHECK_EQ(masterVolume.getValue<unsigned int>(), 15u);
         CHECK_EQ(masterVolume.getDescription(), "The master volume");
 
-        ime::Preference playerName = loadedPreferences.getPref("Player_Name");
+        mighter2d::Preference playerName = loadedPreferences.getPref("Player_Name");
         CHECK_EQ(playerName.getKey(), "Player_Name");
-        CHECK_EQ(playerName.getType(), ime::PrefType::String);
+        CHECK_EQ(playerName.getType(), mighter2d::PrefType::String);
         CHECK_EQ(playerName.getValue<std::string>(), std::string("Kwena"));
         CHECK_EQ(playerName.getDescription(), "The name of the player");
     }

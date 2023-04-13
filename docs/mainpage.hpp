@@ -2,12 +2,12 @@
 /// \mainpage
 ///
 /// \section welcome Welcome
-/// Welcome to the official IME documentation. Here you will find a detailed
+/// Welcome to the official Mighter2d documentation. Here you will find a detailed
 /// view of all the classes and functions. <br/>
 ///
 /// \section example Getting started
-/// IME is state based, which means that the game flow is controlled by pushing
-/// and popping game states at appropriate times. In IME everything lives in a
+/// Mighter2d is state based, which means that the game flow is controlled by pushing
+/// and popping game states at appropriate times. In Mighter2d everything lives in a
 /// ime::Scene. To get started, you must create a scene (or state), then instantiate
 /// a ime::Engine and initialize it (see ime::Engine::initialize). Finally, add
 /// a scene to the engine (see ime::Engine::pushScene) and run it (see ime::Engine::run).
@@ -15,13 +15,13 @@
 ///
 /// Here is the minimal and complete code to achieve the above steps:
 ///  @code
-///  // Includes the entire IME library, you can selectively include headers
+///  // Includes the entire Mighter2d library, you can selectively include headers
 ///  // once you know whats going on
-///  #include <IME/IME.h>
+///  #include <Mighter2d/Mighter2d.h>
 ///
 /// // Step 1: Create a ime::Scene
 /// // You define the behavior of your game by overriding ime::Scene functions.
-/// // These functions will be called IME at appropriate times.
+/// // These functions will be called Mighter2d at appropriate times.
 ///
 /// // This scene displays a welcome message at the centre of the screen
 /// class StartUpScene : public ime::Scene {
@@ -50,7 +50,7 @@
 ///    //       settings are optional. When not specified the engine will use
 ///    //       default values
 ///    ime::PrefContainer settings;
-///    settings.addPref({"WINDOW_TITLE", ime::PrefType::String, std::string("IME Demo App")});
+///    settings.addPref({"WINDOW_TITLE", ime::PrefType::String, std::string("Mighter2d Demo App")});
 ///    settings.addPref({"WINDOW_WIDTH", ime::PrefType::Int, 600});
 ///    settings.addPref({"WINDOW_HEIGHT", ime::PrefType::Int, 600});
 ///    settings.addPref({"WINDOW_ICON", ime::PrefType::String, std::string("assets/images/icon.png")});
