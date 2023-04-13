@@ -33,8 +33,6 @@
 #include <memory>
 
 namespace mighter2d {
-    class BoxCollider;
-
     /**
      * @brief A Grid2D tile
      */
@@ -223,44 +221,6 @@ namespace mighter2d {
         bool contains(Vector2f point) const;
 
         /**
-         * @brief Add a collider to the tile
-         * @param collider The collider to be added
-         *
-         * Without a Collider, only game objects that are controlled by a
-         * GridMover can collide with the tile. Attaching a collider makes
-         * a GameObject with a RigidBody that has a Collider attached to it
-         * able to collide with the tile. The tile can can only have one
-         * collider attached to it. The current collider must be removed first
-         * before attaching a new one
-         *
-         * By default, the tile does not have a collider attached to it
-         *
-         * @warning A RigidBody is required before attaching a Collider,
-         * doing so without a RigidBody is undefined behavior. Use the
-         * setBody() function to add a RigidBody
-         *
-         * @see removeCollider and hasCollider
-         */
-        void attachCollider(std::unique_ptr<BoxCollider> collider);
-
-        /**
-         * @brief Remove the collider added to the tile
-         *
-         * Note that when the collider is removed, the tile will no longer
-         * participate in RigidBody physics, however grid-based physics
-         * (see mighter2d::GridMover) will continue as normal.
-         *
-         * @see attachCollider and hasCollider
-         */
-        void removeCollider();
-
-        /**
-         * @brief Check if the tile has a collider or not
-         * @return True if the tile has a collider, otherwise false
-         */
-        bool hasCollider() const;
-
-        /**
          * @brief Toggle the visibility of the tile
          *
          * This function will hide the tile if its currently
@@ -273,17 +233,6 @@ namespace mighter2d {
          * @param other The tile to swap contents with
          */
         void swap(Tile& other);
-
-        /**
-         * @brief Set the tiles RigidBody
-         * @param body The physics body to set
-         *
-         * The rigid body is only required if you intend to attach a Collider.
-         * The rigid body must be of type mighter2d::RigidBody::Type::Static
-         *
-         * @see attachCollider
-         */
-        void setBody(RigidBody::Ptr body);
 
         /**
          * @internal

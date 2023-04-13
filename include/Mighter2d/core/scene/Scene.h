@@ -42,7 +42,6 @@
 #include "Mighter2d/ui/GuiContainer.h"
 #include "Mighter2d/graphics/Camera.h"
 #include "Mighter2d/core/grid/Grid2D.h"
-#include "Mighter2d/core/physics/rigid_body/PhysicsIterations.h"
 #include <string>
 #include <memory>
 #include <vector>
@@ -50,7 +49,6 @@
 namespace mighter2d {
     class Engine;
     class Window;
-    class PhysicsEngine;
 
     /// @internal
     namespace priv {
@@ -619,25 +617,6 @@ namespace mighter2d {
         const CameraContainer& getCameras() const;
 
         /**
-         * @brief Get the scene level physics engine/simulation
-         * @return The scene level physics engine/simulation
-         * @throws AccessViolationException If this function is called without
-         *         creating the physics engine first
-         *
-         * The physics engine is responsible for creating, managing,
-         * colliding and updating all of the RigidBody's in it.
-         *
-         * @warning By default, the scene does not have a physics engine.
-         * As a result, calling this function prior to creating the physics
-         * engine is undefined behavior. Use createPhysicsEngine() to
-         * instantiate a scene level physics engine
-         *
-         * @see createPhysicEngine
-         */
-        PhysicsEngine& getPhysicsEngine();
-        const PhysicsEngine& getPhysicsEngine() const;
-
-        /**
          * @brief Get the scene level GridMover container
          * @return The scene level grid mover container
          */
@@ -831,21 +810,6 @@ namespace mighter2d {
         const SpriteContainer& getSprites() const;
 
         /**
-         * @brief Create a scene level physics simulation
-         * @param gravity Acceleration of bodies in the simulation due to gravity
-         * @param iterations Position and velocity iterations (see mighter2d::PhysIterations)
-         *
-         * @note This function should only be called by scenes that require
-         * a physics simulation (i.e. scenes that make use of mighter2d::RigidBody).
-         * If the scene uses no physics at all or only makes use of grid-based
-         * physics (see mighter2d::GridMover) then there is no need to create the
-         * physics world. Grid-based physics do not use a physics engine.
-         *
-         * @see getPhysicsEngine
-         */
-        void createPhysicsEngine(const Vector2f& gravity, const PhysIterations& iterations = {3, 8});
-
-        /**
          * @brief Create the scene level grid instance
          * @param tileWidth The width of the grid
          * @param tileHeight The height of the grid
@@ -910,7 +874,6 @@ namespace mighter2d {
 
     private:
         std::unique_ptr<Camera> camera_;      //!< Scene level camera
-        std::unique_ptr<PhysicsEngine> world_; //!< Scene level physics simulation
         input::InputManager inputManager_;    //!< Scene level input manager
         audio::AudioManager audioManager_;    //!< Scene level audio manager
         EventEmitter eventEmitter_;           //!< scene level event dispatcher
@@ -928,7 +891,6 @@ namespace mighter2d {
         bool isBackgroundSceneDrawable_;      //!< A flag indicating whether or not the scenes background scene is rendered
         bool isBackgroundSceneUpdated_;       //!< A flag indicating whether or not the scenes background scene receives time updates
         bool isBackgroundSceneEventsEnabled_; //!< A flag indicating whether or not the scenes background scene receives system events
-        bool hasPhysicsSim_;                  //!< A flag indicating whether or not the scene has a physics simulation
         bool hasGrid2D_;                      //!< A flag indicating whether or not the scene has a grid
         std::pair<bool, std::string> cacheState_;
         Scene* parentScene_;                  //!< The parent scene of this scene when it is in the background of another scene

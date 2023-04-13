@@ -33,22 +33,11 @@ set(MIGHTER2D_SRC
     core/physics/grid/path/BFS.cpp
     core/physics/grid/path/DFS.cpp
     core/physics/grid/path/IPathFinderStrategy.cpp
-    core/physics/rigid_body/RigidBody.cpp
-    core/physics/rigid_body/colliders/Collider.cpp
-    core/physics/rigid_body/colliders/CircleCollider.cpp
-    core/physics/rigid_body/colliders/PolygonCollider.cpp
-    core/physics/rigid_body/colliders/BoxCollider.cpp
-    core/physics/rigid_body/colliders/EdgeCollider.cpp
-    core/physics/rigid_body/joints/Joint.cpp
-    core/physics/rigid_body/joints/JointDefinition.cpp
-    core/physics/rigid_body/joints/DistanceJoint.cpp
-    core/physics/rigid_body/AABB.cpp
     core/physics/grid/GridMover.cpp
     core/physics/grid/TargetGridMover.cpp
     core/physics/grid/KeyboardGridMover.cpp
     core/physics/grid/RandomGridMover.cpp
     core/physics/grid/CyclicGridMover.cpp
-    core/physics/rigid_body/PhysicsEngine.cpp
     core/scene/Scene.cpp
     core/scene/SceneManager.cpp
     core/scene/RenderLayer.cpp
@@ -118,7 +107,6 @@ set(MIGHTER2D_SRC
     graphics/shapes/RectangleShape.cpp
     graphics/shapes/CircleShape.cpp
     graphics/shapes/ConvexShape.cpp
-    graphics/DebugDrawer.cpp
     graphics/Drawable.cpp
     graphics/Camera.cpp
     graphics/SpriteImage.cpp

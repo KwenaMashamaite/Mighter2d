@@ -24,8 +24,6 @@
 
 #include "Mighter2d/graphics/Tile.h"
 #include "Mighter2d/graphics/RenderTarget.h"
-#include "Mighter2d/core/physics/rigid_body/colliders/BoxCollider.h"
-#include "Mighter2d/core/physics/rigid_body/PhysicsEngine.h"
 
 namespace mighter2d {
     Tile::Tile(Vector2u size, Vector2f position) :
@@ -63,24 +61,6 @@ namespace mighter2d {
         swap(isCollidable_, other.isCollidable_);
     }
 
-    void Tile::attachCollider(BoxCollider::Ptr collider) {
-        MIGHTER2D_ASSERT(collider, "Collider must not be a nullptr")
-        MIGHTER2D_ASSERT(tile_.hasRigidBody(), "The tile must have a RigidBody before attaching a collider")
-
-        if (collider->getSize() < tile_.getSize() || collider->getSize() > tile_.getSize())
-            collider->setSize(tile_.getSize());
-
-        tile_.getRigidBody()->attachCollider(std::move(collider));
-    }
-
-    void Tile::removeCollider() {
-        tile_.removeRigidBody();
-    }
-
-    bool Tile::hasCollider() const {
-        return tile_.hasRigidBody() ? tile_.getRigidBody()->getColliderCount() != 0: false;
-    }
-
     std::string Tile::getClassName() const {
         return "Tile";
     }
@@ -95,9 +75,6 @@ namespace mighter2d {
             return;
 
         tile_.setPosition(x, y);
-
-        if (tile_.hasRigidBody())
-            tile_.getRigidBody()->setPosition(getWorldCentre());
 
         emitChange(Property{Property{"position", getPosition()}});
     }
@@ -125,13 +102,6 @@ namespace mighter2d {
 
         tile_.setSize({static_cast<float>(width), static_cast<float>(height)});
 
-        if (hasCollider()) {
-            tile_.getRigidBody()->forEachCollider([this, width, height](Collider* collider) {
-                static_cast<BoxCollider*>(collider)->setSize(static_cast<float>(width), static_cast<float>(height));
-                collider->getBody()->setPosition(getWorldCentre());
-            });
-        }
-
         emitChange(Property{"size", getSize()});
     }
 
@@ -144,9 +114,6 @@ namespace mighter2d {
             return;
 
         isCollidable_ = collidable;
-
-        if (tile_.hasRigidBody())
-            tile_.getRigidBody()->setEnabled(collidable);
 
         emitChange(Property{"collidable", isCollidable_});
     }
@@ -195,14 +162,6 @@ namespace mighter2d {
     bool Tile::contains(Vector2f point) const {
         return ((point.x >= getPosition().x && point.x <= getPosition().x + getSize().x)
                 && (point.y >= getPosition().y && point.y <= getPosition().y + getSize().y));
-    }
-
-    void Tile::setBody(RigidBody::Ptr body) {
-        MIGHTER2D_ASSERT(body, "'mighter2d::Tile::setBody() must not be called with a nullptr argument")
-        MIGHTER2D_ASSERT(body->getType() == RigidBody::Type::Static, "An 'mighter2d::RigidBody' of a 'mighter2d::Tile' must be of type 'mighter2d::RigidBody::Type::Static'")
-        tile_.attachRigidBody(std::move(body));
-        tile_.setOrigin(0, 0);
-        tile_.getRigidBody()->setPosition(getWorldCentre());
     }
 
     void Tile::setIndex(Index index) {

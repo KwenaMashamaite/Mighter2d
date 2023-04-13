@@ -24,7 +24,6 @@
 
 #include "Mighter2d/core/object/GameObject.h"
 #include "Mighter2d/core/scene/Scene.h"
-#include "Mighter2d/core/physics/rigid_body/PhysicsEngine.h"
 #include "Mighter2d/utility/Helpers.h"
 
 namespace mighter2d {
@@ -49,9 +48,6 @@ namespace mighter2d {
         destructionId_{-1}
     {
         initEvents();
-
-        if (other.hasRigidBody())
-            attachRigidBody(other.body_->copy());
     }
 
     GameObject &GameObject::operator=(const GameObject &other) {
@@ -87,7 +83,6 @@ namespace mighter2d {
         std::swap(isActive_, other.isActive_);
         std::swap(transform_, other.transform_);
         std::swap(sprite_, other.sprite_);
-        std::swap(body_, other.body_);
         std::swap(userData_, other.userData_);
         std::swap(postStepId_, other.postStepId_);
         std::swap(destructionId_, other.destructionId_);
@@ -119,9 +114,6 @@ namespace mighter2d {
 
         isActive_ = isActive;
 
-        if (body_)
-            body_->setEnabled(isActive_);
-
         emitChange(Property{"active", isActive_});
     }
 
@@ -145,30 +137,6 @@ namespace mighter2d {
         return "GameObject";
     }
 
-    void GameObject::attachRigidBody(RigidBody::Ptr body) {
-        MIGHTER2D_ASSERT(body, "Invalid rigid body, cannot attach a nullptr to an entity")
-        MIGHTER2D_ASSERT(!body_, "Game object already has a rigid body attached, remove it first before attaching another one")
-        body_ = std::move(body);
-        body_->setGameObject(this);
-        resetSpriteOrigin();
-        body_->setPosition(transform_.getPosition());
-        body_->setRotation(transform_.getRotation());
-    }
-
-    RigidBody* GameObject::getRigidBody() {
-        return body_.get();
-    }
-
-    const RigidBody* GameObject::getRigidBody() const {
-        return body_.get();
-    }
-
-    void GameObject::removeRigidBody() {
-        if (body_) {
-            body_.reset();
-        }
-    }
-
     int GameObject::onRigidBodyCollisionStart(const CollisionCallback& callback, bool oneTime) {
         return utility::addEventListener(eventEmitter_, "GameObject_contactBegin", callback, oneTime);
     }
@@ -179,10 +147,6 @@ namespace mighter2d {
 
     int GameObject::onRigidBodyCollisionStay(const CollisionCallback &callback, bool oneTime) {
         return utility::addEventListener(eventEmitter_, "GameObject_contactStay", callback, oneTime);
-    }
-
-    bool GameObject::hasRigidBody() const {
-        return body_ != nullptr;
     }
 
     Transform &GameObject::getTransform() {
@@ -224,13 +188,6 @@ namespace mighter2d {
     }
 
     void GameObject::initEvents() {
-        postStepId_ = scene_.get().on_("postStep", Callback<Time>([this](Time) {
-            if (body_) {
-                transform_.setPosition(body_->getPosition());
-                transform_.setRotation(body_->getRotation());
-            }
-        }));
-
         destructionId_ = scene_.get().onDestruction([this] {
             postStepId_ = destructionId_ = -1;
         });
@@ -238,9 +195,6 @@ namespace mighter2d {
         transform_.onPropertyChange([this](const Property& property) {
             const auto& name = property.getName();
             if (name == "position") {
-                if (body_)
-                    body_->setPosition(transform_.getPosition());
-
                 sprite_.setPosition(transform_.getPosition());
                 emitChange(Property{name, transform_.getPosition()});
             } else if (name == "origin") {
@@ -250,9 +204,6 @@ namespace mighter2d {
                 sprite_.setScale(transform_.getScale());
                 emitChange(Property{name, transform_.getScale()});
             } else if (name == "rotation") {
-                if (body_)
-                    body_->setRotation(transform_.getRotation());
-
                 sprite_.setRotation(transform_.getRotation());
                 emitChange(Property{name, transform_.getRotation()});
             }
@@ -267,8 +218,5 @@ namespace mighter2d {
 
         if (destructionId_ != -1)
             scene_.get().removeEventListener(destructionId_);
-
-        if (body_)
-            body_->setGameObject(nullptr);
     }
 }

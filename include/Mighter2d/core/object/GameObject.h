@@ -33,7 +33,6 @@
 #include "Mighter2d/graphics/Sprite.h"
 
 namespace mighter2d {
-    class RigidBody;
     class Scene;
 
     /**
@@ -42,7 +41,6 @@ namespace mighter2d {
     class MIGHTER2D_API GameObject : public Object {
     public:
         using Ptr = std::unique_ptr<GameObject>;                      //!< Unique game object pointer
-        using BodyPtr = std::unique_ptr<RigidBody>;                   //!< Unique Body pointer
         using CollisionCallback = Callback<GameObject*, GameObject*>; //!< Collision callback
 
         /**
@@ -169,55 +167,6 @@ namespace mighter2d {
          * @see getClassName
          */
         std::string getClassType() const override;
-
-        /**
-         * @brief Attach a physics Body to the game object
-         * @param body Physics body to be attached to the game object
-         *
-         * When a rigid body is attached to a game object, the game object
-         * becomes enabled for physics. This means that it will react to
-         * gravity, friction, applies forces, impulses etc. The position
-         * and rotation of the game object will be controlled by the physics
-         * engine therefore you should refrain from calling functions that
-         * MODIFY the game objects transform (position, rotation and origin).
-         * A result of doing so is inconsistency. Note that the physics engine
-         * does not account for scaling. This means that scaling the objects
-         * sprite will NOT scale the objects body or the body's collider. If
-         * you want the body to scale with the objects sprite, you should
-         * remove the old collider and attach a new one with the appropriate
-         * size.
-         *
-         * @warning The pointer must not be a nullptr. Also, you cannot attach
-         * a rigid body to a game object that already has a rigid body attached
-         * to it, the current rigid body must be removed first
-         *
-         * @see removeRigidBody
-         */
-        void attachRigidBody(BodyPtr body);
-
-        /**
-         * @brief Get the game objects physics body
-         * @return The game objects physics body if any, otherwise a nullptr
-         */
-        RigidBody* getRigidBody();
-        const RigidBody* getRigidBody() const;
-
-        /**
-         * @brief Remove a rigid body from the game object
-         *
-         * Removing a rigid Body from an game object disables all physics
-         * applied to it
-         *
-         * @see attachRigidBody
-         */
-        void removeRigidBody();
-
-        /**
-         * @brief Check if the the game object has a rigid body attached to it
-         * @return True if the game object has a rigid body attached to it,
-         *         otherwise false
-         */
-        bool hasRigidBody() const;
 
         /**
          * @brief Add an event listener to a rigid body collision begin event
@@ -373,11 +322,10 @@ namespace mighter2d {
         bool isActive_;                       //!< A flag indicating whether or not the game object is active
         Transform transform_;                 //!< The objects transform
         Sprite sprite_;                       //!< The objects visual representation
-        BodyPtr body_;                        //!< The rigid body attached to this game object
         int postStepId_;                      //!< Scene post step handler id
         int destructionId_;                   //!< Scene destruction listener id
         PropertyContainer userData_;          //!< Used to store metadata about the object
     };
 }
 
-#endif // MIGHTER2D_IENTITY_H
+#endif

@@ -24,29 +24,19 @@
 
 #include "Mighter2d/graphics/shapes/Shape.h"
 #include "Mighter2d/core/scene/Scene.h"
-#include "Mighter2d/core/physics/rigid_body/PhysicsEngine.h"
 #include "Mighter2d/graphics/shapes/ShapeImpl.h"
 
 namespace mighter2d {
     Shape::Shape(std::unique_ptr<priv::IShapeImpl> impl, Type type) :
         pimpl_{std::move(impl)},
-        type_{type},
-        postStepId_{-1},
-        destructionId_{-1},
-        propertyChangeId_{-1}
+        type_{type}
     {}
 
     Shape::Shape(const Shape& other) :
         Drawable(other),
         pimpl_{other.pimpl_->clone()},
-        type_{other.type_},
-        body_{},
-        postStepId_{-1},
-        destructionId_{-1},
-        propertyChangeId_{-1}
+        type_{other.type_}
     {
-        if (other.body_)
-            attachRigidBody(other.body_->copy());
     }
 
     Shape &Shape::operator=(const Shape& rhs) {
@@ -54,16 +44,6 @@ namespace mighter2d {
             Drawable::operator=(rhs);
             pimpl_ = rhs.pimpl_->clone();
             type_ = rhs.type_;
-
-            if (!body_) {
-                if (rhs.body_)
-                    attachRigidBody(rhs.body_->copy());
-                else {
-                    postStepId_ = -1;
-                    destructionId_ = -1;
-                    propertyChangeId_ = -1;
-                }
-            }
         }
 
         return *this;
@@ -78,69 +58,6 @@ namespace mighter2d {
 
     Shape::Type Shape::getShapeType() const {
         return type_;
-    }
-
-    void Shape::attachRigidBody(RigidBody::Ptr body) {
-        MIGHTER2D_ASSERT(body, "Invalid rigid body, cannot attach a nullptr to a shape")
-        MIGHTER2D_ASSERT(!body_, "Shape already has a rigid body attached, remove it first before attaching another one")
-        body_ = std::move(body);
-        setOrigin(getLocalBounds().width / 2.0f, getLocalBounds().height / 2.0f);
-        body_->setPosition(getPosition());
-        body_->setRotation(getRotation());
-
-        // Synchronize the shape's transform with that of its rigid body
-        if (body_->getType() == RigidBody::Type::Dynamic) {
-            postStepId_ = body_->getWorld()->getScene().on_("postStep", Callback<Time>([this](Time) {
-                setPosition(body_->getPosition());
-                setRotation(body_->getRotation());
-            }));
-
-            destructionId_ = body_->getWorld()->getScene().onDestruction([this] {
-                postStepId_ = destructionId_ = -1;
-            });
-
-            onDestruction([this] {
-                if (destructionId_ != -1 && body_) {
-                    body_->getWorld()->getScene().removeEventListener(destructionId_);
-                    destructionId_ = -1;
-                }
-            });
-        } else {
-            propertyChangeId_ = onPropertyChange([this](const Property& property) {
-                if (body_) {
-                    if (property.getName() == "position")
-                        body_->setPosition(property.getValue<Vector2f>());
-                    else if (property.getName() == "rotation")
-                        body_->setRotation(property.getValue<float>());
-                }
-            });
-        }
-    }
-
-    void Shape::removeRigidBody() {
-        if (body_) {
-            if (body_->getType() == RigidBody::Type::Dynamic) {
-                body_->getWorld()->getScene().unsubscribe_("postStep", postStepId_);
-                postStepId_ = -1;
-            } else {
-                removeEventListener("propertyChange", propertyChangeId_);
-                propertyChangeId_ = -1;
-            }
-
-            body_.reset();
-        }
-    }
-
-    RigidBody* Shape::getRigidBody() {
-        return body_.get();
-    }
-
-    const RigidBody* Shape::getRigidBody() const {
-        return body_.get();
-    }
-
-    bool Shape::hasRigidBody() const {
-        return body_ != nullptr;
     }
 
     void Shape::setTexture(const std::string &filename) {
@@ -298,11 +215,5 @@ namespace mighter2d {
 
     Shape::~Shape() {
         emitDestruction();
-
-        if (postStepId_ != -1)
-            body_->getWorld()->getScene().unsubscribe_("postStep", postStepId_);
-
-        if (destructionId_ != -1)
-            body_->getWorld()->getScene().removeEventListener(destructionId_);
     }
 }

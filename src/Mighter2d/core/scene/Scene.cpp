@@ -24,7 +24,6 @@
 
 #include "Mighter2d/core/scene/Scene.h"
 #include "Mighter2d/core/engine/Engine.h"
-#include "Mighter2d/core/physics/rigid_body/PhysicsEngine.h"
 #include "Mighter2d/core/exceptions/Exceptions.h"
 
 namespace mighter2d {
@@ -37,7 +36,6 @@ namespace mighter2d {
         isBackgroundSceneDrawable_{true},
         isBackgroundSceneUpdated_{true},
         isBackgroundSceneEventsEnabled_{false},
-        hasPhysicsSim_{false},
         hasGrid2D_{false},
         cacheState_{false, ""},
         parentScene_{nullptr},
@@ -61,7 +59,6 @@ namespace mighter2d {
             camera_ = std::move(other.camera_);
             cache_ = std::move(other.cache_);
             sCache_ = std::move(other.sCache_);
-            world_ = std::move(other.world_);
             inputManager_ = std::move(other.inputManager_);
             audioManager_ = std::move(other.audioManager_);
             eventEmitter_ = std::move(other.eventEmitter_);
@@ -78,7 +75,6 @@ namespace mighter2d {
             isBackgroundSceneDrawable_ = other.isBackgroundSceneDrawable_;
             isBackgroundSceneUpdated_ = other.isBackgroundSceneUpdated_;
             isBackgroundSceneEventsEnabled_ = other.isBackgroundSceneEventsEnabled_;
-            hasPhysicsSim_ = other.hasPhysicsSim_;
             hasGrid2D_ = other.hasGrid2D_;
             cacheState_ = other.cacheState_;
             isEntered_ = other.isEntered_;
@@ -300,17 +296,6 @@ namespace mighter2d {
             return *cameraContainer_;
     }
 
-    PhysicsEngine& Scene::getPhysicsEngine() {
-        return const_cast<PhysicsEngine&>(std::as_const(*this).getPhysicsEngine());
-    }
-
-    const PhysicsEngine& Scene::getPhysicsEngine() const {
-        if (!world_)
-            throw AccessViolationException("mighter2d::Scene::createPhysicsEngine() must be called first before calling mighter2d::Scene::getPhysicsEngine()");
-        else
-            return *world_;
-    }
-
     GridMoverContainer &Scene::getGridMovers() {
         return gridMovers_;
     }
@@ -431,22 +416,8 @@ namespace mighter2d {
         return *spriteContainer_;
     }
 
-    void Scene::createPhysicsEngine(const Vector2f& gravity, const PhysIterations& iterations) {
-        world_ = PhysicsEngine::create(*this, gravity);
-        world_->setIterations(iterations);
-        world_->createDebugDrawer(getEngine().getRenderTarget());
-        hasPhysicsSim_ = true;
-
-        if (hasGrid2D_)
-            grid2D_->setPhysicsEngine(world_.get());
-    }
-
     void Scene::createGrid2D(unsigned int tileWidth, unsigned int tileHeight) {
         grid2D_ = std::make_unique<Grid2D>(tileWidth, tileHeight, *this);
-
-        if (hasPhysicsSim_)
-            grid2D_->setPhysicsEngine(world_.get());
-
         hasGrid2D_ = true;
     }
 

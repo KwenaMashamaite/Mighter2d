@@ -23,7 +23,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "Mighter2d/core/scene/SceneManager.h"
-#include "Mighter2d/core/physics/rigid_body/PhysicsEngine.h"
 #include "Mighter2d/core/engine/Engine.h"
 #include "Mighter2d/graphics/RenderTarget.h"
 #include "Mighter2d/graphics/shapes/RectangleShape.h"
@@ -517,25 +516,7 @@ namespace mighter2d::priv {
             scene->guiContainer_.update(deltaTime);
         }
 
-        updatePhysicsWorld(scene, deltaTime, fixedUpdate);
         updateExternalScene(scene, deltaTime, fixedUpdate);
-    }
-
-    void SceneManager::updatePhysicsWorld(Scene *scene, const Time &deltaTime, bool fixedUpdate) {
-        if (scene->hasPhysicsSim_) {
-            scene->internalEmitter_.emit("preStep", deltaTime * scene->getTimescale());
-
-            /// This function is called by the engine for both fixed and normal
-            /// update. The only way to know which is which is via @fixedUpdate
-            /// flag (explains, this explains why the bodies of the if-else
-            /// statement below are the same
-            if (fixedUpdate && scene->world_->isFixedStep()) {
-                scene->world_->update(deltaTime * scene->getTimescale());
-            } else if (!fixedUpdate && !scene->world_->isFixedStep())
-                scene->world_->update(deltaTime * scene->getTimescale());
-
-            scene->internalEmitter_.emit("postStep", deltaTime * scene->getTimescale());
-        }
     }
 
     void SceneManager::updateExternalScene(Scene* scene, const Time& deltaTime, bool fixedUpdate) {

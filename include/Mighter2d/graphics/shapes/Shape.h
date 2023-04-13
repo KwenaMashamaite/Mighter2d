@@ -30,7 +30,6 @@
 #include "Mighter2d/graphics/Colour.h"
 #include "Mighter2d/graphics/Texture.h"
 #include "Mighter2d/common/Rect.h"
-#include "Mighter2d/core/physics/rigid_body/RigidBody.h"
 #include <memory>
 
 namespace mighter2d {
@@ -102,51 +101,6 @@ namespace mighter2d {
          * @return The type of the shape
          */
         Type getShapeType() const;
-
-        /**
-         * @brief Attach a rigid body to a shape
-         * @param body The body to be attached
-         *
-         * Attaching a rigid Body to a shape enables physics for that shape.
-         * This means that you should refrain from calling functions that
-         * MODIFY the shapes transform (position, rotation and origin).
-         * Note that the physics simulation does not account for scaling,
-         * that should be handles by you
-         *
-         * @note Attaching a rigid body will alter the origin of the shape to
-         * match the centre of mass of the body
-         *
-         * @warning The pointer must not be a nullptr. Also, you cannot attach
-         * a rigid body to a shape that already has a rigid body attached, the
-         * previous body must be removed first
-         *
-         * @see removeRigidBody
-         */
-        void attachRigidBody(RigidBody::Ptr body);
-
-        /**
-         * @brief Remove a rigid body from the shape
-         *
-         * Removing a rigid Body from a shape disables all physics applied to
-         * the shape. This means that the shape will not respond to forces
-         * ans must be moved and rotated manually if need be
-         */
-        void removeRigidBody();
-
-        /**
-         * @brief Get the rigid body attached to the shape
-         * @return The rigid body attached to the shape or a nullptr if the
-         *         shape does not have a rigid body attached to it
-         */
-        RigidBody* getRigidBody();
-        const RigidBody* getRigidBody() const;
-
-        /**
-         * @brief Check if the the shape has a rigid body attached to it or not
-         * @return True if the shape has a rigid body attached to it, otherwise
-         *         false
-         */
-        bool hasRigidBody() const;
 
         /**
          * @brief Set the texture of the shape
@@ -458,10 +412,6 @@ namespace mighter2d {
     private:
         std::unique_ptr<priv::IShapeImpl> pimpl_;
         Type type_;              //!< The type of this shape
-        RigidBody::Ptr body_;    //!< The shapes rigid body
-        int postStepId_;         //!< Scene post step handler id
-        int destructionId_;      //!< Scene destruction listener id
-        int propertyChangeId_;   //!< Object property change handler id
     };
 }
 

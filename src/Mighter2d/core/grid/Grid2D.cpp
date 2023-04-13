@@ -25,8 +25,6 @@
 #include "Mighter2d/core/grid/Grid2D.h"
 #include "Mighter2d/core/grid/Grid2DParser.h"
 #include "Mighter2d/core/resources/ResourceManager.h"
-#include "Mighter2d/core/physics/rigid_body/colliders/BoxCollider.h"
-#include "Mighter2d/core/physics/rigid_body/PhysicsEngine.h"
 #include "Mighter2d/core/object/GridObject.h"
 #include "Mighter2d/graphics/RenderTarget.h"
 #include <algorithm>
@@ -43,8 +41,7 @@ namespace mighter2d {
     Grid2D::Grid2D(unsigned int tileWidth, unsigned int tileHeight, Scene& scene) :
         scene_{scene},
         tileSpacing_{1u},
-        invalidTile_({0, 0}, {-1, -1}),
-        physicsSim_{nullptr}
+        invalidTile_({0, 0}, {-1, -1})
     {
         invalidTile_.setIndex({-1, -1});
         mapPos_ = {0, 0};
@@ -61,10 +58,6 @@ namespace mighter2d {
         renderer_.onPropertyChange([this](const Property& property){
             onRenderChange(property);
         });
-    }
-
-    void Grid2D::setPhysicsEngine(PhysicsEngine* engine) {
-        physicsSim_ = engine;
     }
 
     Scene &Grid2D::getScene() {
@@ -156,13 +149,6 @@ namespace mighter2d {
     void Grid2D::setCollidable(Tile &tile, bool collidable, bool attachCollider) {
         if (tile.isCollidable() == collidable)
             return;
-        else if (collidable && !tile.hasCollider() && attachCollider) {
-            if (!physicsSim_)
-                throw InvalidArgumentException("The 'mighter2d::Scene' that an 'mighter2d::Grid2D' belongs to must have 'mighter2d::PhysicsEngine' before attaching a collider to a tile");
-
-            tile.setBody(physicsSim_->createBody(RigidBody::Type::Static));
-            tile.attachCollider(BoxCollider::create(Vector2f{static_cast<float>(tile.getSize().x), static_cast<float>(tile.getSize().y)}));
-        }
 
         tile.setCollidable(collidable);
 

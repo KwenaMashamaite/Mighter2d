@@ -92,17 +92,6 @@ namespace mighter2d {
             MIGHTER2D_ASSERT(!target->getGridMover(), "A game object can only be controlled by one grid mover at a time, call setTarget(nullptr) on the current grid mover")
             MIGHTER2D_ASSERT(grid_.hasChild(target), "The game object must already be in the grid/grid before adding it to a grid mover")
 
-            if (target->hasRigidBody())
-            {
-                MIGHTER2D_ASSERT(target->getRigidBody()->getType() == RigidBody::Type::Kinematic, "A grid mover can only control game objects with a mighter2d::RigidBody::Type::Kinematic rigid body")
-                Vector2f velocity = target->getRigidBody()->getLinearVelocity();
-
-                if (velocity != Vector2f(0.0f, 0.0f))
-                    maxSpeed_ = {std::fabs(velocity.x), std::fabs(velocity.y)};
-
-                target->getRigidBody()->setLinearVelocity({0, 0});
-            }
-
             if (target_) {
                 target_->removeEventListener(targetDestructionId_);
                 target_->removeEventListener(targetPropertyChangeId_);
@@ -119,14 +108,6 @@ namespace mighter2d {
             targetPropertyChangeId_ = target->onPropertyChange([this](const Property& property) {
                 if (property.getName() == "speed") {
                     maxSpeed_ = property.getValue<Vector2f>();
-
-                    // The position of the target is updated by the physics engine and not by the grid mover
-                    if (target_->hasRigidBody()) {
-                        target_->getRigidBody()->setLinearVelocity(
-                            Vector2f{maxSpeed_.x * targetDirection_.x * speedMultiplier_,
-                                     maxSpeed_.y * targetDirection_.y * speedMultiplier_}
-                        );
-                    }
                 }
             });
 
@@ -206,14 +187,6 @@ namespace mighter2d {
     void GridMover::setMovementFreeze(bool freeze) {
         if (isMoveFrozen_ != freeze) {
             isMoveFrozen_ = freeze;
-
-            if (target_->hasRigidBody()) {
-                if (!isMoveFrozen_ && isMoving_) {
-                    target_->getRigidBody()->setLinearVelocity(Vector2f{maxSpeed_.x * targetDirection_.x * speedMultiplier_,
-                                                                maxSpeed_.y * targetDirection_.y * speedMultiplier_});
-                } else
-                    target_->getRigidBody()->setLinearVelocity({0.0f, 0.0f});
-            }
 
             emitChange(Property{"movementFreeze", isMoveFrozen_});
         }
@@ -298,11 +271,6 @@ namespace mighter2d {
         if (target_ && !isMoveFrozen_) {
             MIGHTER2D_ASSERT(grid_.hasChild(target_), "Target removed from the grid while still controlled by a grid mover")
 
-            if (target_->hasRigidBody())
-            {
-                MIGHTER2D_ASSERT(target_->getRigidBody()->getType() == RigidBody::Type::Kinematic, "A grid mover can only control game objects with a mighter2d::RigidBody::Type::Kinematic rigid body")
-            }
-
             if (!isMoving_ && targetDirection_ != Unknown && maxSpeed_ != Vector2f{0.0f, 0.0f}) {
                 setTargetTile();
 
@@ -312,12 +280,6 @@ namespace mighter2d {
                 prevDirection_ = currentDirection_;
                 currentDirection_ = targetDirection_;
                 isMoving_ = true;
-
-                // The position of the target is updated by the physics engine
-                if (target_->hasRigidBody()) {
-                    target_->getRigidBody()->setLinearVelocity({maxSpeed_.x * targetDirection_.x * speedMultiplier_, 
-                                                                maxSpeed_.y * targetDirection_.y * speedMultiplier_});
-                }
 
                 // Move target to target tile ahead of time
                 Vector2f currentPosition = target_->getTransform().getPosition();
@@ -335,7 +297,7 @@ namespace mighter2d {
                 if (isTargetTileReached(deltaTime)) {
                     snapTargetToTargetTile();
                     onDestinationReached();
-                } else if (!target_->hasRigidBody()) {
+                } else {
                     eventEmitter_.emit("GridMover_preMove");
                     target_->emitGridEvent(Property("preMove"));
 
@@ -356,12 +318,6 @@ namespace mighter2d {
     void GridMover::snapTargetToTargetTile() {
         isMoving_ = false;
         targetDirection_ = Unknown;
-
-        if (target_->hasRigidBody())
-        {
-            target_->getRigidBody()->setLinearVelocity({0.0f, 0.0f});
-        }
-
         target_->getTransform().setPosition(targetTile_->getWorldCentre());
     }
 
@@ -429,9 +385,6 @@ namespace mighter2d {
             targetTile_ = prevTile_;
             targetDirection_ = Unknown;
 
-            if (target_->hasRigidBody())
-                target_->getRigidBody()->setLinearVelocity({0.0f, 0.0f});
-
             eventEmitter_.emit("GridMover_tileCollision", hitTile->getIndex());
             target_->emitGridEvent(Property{"tileCollision", hitTile->getIndex()});
 
@@ -452,9 +405,6 @@ namespace mighter2d {
 
             targetTile_ = prevTile_;
             targetDirection_ = Unknown;
-
-            if (target_->hasRigidBody())
-                target_->getRigidBody()->setLinearVelocity({0.0f, 0.0f});
 
             eventEmitter_.emit("GridMover_objectCollision", target_, obstacle);
             target_->emitGridEvent(Property{"objectCollision", obstacle});
@@ -483,9 +433,6 @@ namespace mighter2d {
         if (targetTile_->getIndex().row < 0 || targetTile_->getIndex().colm < 0) {
             targetTile_ = prevTile_;
             targetDirection_ = Unknown;
-
-            if (target_->hasRigidBody())
-                target_->getRigidBody()->setLinearVelocity({0.0f, 0.0f});
 
             eventEmitter_.emit("GridMover_borderCollision", targetTile_->getIndex());
             target_->emitGridEvent(Property{"borderCollision"});
@@ -593,9 +540,6 @@ namespace mighter2d {
 
             if (targetPropertyChangeId_ != -1)
                 target_->removeEventListener(targetPropertyChangeId_);
-
-            if (target_->getRigidBody())
-                target_->getRigidBody()->setLinearVelocity({0.0f, 0.0f});
 
             target_->setGridMover(nullptr);
         }

@@ -68,15 +68,6 @@ namespace mighter2d {
         Grid2D(unsigned int tileWidth, unsigned int tileHeight, Scene& scene);
 
         /**
-         * @internal
-         * @brief Set the physics engine
-         * @param engine The physics engine to be set
-         *
-         * @warning This function is intended for internal use only
-         */
-        void setPhysicsEngine(PhysicsEngine* engine);
-
-        /**
          * @brief Get the scene the grid belongs to
          * @return The scene the grid belongs to
          */
@@ -664,7 +655,6 @@ namespace mighter2d {
         std::unordered_set<GridObject*> children_; //!< Stores the id's of game objects that belong to the grid
         std::unordered_map<unsigned int, int> destructionIds_;         //!< Holds the id of the destruction listeners (key = object id, value = destruction id)
         std::vector<std::vector<Tile>> tiledMap_;                      //!< Tiles container
-        PhysicsEngine* physicsSim_;                                     //!< The physics simulation
 
         friend class Scene;
     };
