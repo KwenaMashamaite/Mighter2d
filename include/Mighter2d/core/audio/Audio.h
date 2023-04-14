@@ -223,6 +223,30 @@ namespace mighter2d {
             virtual Status getStatus() const = 0;
 
             /**
+             * @brief Check if the audio is playing or not
+             * @return True if the audio is playing, otherwise false
+             *
+             * @see isPaused, isStopped, getStatus
+             */
+            bool isPlaying() const;
+
+            /**
+             * @brief Check if the audio is paused or not
+             * @return True if the audio is paused, otherwise false
+             *
+             * @see isPlaying, isStopped, getStatus
+             */
+            bool isPaused() const;
+
+            /**
+             * @brief Check if the audio is stopped or not
+             * @return True if the audio is stopped, otherwise false
+             *
+             * @see isPlaying, isPaused, getStatus
+             */
+            bool isStopped() const;
+
+            /**
              * @brief Destructor
              */
             ~Audio() override;

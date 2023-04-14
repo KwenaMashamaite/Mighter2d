@@ -64,6 +64,18 @@ namespace mighter2d::audio {
         seek(Time::Zero);
     }
 
+    bool Audio::isPlaying() const {
+        return getStatus() == Status::Playing;
+    }
+
+    bool Audio::isPaused() const {
+        return getStatus() == Status::Paused;
+    }
+
+    bool Audio::isStopped() const {
+        return getStatus() == Status::Stopped;
+    }
+
     Audio::~Audio() {
         emitDestruction();
     }
