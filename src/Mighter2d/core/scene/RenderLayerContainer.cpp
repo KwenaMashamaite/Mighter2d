@@ -122,7 +122,7 @@ namespace mighter2d {
             moveDown(inverseLayers_[name]);
     }
 
-    void RenderLayerContainer::moveToFront(unsigned int index) {
+    void RenderLayerContainer::sendToFront(unsigned int index) {
         if (!(isIndexValid(index) && std::prev(layers_.end())->first != index))
             return;
 
@@ -139,9 +139,9 @@ namespace mighter2d {
         }
     }
 
-    void RenderLayerContainer::moveToFront(const std::string &name) {
+    void RenderLayerContainer::sendToFront(const std::string &name) {
         if (hasLayer(name))
-            moveToFront(inverseLayers_[name]);
+            sendToFront(inverseLayers_[name]);
     }
 
     void RenderLayerContainer::sendToBack(unsigned int index) {

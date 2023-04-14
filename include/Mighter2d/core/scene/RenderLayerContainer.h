@@ -210,7 +210,7 @@ namespace mighter2d {
          *
          * @see sendToBack(unsigned int)
          */
-        void moveToFront(unsigned int index);
+        void sendToFront(unsigned int index);
 
         /**
          * @brief Move a layer to the highest level (foreground)
@@ -221,7 +221,7 @@ namespace mighter2d {
          *
          * @see sendToBack(const std::string&)
          */
-        void moveToFront(const std::string& name);
+        void sendToFront(const std::string& name);
 
         /**
          * @brief Move a layer to the lowest level (background)
@@ -230,7 +230,7 @@ namespace mighter2d {
          * This function has no effect if the layer does not exist or the
          * layer is already at the lowest level
          *
-         * @see moveToFront(unsigned int)
+         * @see sendToFront(unsigned int)
          */
         void sendToBack(unsigned int index);
 
@@ -241,7 +241,7 @@ namespace mighter2d {
          * This function has no effect if the layer does not exist or the
          * layer is already at the lowest level
          *
-         * @see moveToFront(const std::string&)
+         * @see sendToFront(const std::string&)
          */
         void sendToBack(const std::string& name);
 
