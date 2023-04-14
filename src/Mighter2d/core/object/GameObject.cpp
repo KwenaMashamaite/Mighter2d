@@ -171,6 +171,13 @@ namespace mighter2d {
     }
 
     void GameObject::initEvents() {
+        // Always keep the game object origin at the centre of sprite
+        sprite_->onPropertyChange([this](const Property& property) {
+            if (property.getName() == "scale" || property.getName() == "texture" || property.getName() == "textureRect")
+                resetSpriteOrigin();
+        });
+
+        // Keep the sprite in sync with the objects transfor changes
         transform_.onPropertyChange([this](const Property& property) {
             const auto& name = property.getName();
             if (name == "position") {

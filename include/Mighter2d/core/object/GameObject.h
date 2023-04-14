@@ -188,16 +188,6 @@ namespace mighter2d {
         const Scene& getScene() const;
 
         /**
-         * @brief Reset the origin of the sprite
-         *
-         * The origin is reset to the local centre of the sprite
-         *
-         * @note This function must be called everytime the sprites texture,
-         * texture rectangle size or scale is changed
-         */
-        void resetSpriteOrigin();
-
-        /**
          * @brief Get the game objects graphical representation
          * @return The game objects graphical representation
          *
@@ -229,6 +219,16 @@ namespace mighter2d {
          * @brief Subscribe game object to events
          */
         void initEvents();
+
+        /**
+         * @brief Reset the origin of the game object
+         *
+         * The origin is reset to the local centre of the sprite
+         *
+         * @note This function must be called everytime the sprites texture,
+         * texture rectangle size or scale is changed
+         */
+        void resetSpriteOrigin();
 
     private:
         std::reference_wrapper<Scene> scene_; //!< The scene this game object belongs to

@@ -313,6 +313,7 @@ namespace mighter2d {
 
     void Sprite::setTexture(const std::string &filename) {
         pImpl_->setTexture(filename);
+        emitChange(Property{"texture", filename});
     }
 
     void Sprite::setTextureRect(const UIntRect& rect) {
