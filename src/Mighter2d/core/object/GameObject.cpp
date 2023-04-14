@@ -137,18 +137,6 @@ namespace mighter2d {
         return "GameObject";
     }
 
-    int GameObject::onRigidBodyCollisionStart(const CollisionCallback& callback, bool oneTime) {
-        return utility::addEventListener(eventEmitter_, "GameObject_contactBegin", callback, oneTime);
-    }
-
-    int GameObject::onRigidBodyCollisionEnd(const CollisionCallback& callback, bool oneTime) {
-        return utility::addEventListener(eventEmitter_, "GameObject_contactEnd", callback, oneTime);
-    }
-
-    int GameObject::onRigidBodyCollisionStay(const CollisionCallback &callback, bool oneTime) {
-        return utility::addEventListener(eventEmitter_, "GameObject_contactStay", callback, oneTime);
-    }
-
     Transform &GameObject::getTransform() {
         return transform_;
     }
@@ -175,16 +163,6 @@ namespace mighter2d {
 
     const Sprite &GameObject::getSprite() const {
         return sprite_;
-    }
-
-    void GameObject::emitRigidBodyCollisionEvent(const std::string &event, GameObject* other) {
-        MIGHTER2D_ASSERT(other, "Internal Error, cannot collide with nullptr")
-
-        // Prevent self collisions
-        if (this == other)
-            return;
-
-        eventEmitter_.emit("GameObject_" + event, this, other);
     }
 
     void GameObject::initEvents() {

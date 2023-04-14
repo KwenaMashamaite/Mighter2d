@@ -169,83 +169,6 @@ namespace mighter2d {
         std::string getClassType() const override;
 
         /**
-         * @brief Add an event listener to a rigid body collision begin event
-         * @param callback The function to be executed when the event is fired
-         * @param oneTime True to execute the callback one-time or false to
-         *                execute it every time the event is triggered
-         * @return The event listeners identification number
-         *
-         * The callback function is called when two game objects begin to
-         * overlap. The callback is passed this game object and the game
-         * object that collided with this game object respectively.
-         *
-         * A collision begin handler may be registered on the game object or on
-         * the collider that is attached to the game objects rigid body or on
-         * both. However, exercise caution as registering the same handler on
-         * both objects will result in the handler being executed twice each
-         * time the event is fired
-         *
-         * @note A collision begin event can only occur if the game object has a
-         * rigid body attached to it and the rigid body has a Collider attached
-         * to it
-         *
-         * @see attachRigidBody, onCollisionStay and onCollisionEnd
-         */
-        int onRigidBodyCollisionStart(const CollisionCallback& callback, bool oneTime = false);
-
-        /**
-         * @brief Add an event listener to a rigid body collision end event
-         * @param callback The function to be executed when the event is fired
-         * @param oneTime True to execute the callback one-time or false to
-         *                execute it every time the event is triggered
-         * @return The event listeners identification number
-         *
-         * The callback function is called when two game objects stop
-         * overlapping. The callback is passed this game object and the
-         * game object that stopped overlapping with this game object
-         * respectively.
-         *
-         * A collision end handler may be registered on the game object or on
-         * the collider that is attached to the game objects rigid body or on
-         * both. However, exercise caution as registering the same handler on
-         * both objects will result in the handler being executed twice each
-         * time the event is fired
-         *
-         * @note A collision end event can only occur if the game object has a
-         * rigid body attached to it and the rigid body has a Collider attached
-         * to it
-         *
-         * @see attachRigidBody, onCollisionStart and onCollisionStay
-         */
-        int onRigidBodyCollisionEnd(const CollisionCallback& callback, bool oneTime = false);
-
-        /**
-         * @brief Add an event listener to a rigid body collision stay event
-         * @param callback The function to be executed when the event is fired
-         * @param oneTime True to execute the callback one-time or false to
-         *                execute it every time the event is triggered
-         * @return The event listeners identification number
-         *
-         * The callback function is called while this game object remains in
-         * contact with another game object. The callback is passed this game
-         * object and the game object that is currently in contact with this
-         * game object respectively.
-         *
-         * A collision stay handler may be registered on the game object or on
-         * the collider that is attached to the game objects rigid body or on
-         * both. However, exercise caution as registering the same handler on
-         * both objects will result in the handler being executed twice each
-         * time the event is fired
-         *
-         * @note A collision stay event can only occur if the game object has
-         * a rigid body attached to it and the rigid body is awake and has a
-         * Collider attached to it that is not a sensor
-         *
-         * @see attachRigidBody, onCollisionStart and onCollisionEnd
-         */
-        int onRigidBodyCollisionStay(const CollisionCallback& callback, bool oneTime = false);
-
-        /**
          * @brief Get the game objects transform
          * @return The game objects transform
          *
@@ -293,17 +216,6 @@ namespace mighter2d {
          * the base class version when overriding it
          */
         virtual void update(Time deltaTime) {MIGHTER2D_UNUSED(deltaTime);}
-
-        /**
-         * @internal
-         * @brief Emit a rigid body collision event on the game object
-         * @param event Collision event to be emitted
-         * @param other The game object that triggered the event
-         *
-         * @warning This function is intended for internal use only and should
-         * never be called outside of Mighter2d
-         */
-        void emitRigidBodyCollisionEvent(const std::string& event, GameObject* other);
 
         /**
          * @brief Destructor
