@@ -22,8 +22,8 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef MIGHTER2D_GRID2D_H
-#define MIGHTER2D_GRID2D_H
+#ifndef MIGHTER2D_GRID_H
+#define MIGHTER2D_GRID_H
 
 #include "Mighter2d/Config.h"
 #include "Mighter2d/common/Vector2.h"
@@ -33,7 +33,7 @@
 #include "Mighter2d/graphics/Sprite.h"
 #include "Mighter2d/graphics/shapes/RectangleShape.h"
 #include "Mighter2d/core/scene/GameObjectContainer.h"
-#include "Mighter2d/core/grid/Grid2DRenderer.h"
+#include "Mighter2d/core/grid/GridRenderer.h"
 #include <unordered_map>
 #include <vector>
 #include <unordered_set>
@@ -51,7 +51,7 @@ namespace mighter2d {
     /**
      * @brief A 2D visual grid
      */
-    class MIGHTER2D_API Grid2D {
+    class MIGHTER2D_API Grid {
     public:
         /**
          * @internal
@@ -65,7 +65,7 @@ namespace mighter2d {
          *
          * This constructor is intended for internal use only
          */
-        Grid2D(unsigned int tileWidth, unsigned int tileHeight, Scene& scene);
+        Grid(unsigned int tileWidth, unsigned int tileHeight, Scene& scene);
 
         /**
          * @brief Get the scene the grid belongs to
@@ -98,8 +98,8 @@ namespace mighter2d {
          * grid is displayed. It allows you to manipulate things such
          * as the tile colour, grid line colour etc...
          */
-        Grid2DRenderer& getRenderer();
-        const Grid2DRenderer& getRenderer() const;
+        GridRenderer& getRenderer();
+        const GridRenderer& getRenderer() const;
 
         /**
          * @brief Set the position of the grid
@@ -141,7 +141,7 @@ namespace mighter2d {
          * @param separator Character used to separate map data
          * @throws FileNotFoundException If @a filename cannot be opened for reading
          * @throws InvalidParseException If the contents of @a filename cannot
-         *         be successfully parsed into Grid2D map data
+         *         be successfully parsed into Grid map data
          *
          * @see loadFromVector
          */
@@ -168,7 +168,7 @@ namespace mighter2d {
          * GridMover can collide with the tile. Attaching a collider makes
          * a GridObject with a RigidBody that has a Collider attached to it
          * able to collide with the tile. Note that a collider can only be
-         * attached if the Scene this Grid2D belongs to has a PhysicsEngine
+         * attached if the Scene this Grid belongs to has a PhysicsEngine
          */
         void setCollidableByIndex(const Index &index, bool isCollidable, bool attachCollider = false);
 
@@ -185,7 +185,7 @@ namespace mighter2d {
          * GridMover can collide with the tile. Attaching a collider makes
          * a GridObject with a RigidBody that has a Collider attached to it
          * able to collide with the tile. Note that a collider can only be
-         * attached if the Scene this Grid2D belongs to has a PhysicsEngine
+         * attached if the Scene this Grid belongs to has a PhysicsEngine
          *
          * By default, tiles are not collidable
          *
@@ -209,7 +209,7 @@ namespace mighter2d {
          * GridMover can collide with the tile. Attaching a collider makes
          * a GridObject with a RigidBody that has a Collider attached to it
          * able to collide with the tile. Note that a collider can only be
-         * attached if the Scene this Grid2D belongs to has a PhysicsEngine
+         * attached if the Scene this Grid belongs to has a PhysicsEngine
          *
          * By default, tiles are not collidable
          *
@@ -232,7 +232,7 @@ namespace mighter2d {
          * GridMover can collide with the tile. Attaching a collider makes
          * a GridObject with a RigidBody that has a Collider attached to it
          * able to collide with the tile. Note that a collider can only be
-         * attached if the Scene this Grid2D belongs to has a PhysicsEngine
+         * attached if the Scene this Grid belongs to has a PhysicsEngine
          *
          * All the tiles with the specified id will be marked as solid tiles
          * if currently marked as empty tiles
@@ -255,7 +255,7 @@ namespace mighter2d {
          * GridMover can collide with the tile. Attaching a collider makes
          * a GridObject with a RigidBody that has a Collider attached to it
          * able to collide with the tile. Note that a collider can only be
-         * attached if the Scene this Grid2D belongs to has a PhysicsEngine
+         * attached if the Scene this Grid belongs to has a PhysicsEngine
          *
          * By default, tiles are not collidable
          */
@@ -549,7 +549,7 @@ namespace mighter2d {
         /**
          * @brief Destructor
          */
-        ~Grid2D();
+        ~Grid();
 
     private:
         /**
@@ -615,7 +615,7 @@ namespace mighter2d {
          * GridMover can collide with the tile. Attaching a collider makes
          * a GridObject with a RigidBody that has a Collider attached to it
          * able to collide with the tile. Note that a collider can only be
-         * attached if the Scene this Grid2D belongs to has a PhysicsEngine
+         * attached if the Scene this Grid belongs to has a PhysicsEngine
          *
          * By default, a tile is not collidable
          */
@@ -649,7 +649,7 @@ namespace mighter2d {
         unsigned int numOfColms_;            //!< The height of the grid in tiles
         Map mapData_;                        //!< Map data used to identify different tiles
         Tile invalidTile_;                   //!< Tile returned when an invalid index is provided
-        Grid2DRenderer renderer_;           //!< Determines the look of the grid
+        GridRenderer renderer_;           //!< Determines the look of the grid
         RectangleShape backgroundTile_;      //!< Dictates the background colour of the grid
 
         std::unordered_set<GridObject*> children_; //!< Stores the id's of game objects that belong to the grid
@@ -660,4 +660,4 @@ namespace mighter2d {
     };
 }
 
-#endif // MIGHTER2D_GRID2D_H
+#endif // MIGHTER2D_GRID_H

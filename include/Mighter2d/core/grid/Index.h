@@ -30,7 +30,7 @@
 
 namespace mighter2d {
     /**
-     * @brief Represents a position Grid2D Tile
+     * @brief Represents a position Grid Tile
      */
     struct MIGHTER2D_API Index {
         /**

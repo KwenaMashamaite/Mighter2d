@@ -354,7 +354,7 @@ namespace mighter2d {
 
         //!> Needs access to the constructor
         friend class Scene;
-        friend class Grid2D;
+        friend class Grid;
     };
 }
 

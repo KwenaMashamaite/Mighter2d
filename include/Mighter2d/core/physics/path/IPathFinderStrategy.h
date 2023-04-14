@@ -31,7 +31,7 @@
 #include <string>
 
 namespace mighter2d {
-    class Grid2D;
+    class Grid;
 
     /**
      * @brief Interface for grid path finder algorithms
@@ -47,8 +47,8 @@ namespace mighter2d {
          *         destination is reachable from the source, otherwise
          *         an empty path
          */
-        virtual std::stack<Index> findPath(const Grid2D& grid, const Index& sourceNode,
-            const Index& source) = 0;
+        virtual std::stack<Index> findPath(const Grid& grid, const Index& sourceNode,
+                                           const Index& source) = 0;
 
         /**
          * @brief Get the type of path finding algorithm

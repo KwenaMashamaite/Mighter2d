@@ -22,8 +22,8 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef MIGHTER2D_GRID2DRENDERER_H
-#define MIGHTER2D_GRID2DRENDERER_H
+#ifndef MIGHTER2D_GRIDRENDERER_H
+#define MIGHTER2D_GRIDRENDERER_H
 
 #include "Mighter2d/Config.h"
 #include "Mighter2d/graphics/Colour.h"
@@ -34,18 +34,18 @@ namespace mighter2d {
     class Texture;
 
     /**
-     * @brief Defines the render properties of a Grid2D
+     * @brief Defines the render properties of a Grid
      *
      * This class determines how a grid looks
      */
-    class MIGHTER2D_API Grid2DRenderer {
+    class MIGHTER2D_API GridRenderer {
     public:
         using Callback = std::function<void(const Property&)>; //!< Property change callback
 
         /**
          * @brief Default constructor
          */
-        Grid2DRenderer();
+        GridRenderer();
 
         /**
          * @brief Set the background texture of the grid
@@ -162,4 +162,4 @@ namespace mighter2d {
     };
 }
 
-#endif //MIGHTER2D_GRID2DRENDERER_H
+#endif //MIGHTER2D_GRIDRENDERER_H

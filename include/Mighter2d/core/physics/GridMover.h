@@ -26,7 +26,7 @@
 #define MIGHTER2D_GRIDMOVER_H
 
 #include "Mighter2d/Config.h"
-#include "Mighter2d/core/grid/Grid2D.h"
+#include "Mighter2d/core/grid/Grid.h"
 #include "Mighter2d/core/object/GridObject.h"
 #include "Mighter2d/core/event/EventEmitter.h"
 #include "Mighter2d/core/time/Time.h"
@@ -94,7 +94,7 @@ namespace mighter2d {
          *
          * @see setTarget
          */
-        explicit GridMover(Grid2D& grid, GridObject* gameObject = nullptr);
+        explicit GridMover(Grid& grid, GridObject* gameObject = nullptr);
 
         /**
          * @brief Copy constructor
@@ -120,7 +120,7 @@ namespace mighter2d {
          *
          * @see setTarget
          */
-        static GridMover::Ptr create(Grid2D& grid, GridObject* gameObject = nullptr);
+        static GridMover::Ptr create(Grid& grid, GridObject* gameObject = nullptr);
 
         /**
          * @brief Get the name of this class
@@ -212,7 +212,7 @@ namespace mighter2d {
          * Provide nullptr as argument to remove current target
          *
          * @warning if the @a target is not a @a nullptr, then it must exist
-         * in the Grid2D and must not have a RigidBody attached to it,
+         * in the Grid and must not have a RigidBody attached to it,
          * otherwise undefined behavior
          */
         void setTarget(GridObject* target);
@@ -349,8 +349,8 @@ namespace mighter2d {
          * @brief Get access to the grid in which the target is moved in
          * @return The grid in which the target is being moved in
          */
-        Grid2D& getGrid();
-        const Grid2D& getGrid() const;
+        Grid& getGrid();
+        const Grid& getGrid() const;
 
         /**
          * @brief Check if target is moving or not
@@ -557,7 +557,7 @@ namespace mighter2d {
          * @warning if the target is not a nullptr, then it must be placed
          * in the grid prior to instantiation of this class
          */
-        GridMover(Type type, Grid2D &grid, GridObject* target);
+        GridMover(Type type, Grid &grid, GridObject* target);
 
     private:
         /**
@@ -637,7 +637,7 @@ namespace mighter2d {
 
     private:
         Type type_;                    //!< The type of the grid mover
-        Grid2D& grid_;             //!< Grid to move entity in
+        Grid& grid_;             //!< Grid to move entity in
         GridObject* target_;           //!< Target to be moved in the grid
         Vector2f maxSpeed_;            //!< The maximum speed of the game object
         float speedMultiplier_;        //!< A normal speed multiplier

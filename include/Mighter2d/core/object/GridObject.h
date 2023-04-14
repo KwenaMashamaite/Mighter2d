@@ -28,14 +28,14 @@
 #include "Mighter2d/Config.h"
 #include "Mighter2d/core/object/GridObject.h"
 #include "Mighter2d/core/object/ExcludeList.h"
-#include "Mighter2d/core/grid/Grid2D.h"
+#include "Mighter2d/core/grid/Grid.h"
 #include <memory>
 
 namespace mighter2d {
     class GridMover;
 
     /**
-     * @brief An object that can be placed in a Grid2D
+     * @brief An object that can be placed in a Grid
      */
     class MIGHTER2D_API GridObject : public GameObject {
     public:
@@ -260,8 +260,8 @@ namespace mighter2d {
          * @brief Get access to the grid in which the target is moved in
          * @return The grid in which the target is being moved in
          */
-        Grid2D* getGrid();
-        const Grid2D* getGrid() const;
+        Grid* getGrid();
+        const Grid* getGrid() const;
 
         /**
          * @brief Get the game objects collision exclude list
@@ -311,7 +311,7 @@ namespace mighter2d {
         /**
          * @brief Add an event listener to a grid enter event
          * @param callback The function to be executed when the game object
-         *                 is added to a Grid2D
+         *                 is added to a Grid
          * @param oneTime True to execute the callback one-time or false to
          *                execute it every time the event is triggered
          * @return The event listeners unique identification number
@@ -325,7 +325,7 @@ namespace mighter2d {
         /**
          * @brief Add an event listener to a grid exit event
          * @param callback The function to be executed when the game object
-         *                 is removed from a Grid2D
+         *                 is removed from a Grid
          * @param oneTime True to execute the callback one-time or false to
          *                execute it every time the event is triggered
          * @return The event listeners unique identification number
@@ -430,14 +430,14 @@ namespace mighter2d {
         /**
          * @brief Add an event listener to a grid object collision event
          * @param callback Function to be executed when this game object
-         *                 collides with another game object in a Grid2D
+         *                 collides with another game object in a Grid
          * @param oneTime True to execute the callback one-time or false to
          *                execute it every time the event is triggered
          * @return The event listeners unique identification number
          *
          * This event is triggered when this grid object collides with another
          * grid object or vice versa. A collision is registered between two
-         * grid objects when the occupy the same Grid2D tile
+         * grid objects when the occupy the same Grid tile
          *
          * The callback is passed this game object and the game object it is
          * in collision with respectively.
@@ -506,7 +506,7 @@ namespace mighter2d {
          * @warning This function is intended for internal use only and should
          * never be called outside of Mighter2d
          */
-        void setGrid(Grid2D* grid);
+        void setGrid(Grid* grid);
 
         /**
          * @internal
@@ -524,7 +524,7 @@ namespace mighter2d {
         ~GridObject() override;
 
     private:
-        Grid2D* grid_;                     //!< The grid the object is in
+        Grid* grid_;                     //!< The grid the object is in
         bool isObstacle_;                   //!< A flag indicating whether or not the object is an obstacle
         Vector2i direction_;                //!< The current direction of the object
         Vector2f speed_;                    //!< The speed of the game object

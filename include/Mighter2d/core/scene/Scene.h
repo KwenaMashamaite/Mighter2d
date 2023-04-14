@@ -41,7 +41,7 @@
 #include "Mighter2d/core/scene/CameraContainer.h"
 #include "Mighter2d/ui/GuiContainer.h"
 #include "Mighter2d/graphics/Camera.h"
-#include "Mighter2d/core/grid/Grid2D.h"
+#include "Mighter2d/core/grid/Grid.h"
 #include <string>
 #include <memory>
 #include <vector>
@@ -728,8 +728,8 @@ namespace mighter2d {
          *
          * @see createGrid2D
          */
-        Grid2D& getGrid();
-        const Grid2D& getGrid() const;
+        Grid& getGrid();
+        const Grid& getGrid() const;
 
         /**
          * @brief Get the scene level gui container
@@ -852,7 +852,7 @@ namespace mighter2d {
         ui::GuiContainer guiContainer_;       //!< Scene level gui container
         RenderLayerContainer renderLayers_;   //!< Render layers for this scene
         GridMoverContainer gridMovers_;       //!< Stores grid movers that belong to the scene
-        std::unique_ptr<Grid2D> grid2D_;      //!< Scene level grid
+        std::unique_ptr<Grid> grid2D_;      //!< Scene level grid
         float timescale_;                     //!< Controls the speed of the scene without affecting the render fps
         bool isEntered_;                      //!< A flag indicating whether or not the scene has been entered
         bool isInitialized_;                  //!< A flag indicating whether or not the scene has been initialized

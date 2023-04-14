@@ -41,7 +41,7 @@ namespace mighter2d {
      * will switch between four adjacent tiles in the chosen cycle direction.
      *
      * Note that this grid mover cannot get the target out of a dead-end. If
-     * the Grid2D contains dead-ends and you intend for the target to never
+     * the Grid contains dead-ends and you intend for the target to never
      * get stuck at any point in the grid, then you should consider removing
      * them or using a different GridMover.
      */
@@ -70,7 +70,7 @@ namespace mighter2d {
          *
          * @see setTarget
          */
-        explicit CyclicGridMover(Grid2D& grid, GridObject* target = nullptr);
+        explicit CyclicGridMover(Grid& grid, GridObject* target = nullptr);
 
         /**
          * @brief Create a CyclicGridMover
@@ -86,7 +86,7 @@ namespace mighter2d {
          *
          * @see setTarget
          */
-        static CyclicGridMover::Ptr create(Grid2D &grid, GridObject* target = nullptr);
+        static CyclicGridMover::Ptr create(Grid &grid, GridObject* target = nullptr);
 
         /**
          * @brief Get the name of this class

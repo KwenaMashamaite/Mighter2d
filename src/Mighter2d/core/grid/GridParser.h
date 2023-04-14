@@ -22,8 +22,8 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef MIGHTER2D_GRID2DPARSER_H
-#define MIGHTER2D_GRID2DPARSER_H
+#ifndef MIGHTER2D_GRIDPARSER_H
+#define MIGHTER2D_GRIDPARSER_H
 
 #include <vector>
 #include <string>
@@ -32,7 +32,7 @@ namespace mighter2d {
     /**
      * @brief Reads a file containing the grid data and returns it in grid form
      */
-    class Grid2DParser {
+    class GridParser {
     public:
         using Map = std::vector<std::vector<char>>; //!< Alias for 2D vector of chars
 
@@ -42,7 +42,7 @@ namespace mighter2d {
          * @param separator Character used to separate column entries
          * @return Tile map data
          * @throws InvalidParseException If the contents of @a filename cannot
-         *         be successfully parsed into Grid2D map data
+         *         be successfully parsed into Grid map data
          *
          * This function parses a map file and returns a map object created
          * form the parsed date

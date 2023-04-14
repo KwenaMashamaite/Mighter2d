@@ -23,7 +23,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "Mighter2d/core/physics/path/BFS.h"
-#include "Mighter2d/core/grid/Grid2D.h"
+#include "Mighter2d/core/grid/Grid.h"
 #include <algorithm>
 
 namespace mighter2d {
@@ -31,7 +31,7 @@ namespace mighter2d {
         visited_ = std::vector<std::vector<bool>>(gridSize.y, std::vector<bool>(gridSize.x, false));
     }
 
-    std::stack<Index> BFS::findPath(const Grid2D& grid, const Index& sourceTile, const Index& targetTile) {
+    std::stack<Index> BFS::findPath(const Grid& grid, const Index& sourceTile, const Index& targetTile) {
         if (sourceTile == targetTile || !grid.isIndexValid(sourceTile)
             || !grid.isIndexValid(targetTile))
             return std::stack<Index>{};

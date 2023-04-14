@@ -62,7 +62,7 @@
 #include "Mighter2d/core/scene/DrawableContainer.h"
 #include "Mighter2d/core/scene/GameObjectContainer.h"
 #include "Mighter2d/core/grid/Index.h"
-#include "Mighter2d/core/grid/Grid2D.h"
+#include "Mighter2d/core/grid/Grid.h"
 #include "Mighter2d/core/time/Clock.h"
 #include "Mighter2d/core/time/Time.h"
 #include "Mighter2d/core/time/Timer.h"

@@ -22,13 +22,13 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "Mighter2d/core/grid/Grid2DParser.h"
+#include "Mighter2d/core/grid/GridParser.h"
 #include "Mighter2d/utility/DiskFileReader.h"
 #include "Mighter2d/core/exceptions/Exceptions.h"
 #include <sstream>
 
 namespace mighter2d {
-    Grid2DParser::Map Grid2DParser::parse(const std::string &filename, char separator) {
+    GridParser::Map GridParser::parse(const std::string &filename, char separator) {
         Map map;
         std::stringstream mapData;
         utility::DiskFileReader().readFileInto(filename, mapData);
@@ -48,7 +48,7 @@ namespace mighter2d {
         }
 
         if (map.empty())
-            throw InvalidParseException("Failed to parse \'" + filename + "\', 'mighter2d::Grid2D' map data not found. Recall empty lines and comments (lines that start with a '#') are ignored.");
+            throw InvalidParseException("Failed to parse \'" + filename + "\', 'mighter2d::Grid' map data not found. Recall empty lines and comments (lines that start with a '#') are ignored.");
 
         return map;
     }

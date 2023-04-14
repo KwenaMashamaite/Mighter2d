@@ -30,7 +30,7 @@
 
 namespace mighter2d {
     /**
-     * @brief Moves a GridObject randomly in a Grid2D
+     * @brief Moves a GridObject randomly in a Grid
      *
      * Note that the target cannot move backwards because it may be
      * stuck in a loop where it switches between the same two tiles.
@@ -54,7 +54,7 @@ namespace mighter2d {
          *
          * @see setTarget
          */
-        explicit RandomGridMover(Grid2D &grid, GridObject* target = nullptr);
+        explicit RandomGridMover(Grid &grid, GridObject* target = nullptr);
 
         /**
          * @brief Create a RandomGridMover
@@ -70,7 +70,7 @@ namespace mighter2d {
          *
          * @see setTarget
          */
-        static RandomGridMover::Ptr create(Grid2D &grid, GridObject* target = nullptr);
+        static RandomGridMover::Ptr create(Grid &grid, GridObject* target = nullptr);
 
         /**
          * @brief Get the name of this class

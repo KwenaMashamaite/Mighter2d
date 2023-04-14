@@ -357,11 +357,11 @@ namespace mighter2d {
         return renderLayers_;
     }
 
-    Grid2D &Scene::getGrid() {
-        return const_cast<Grid2D&>(std::as_const(*this).getGrid());
+    Grid &Scene::getGrid() {
+        return const_cast<Grid&>(std::as_const(*this).getGrid());
     }
 
-    const Grid2D &Scene::getGrid() const {
+    const Grid &Scene::getGrid() const {
         if (!grid2D_)
             throw AccessViolationException("mighter2d::Scene::createGrid2D() must be called first before calling mighter2d::Scene::getGrid()");
         else
@@ -404,7 +404,7 @@ namespace mighter2d {
     }
 
     void Scene::createGrid2D(unsigned int tileWidth, unsigned int tileHeight) {
-        grid2D_ = std::make_unique<Grid2D>(tileWidth, tileHeight, *this);
+        grid2D_ = std::make_unique<Grid>(tileWidth, tileHeight, *this);
         hasGrid2D_ = true;
     }
 

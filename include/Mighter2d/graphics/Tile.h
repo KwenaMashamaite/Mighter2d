@@ -34,7 +34,7 @@
 
 namespace mighter2d {
     /**
-     * @brief A Grid2D tile
+     * @brief A Grid tile
      */
     class MIGHTER2D_API Tile : public Drawable {
     public:

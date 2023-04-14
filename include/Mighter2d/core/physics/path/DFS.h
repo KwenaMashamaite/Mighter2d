@@ -31,7 +31,7 @@
 
 namespace mighter2d {
     /**
-     * @brief Finds a path in a Grid2D using the Depth First Search algorithm
+     * @brief Finds a path in a Grid using the Depth First Search algorithm
      */
     class MIGHTER2D_API DFS : public IPathFinderStrategy {
     public:
@@ -49,8 +49,8 @@ namespace mighter2d {
          * @return The path from the source to the destination if reachable,
          *         otherwise an empty path
          */
-        std::stack<Index> findPath(const Grid2D& grid, const Index& sourceTile,
-            const Index& targetTile) override;
+        std::stack<Index> findPath(const Grid& grid, const Index& sourceTile,
+                                   const Index& targetTile) override;
 
         /**
          * @brief Get the type of path finding algorithm

@@ -26,7 +26,7 @@
 #include "Mighter2d/core/event/Event.h"
 
 namespace mighter2d {
-    KeyboardGridMover::KeyboardGridMover(Grid2D &grid, GridObject* target) :
+    KeyboardGridMover::KeyboardGridMover(Grid &grid, GridObject* target) :
         GridMover(Type::KeyboardControlled, grid, target),
         trigger_(MovementTrigger::None),
         onTriggerHandlerId_{-1, -1},
@@ -44,7 +44,7 @@ namespace mighter2d {
         setMovementTrigger(MovementTrigger::OnKeyDown);
     }
 
-    KeyboardGridMover::Ptr KeyboardGridMover::create(Grid2D &grid, GridObject *target) {
+    KeyboardGridMover::Ptr KeyboardGridMover::create(Grid &grid, GridObject *target) {
         return std::make_unique<KeyboardGridMover>(grid, target);
     }
 

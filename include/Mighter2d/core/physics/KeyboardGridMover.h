@@ -72,7 +72,7 @@ namespace mighter2d {
          *
          * @see setTarget
          */
-        explicit KeyboardGridMover(Grid2D &grid, GridObject* target = nullptr);
+        explicit KeyboardGridMover(Grid &grid, GridObject* target = nullptr);
 
         /**
          * @brief Create a KeyboardGridMover
@@ -88,7 +88,7 @@ namespace mighter2d {
          *
          * @see setTarget
          */
-        static KeyboardGridMover::Ptr create(Grid2D &grid, GridObject* target = nullptr);
+        static KeyboardGridMover::Ptr create(Grid &grid, GridObject* target = nullptr);
 
         /**
          * @brief Get the name of this class

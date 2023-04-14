@@ -36,7 +36,7 @@ namespace mighter2d {
         }
     }
 
-    GridMover::GridMover(Type type, Grid2D &grid, GridObject* target) :
+    GridMover::GridMover(Type type, Grid &grid, GridObject* target) :
         type_{type},
         grid_(grid),
         target_{nullptr},
@@ -55,11 +55,11 @@ namespace mighter2d {
         setTarget(target);
     }
 
-    GridMover::GridMover(Grid2D& grid, GridObject* gameObject) :
+    GridMover::GridMover(Grid& grid, GridObject* gameObject) :
         GridMover(Type::Manual, grid, gameObject)
     {}
 
-    GridMover::Ptr GridMover::create(Grid2D &grid, GridObject *gameObject) {
+    GridMover::Ptr GridMover::create(Grid &grid, GridObject *gameObject) {
         return std::make_unique<GridMover>(grid, gameObject);
     }
 
@@ -204,11 +204,11 @@ namespace mighter2d {
         return prevTile_->getIndex();
     }
 
-    Grid2D &GridMover::getGrid() {
+    Grid &GridMover::getGrid() {
         return grid_;
     }
 
-    const Grid2D &GridMover::getGrid() const {
+    const Grid &GridMover::getGrid() const {
         return grid_;
     }
 
@@ -285,7 +285,7 @@ namespace mighter2d {
                 Vector2f currentPosition = target_->getTransform().getPosition();
                 grid_.changeTile(target_, targetTile_->getIndex());
 
-                // Grid2D::addChild modifies the position of the target such that it's at
+                // Grid::addChild modifies the position of the target such that it's at
                 // the centre of the tile, however we don't want it to teleport, we want it
                 // to smoothly move there
                 target_->getTransform().setPosition(currentPosition);

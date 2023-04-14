@@ -23,7 +23,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "Mighter2d/core/physics/path/DFS.h"
-#include "Mighter2d/core/grid/Grid2D.h"
+#include "Mighter2d/core/grid/Grid.h"
 
 namespace mighter2d {
     DFS::DFS(const Vector2u& gridSize) {
@@ -31,7 +31,7 @@ namespace mighter2d {
     }
 
     std::stack<Index>
-    DFS::findPath(const Grid2D &grid, const Index& sourceTile, const Index& targetTile) {
+    DFS::findPath(const Grid &grid, const Index& sourceTile, const Index& targetTile) {
         if (sourceTile == targetTile || !grid.isIndexValid(sourceTile)
             || !grid.isIndexValid(targetTile))
             return std::stack<Index>{};

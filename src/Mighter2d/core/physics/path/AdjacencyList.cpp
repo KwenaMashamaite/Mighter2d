@@ -24,11 +24,11 @@
 
 #include "Mighter2d/core/physics/path/AdjacencyList.h"
 #include "Mighter2d/core/object/GridObject.h"
-#include "Mighter2d/core/grid/Grid2D.h"
+#include "Mighter2d/core/grid/Grid.h"
 
 namespace mighter2d {
     namespace {
-        bool tileHasObstacle(const Grid2D& grid, Index index) {
+        bool tileHasObstacle(const Grid& grid, Index index) {
             bool hasObstacle = false;
             grid.forEachChildInTile(grid.getTile(index), [&hasObstacle](const GridObject* child) {
                 if (child->isObstacle() && child->isActive()) {
@@ -40,9 +40,9 @@ namespace mighter2d {
         }
     }
 
-    void AdjacencyList::generateFrom(const Grid2D &grid) {
+    void AdjacencyList::generateFrom(const Grid &grid) {
         adjacencyList_.clear();
-        auto static addNeighbour = [](const Grid2D& grid2D, std::vector<Index>& neighboursVec, int row, int colm) {
+        auto static addNeighbour = [](const Grid& grid2D, std::vector<Index>& neighboursVec, int row, int colm) {
             if (grid2D.isIndexValid({row, colm})
                 && !grid2D.getTile(Index{row, colm}).isCollidable()
                 && !tileHasObstacle(grid2D, Index{row, colm}))

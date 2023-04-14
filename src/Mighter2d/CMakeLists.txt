@@ -46,9 +46,9 @@ set(MIGHTER2D_SRC
     core/scene/GameObjectContainer.cpp
     core/scene/GridMoverContainer.cpp
     core/grid/Index.cpp
-    core/grid/Grid2D.cpp
-    core/grid/Grid2DParser.cpp
-    core/grid/Grid2DRenderer.cpp
+    core/grid/Grid.cpp
+    core/grid/GridParser.cpp
+    core/grid/GridRenderer.cpp
     core/time/Clock.cpp
     core/time/Timer.cpp
     core/time/TimerManager.cpp

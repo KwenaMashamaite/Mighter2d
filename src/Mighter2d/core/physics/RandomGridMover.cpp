@@ -26,7 +26,7 @@
 #include "Mighter2d/utility/Utils.h"
 
 namespace mighter2d {
-    RandomGridMover::RandomGridMover(Grid2D &grid, GridObject* target) :
+    RandomGridMover::RandomGridMover(Grid &grid, GridObject* target) :
         GridMover(Type::Random, grid, target),
         movementStarted_{false}
     {
@@ -45,7 +45,7 @@ namespace mighter2d {
         });
     }
 
-    RandomGridMover::Ptr RandomGridMover::create(Grid2D &grid, GridObject *target) {
+    RandomGridMover::Ptr RandomGridMover::create(Grid &grid, GridObject *target) {
         return std::make_unique<RandomGridMover>(grid, target);
     }
 

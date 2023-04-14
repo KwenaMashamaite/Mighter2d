@@ -29,7 +29,7 @@
 #include "Mighter2d/utility/Utils.h"
 
 namespace mighter2d {
-    TargetGridMover::TargetGridMover(Grid2D &grid, GridObject* target) :
+    TargetGridMover::TargetGridMover(Grid &grid, GridObject* target) :
         GridMover(Type::Target, grid, target),
         pathFinder_(std::make_unique<BFS>(grid.getSizeInTiles())),
         targetTileIndex_{-1, -1},
@@ -92,7 +92,7 @@ namespace mighter2d {
         });
     }
 
-    TargetGridMover::Ptr TargetGridMover::create(Grid2D &grid, GridObject *target) {
+    TargetGridMover::Ptr TargetGridMover::create(Grid &grid, GridObject *target) {
         return std::make_unique<TargetGridMover>(grid, target);
     }
 

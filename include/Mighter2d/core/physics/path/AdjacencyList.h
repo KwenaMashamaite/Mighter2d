@@ -30,7 +30,7 @@
 #include <vector>
 
 namespace mighter2d {
-    class Grid2D;
+    class Grid;
 
     /**
      * @brief Construct a list of neighbours for each accessible node/cell
@@ -49,7 +49,7 @@ namespace mighter2d {
          * each node/tile in the grid. This functions assumes that the
          * grid nodes are bidirectional
          */
-        void generateFrom(const Grid2D& grid);
+        void generateFrom(const Grid& grid);
 
         /**
          * @brief Get the neighbours of a node at a certain position in the grid

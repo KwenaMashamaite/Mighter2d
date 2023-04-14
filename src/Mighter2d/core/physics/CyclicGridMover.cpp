@@ -25,7 +25,7 @@
 #include "Mighter2d/core/physics/CyclicGridMover.h"
 
 namespace mighter2d {
-    CyclicGridMover::CyclicGridMover(Grid2D &grid, GridObject *target) :
+    CyclicGridMover::CyclicGridMover(Grid &grid, GridObject *target) :
         GridMover(Type::Cyclic, grid, target),
         direction_{CycleDirection::Clockwise},
         isMovementStarted_{false}
@@ -52,7 +52,7 @@ namespace mighter2d {
         });
     }
 
-    CyclicGridMover::Ptr CyclicGridMover::create(Grid2D &grid, GridObject *target) {
+    CyclicGridMover::Ptr CyclicGridMover::create(Grid &grid, GridObject *target) {
         return std::make_unique<CyclicGridMover>(grid, target);
     }
 

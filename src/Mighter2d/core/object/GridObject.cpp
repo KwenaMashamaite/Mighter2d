@@ -150,11 +150,11 @@ namespace mighter2d {
             return {-1, -1};
     }
 
-    Grid2D *GridObject::getGrid() {
+    Grid *GridObject::getGrid() {
         return grid_;
     }
 
-    const Grid2D *GridObject::getGrid() const {
+    const Grid *GridObject::getGrid() const {
         return grid_;
     }
 
@@ -222,7 +222,7 @@ namespace mighter2d {
         gridMover_ = gridMover;
     }
 
-    void GridObject::setGrid(Grid2D *grid) {
+    void GridObject::setGrid(Grid *grid) {
         if (grid_ != grid) {
             if (grid) {
                 if (grid_)

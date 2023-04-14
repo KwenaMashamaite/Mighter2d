@@ -36,7 +36,7 @@ namespace mighter2d {
     }
 
     /**
-     * @brief Moves a GridObject to a specific position in the Grid2D
+     * @brief Moves a GridObject to a specific position in the Grid
      */
     class MIGHTER2D_API TargetGridMover : public GridMover {
     public:
@@ -55,7 +55,7 @@ namespace mighter2d {
          *
          * @see setTarget
          */
-        explicit TargetGridMover(Grid2D &grid, GridObject* target = nullptr);
+        explicit TargetGridMover(Grid &grid, GridObject* target = nullptr);
 
         /**
          * @brief Create a TargetGridMover
@@ -71,7 +71,7 @@ namespace mighter2d {
          *
          * @see setTarget
          */
-        static TargetGridMover::Ptr create(Grid2D &grid, GridObject* target = nullptr);
+        static TargetGridMover::Ptr create(Grid &grid, GridObject* target = nullptr);
 
         /**
          * @brief Get the name of this class

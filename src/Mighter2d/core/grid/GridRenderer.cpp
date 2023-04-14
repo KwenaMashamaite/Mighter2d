@@ -22,74 +22,74 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "Mighter2d/core/grid/Grid2DRenderer.h"
+#include "Mighter2d/core/grid/GridRenderer.h"
 
 namespace mighter2d {
-    Grid2DRenderer::Grid2DRenderer() :
+    GridRenderer::GridRenderer() :
         tileColour_{36, 37, 38},
         collidableTileColour_{120, 80, 39},
         gridLinesColour_{Colour::Grey},
         isVisible_{true}
     {}
 
-    void Grid2DRenderer::setBackgroundTexture(const std::string &filename) {
+    void GridRenderer::setBackgroundTexture(const std::string &filename) {
         emit(Property{"backgroundTexture", filename});
     }
 
-    void Grid2DRenderer::setTileColour(const Colour &colour) {
+    void GridRenderer::setTileColour(const Colour &colour) {
         if (tileColour_ != colour) {
             tileColour_ = colour;
             emit(Property{"tileColour", tileColour_});
         }
     }
 
-    Colour Grid2DRenderer::getTileColour() const {
+    Colour GridRenderer::getTileColour() const {
         return tileColour_;
     }
 
-    void Grid2DRenderer::setCollidableTileColour(const Colour &colour) {
+    void GridRenderer::setCollidableTileColour(const Colour &colour) {
         if (collidableTileColour_ != colour) {
             collidableTileColour_ = colour;
             emit(Property{"collidableTileColour", collidableTileColour_});
         }
     }
 
-    Colour Grid2DRenderer::getCollidableTileColour() const {
+    Colour GridRenderer::getCollidableTileColour() const {
         return collidableTileColour_;
     }
 
-    void Grid2DRenderer::setGridLineColour(const Colour &colour) {
+    void GridRenderer::setGridLineColour(const Colour &colour) {
         if (gridLinesColour_ != colour) {
             gridLinesColour_ = colour;
             emit(Property{"gridLineColour", gridLinesColour_});
         }
     }
 
-    Colour Grid2DRenderer::getGridLineColour() const {
+    Colour GridRenderer::getGridLineColour() const {
         return gridLinesColour_;
     }
 
-    void Grid2DRenderer::setVisible(bool visible) {
+    void GridRenderer::setVisible(bool visible) {
         if (isVisible_ != visible) {
             isVisible_ = visible;
             emit(Property{"visible", isVisible_});
         }
     }
 
-    bool Grid2DRenderer::isVisible() const {
+    bool GridRenderer::isVisible() const {
         return isVisible_;
     }
 
-    void Grid2DRenderer::toggleVisibility() {
+    void GridRenderer::toggleVisibility() {
         setVisible(!isVisible_);
     }
 
-    void Grid2DRenderer::emit(const Property &property) {
+    void GridRenderer::emit(const Property &property) {
         if (onPropertyChange_)
             onPropertyChange_(property);
     }
 
-    void Grid2DRenderer::onPropertyChange(const Callback &callback) {
+    void GridRenderer::onPropertyChange(const Callback &callback) {
         onPropertyChange_ = callback;
     }
 }
