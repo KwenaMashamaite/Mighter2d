@@ -24,6 +24,7 @@
 
 #include "Mighter2d/core/physics/GridMover.h"
 #include "Mighter2d/utility/Helpers.h"
+#include "Mighter2d/core/scene/Scene.h"
 #include <string_view>
 
 using namespace std::string_literals;
@@ -53,6 +54,13 @@ namespace mighter2d {
         isInternalHandler_{false}
     {
         setTarget(target);
+
+        auto& scene = grid.getScene();
+        scene.addUpdatable(this);
+
+        onDestruction([&scene, this] {
+            scene.removeUpdatable(this);
+        });
     }
 
     GridMover::GridMover(Grid& grid, GridObject* gameObject) :

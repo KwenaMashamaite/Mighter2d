@@ -33,6 +33,7 @@
 #include "Mighter2d/core/object/Object.h"
 
 namespace mighter2d {
+    class Scene;
 
     using Direction = Vector2i;                //!< Direction of a game object
     static const Direction Left = {-1, 0};     //!< West direction
@@ -53,7 +54,7 @@ namespace mighter2d {
      * The entities direction cannot be changed until it has completed it's
      * current movement.
      */
-    class MIGHTER2D_API GridMover : public Object {
+    class MIGHTER2D_API GridMover : public Object, public IUpdatable {
     public:
         using Ptr = std::unique_ptr<GridMover>; //!< Unique grid mover pointer
 
@@ -446,7 +447,7 @@ namespace mighter2d {
          *
          * @see onAdjacentMoveEnd
          */
-        virtual void update(Time deltaTime);
+        void update(Time deltaTime) final;
 
         /**
          * @brief Add an event listener to a move begin event
