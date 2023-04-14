@@ -22,8 +22,8 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef MIGHTER2D_EVENTDISPATCHER_H
-#define MIGHTER2D_EVENTDISPATCHER_H
+#ifndef MIGHTER2D_GLOBALEVENTEMITTER_H
+#define MIGHTER2D_GLOBALEVENTEMITTER_H
 
 #include "Mighter2d/Config.h"
 #include "EventEmitter.h"
@@ -32,78 +32,44 @@
 
 namespace mighter2d {
     /**
-     * @brief A singleton class that creates a communication interface between
-     *        separate parts of a program through event dispatching
+     * @brief A singleton for creating and dispatching events
      */
-    class MIGHTER2D_API EventDispatcher {
+    class MIGHTER2D_API GlobalEventEmitter : public EventEmitter {
     public:
-        using Ptr = std::shared_ptr<EventDispatcher>; //!< Shared EventDispatcher pointer
+        using Ptr = std::shared_ptr<GlobalEventEmitter>; //!< Shared GlobalEventEmitter pointer
 
         /**
          * @brief Copy constructor
          */
-        EventDispatcher(const EventDispatcher&) = delete;
+        GlobalEventEmitter(const GlobalEventEmitter&) = delete;
 
         /**
-         * @brief Assignment operator
+         * @brief Copy assignment operator
          */
-        EventDispatcher& operator=(const EventDispatcher&) = delete;
-
-        /**
-         * @brief Add an event listener to an event
-         * @param event Event to add an event listener to
-         * @param callback Function to execute when the event is fired
-         * @return The event listeners identification number
-         */
-        template<typename... Args>
-        int onEvent(const std::string& event, Callback<Args...> callback);
-
-        /**
-         * @brief Fire an event
-         * @param event Name of the event to fire
-         * @param args Arguments to be passed to event listeners
-         *
-         * This function will invoke all event listeners of the specified
-         * event
-         */
-        template<typename... Args>
-        void dispatchEvent(const std::string& event, Args&& ...args);
-
-        /**
-         * @brief Remove an event listener from an event
-         * @param event Event to remove event listener from
-         * @param id Identification number of the event listener to be removed
-         * @return True if the event listener was removed from the specified
-         *         event or false if the specified event does not have an event
-         *         listener with the specified id
-         */
-        bool removeEventListener(const std::string& event, int id);
+        GlobalEventEmitter& operator=(const GlobalEventEmitter&) = delete;
 
         /**
          * @brief Get class instance
          * @return Shared pointer to class instance
          */
-        static EventDispatcher::Ptr instance();
+        static GlobalEventEmitter::Ptr instance();
 
     private:
         /**
          * @brief Default constructor
          */
-        EventDispatcher() = default;
+        GlobalEventEmitter() = default;
 
     private:
-        EventDispatcher::Ptr instance_;  //!< The only class instance
-        EventEmitter eventEmitter_;      //!< Event publisher
-        inline static std::mutex mutex_; //!< Synchronization primitive
+        GlobalEventEmitter::Ptr instance_;   //!< The only class instance
+        inline static std::mutex mutex_;     //!< Synchronization primitive
     };
-
-    #include "Mighter2d/core/event/EventDispatcher.inl"
 }
 
-#endif //EventDispatcher_H
+#endif
 
 /**
- * @class mighter2d::EventDispatcher
+ * @class mighter2d::GlobalEventEmitter
  * @ingroup core
  *
  * The global event emitter is available to anything class that needs
@@ -118,7 +84,7 @@ namespace mighter2d {
  * // We subscribe to a loading event that will be dispatched by some scene
  * // we don't know or care about, we are just interested in knowing that
  * // resource loading is complete
- * EventDispatcher::instance()->onEvent("loadingComplete", Callback<>([&engine] {
+ * GlobalEventEmitter::instance()->on("loadingComplete", Callback<>([&engine] {
  *    engine.popScene();                // Remove the scene that emitted the event
  *    engine.pushScene(gameplayScene);  // Start the gameplay scene
  * }));
@@ -132,7 +98,7 @@ namespace mighter2d {
  * // finished loading the game assets, the scene lets everyone whose is
  * // interested know when it is done without knowing and caring who they are
  *
- * EventDispatcher::instance::dispatchEvent("loadingComplete");
+ * GlobalEventEmitter::instance()->emit("loadingComplete");
  * @endcode
  *
  * @note This classes instance is accessible from anywhere withing the

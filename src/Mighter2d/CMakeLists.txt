@@ -19,7 +19,7 @@ set(MIGHTER2D_SRC
     core/object/GridObject.cpp
     core/object/ExcludeList.cpp
     core/event/EventEmitter.cpp
-    core/event/EventDispatcher.cpp
+    core/event/GlobalEventEmitter.cpp
     core/input/Joystick.cpp
     core/input/Keyboard.cpp
     core/input/Mouse.cpp

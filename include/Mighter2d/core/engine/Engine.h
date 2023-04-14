@@ -29,7 +29,7 @@
 #include "Mighter2d/core/audio/AudioManager.h"
 #include "Mighter2d/ui/GuiContainer.h"
 #include "Mighter2d/core/input/InputManager.h"
-#include "Mighter2d/core/event/EventDispatcher.h"
+#include "Mighter2d/core/event/GlobalEventEmitter.h"
 #include "Mighter2d/core/time/TimerManager.h"
 #include "Mighter2d/common/PrefContainer.h"
 #include "Mighter2d/core/scene/Scene.h"
@@ -714,7 +714,7 @@ namespace mighter2d {
         audio::AudioManager audioManager_;                 //!< The engine level audio manager
         input::InputManager inputManager_;                 //!< The engine level input manager
         std::shared_ptr<ResourceManager> resourceManager_; //!< The engine level resource manager
-        EventDispatcher::Ptr eventDispatcher_;             //!< System wide event emitter (Engine only keeps an instance alive for the application)
+        GlobalEventEmitter::Ptr eventDispatcher_;             //!< System wide event emitter (Engine only keeps an instance alive for the application)
         PropertyContainer dataSaver_;                      //!< Holds Data that persists across scenes
         PrefContainer diskDataSaver_;                      //!< Holds data that persists across scenes and can be read/saved from/to a file on the disk
         int popCounter_;                                   //!< Holds the number of scenes to be removed from the engine at the end of the current frame

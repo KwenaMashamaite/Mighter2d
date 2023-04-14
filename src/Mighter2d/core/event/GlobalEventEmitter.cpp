@@ -22,12 +22,16 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-template<typename... Args>
-void EventDispatcher::dispatchEvent(const std::string &event, Args &&... args) {
-    eventEmitter_.emit(event, std::forward<Args>(args)...);
-}
+#include "Mighter2d/core/event/GlobalEventEmitter.h"
 
-template<typename... Args>
-int EventDispatcher::onEvent(const std::string &event, Callback<Args...> callback) {
-    return eventEmitter_.addEventListener(event, std::move(callback));
+namespace mighter2d {
+    GlobalEventEmitter::Ptr GlobalEventEmitter::instance() {
+        std::scoped_lock lock(mutex_);
+        static std::weak_ptr<GlobalEventEmitter> instance_;
+
+        if (const auto result = instance_.lock())
+            return result;
+
+        return (instance_ = GlobalEventEmitter::Ptr(new GlobalEventEmitter())).lock();
+    }
 }

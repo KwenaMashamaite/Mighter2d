@@ -77,7 +77,7 @@ namespace mighter2d {
         initRenderTarget();
         gui_.setTarget(*privWindow_);
 
-        eventDispatcher_ = EventDispatcher::instance();
+        eventDispatcher_ = GlobalEventEmitter::instance();
         isInitialized_ = true;
 
         eventEmitter_.emit("initialize");

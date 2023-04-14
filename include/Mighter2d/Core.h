@@ -43,7 +43,7 @@
 #include "Mighter2d/core/object/GameObject.h"
 #include "Mighter2d/core/event/Event.h"
 #include "Mighter2d/core/event/EventEmitter.h"
-#include "Mighter2d/core/event/EventDispatcher.h"
+#include "Mighter2d/core/event/GlobalEventEmitter.h"
 #include "Mighter2d/core/exceptions/Exceptions.h"
 #include "Mighter2d/core/input/InputManager.h"
 #include "Mighter2d/core/input/Mouse.h"

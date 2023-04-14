@@ -336,8 +336,8 @@ namespace mighter2d {
         return eventEmitter_;
     }
 
-    EventDispatcher &Scene::getGlobalEventEmitter() {
-        return *EventDispatcher::instance();
+    GlobalEventEmitter &Scene::getGlobalEventEmitter() {
+        return *GlobalEventEmitter::instance();
     }
 
     PropertyContainer &Scene::getCache() {
