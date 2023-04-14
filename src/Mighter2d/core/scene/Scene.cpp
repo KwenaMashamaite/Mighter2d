@@ -65,7 +65,6 @@ namespace mighter2d {
             sCache_ = std::move(other.sCache_);
             inputManager_ = std::move(other.inputManager_);
             audioManager_ = std::move(other.audioManager_);
-            internalEmitter_ = std::move(other.internalEmitter_);
             timerManager_ = std::move(other.timerManager_);
             guiContainer_ = std::move(other.guiContainer_);
             renderLayers_ = std::move(other.renderLayers_);
@@ -107,10 +106,6 @@ namespace mighter2d {
             guiContainer_->setTarget(engine.getRenderTarget());
             onInit();
         }
-    }
-
-    bool Scene::unsubscribe_(const std::string &event, int id) {
-        return internalEmitter_.removeEventListener(event, id);
     }
 
     void Scene::addUpdatable(IUpdatable *updatable) {

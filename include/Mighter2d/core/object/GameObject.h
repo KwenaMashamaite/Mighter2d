@@ -236,8 +236,6 @@ namespace mighter2d {
         bool isActive_;                       //!< A flag indicating whether or not the game object is active
         Transform transform_;                 //!< The objects transform
         std::unique_ptr<Sprite> sprite_;       //!< The objects visual representation
-        int postStepId_;                      //!< Scene post step handler id
-        int destructionId_;                   //!< Scene destruction listener id
         PropertyContainer userData_;          //!< Used to store metadata about the object
     };
 }

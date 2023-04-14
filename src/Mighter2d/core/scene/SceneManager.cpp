@@ -342,9 +342,6 @@ namespace mighter2d::priv {
             renderWindow.draw(camOutline);
 
             scene->onPostRender();
-
-            // Notify scene rendering process is complete
-            scene->internalEmitter_.emit("postRender", std::ref(renderWindow));
         };
 
         // Render the scene on each camera to update its view
@@ -479,7 +476,6 @@ namespace mighter2d::priv {
         static auto update = [](Scene* scene, Time dt) {
             scene->timerManager_.preUpdate();
             scene->audioManager_.removePlayedAudio();
-            scene->internalEmitter_.emit("preUpdate", dt * scene->getTimescale());
         };
 
         Scene* activeScene = scenes_.top().get();
@@ -529,9 +525,6 @@ namespace mighter2d::priv {
 
             // Update user scene after all internal updates
             scene->onUpdate(deltaTime * scene->getTimescale());
-
-            // Emit internal post update
-            scene->internalEmitter_.emit("postUpdate", deltaTime * scene->getTimescale());
 
             // Normal update is always called after fixed update: fixedUpdate -> update -> postUpdate
             scene->onPostUpdate(deltaTime * scene->getTimescale());

@@ -31,8 +31,6 @@ namespace mighter2d {
         scene_{scene},
         state_{-1},
         isActive_{true},
-        postStepId_{-1},
-        destructionId_{-1},
         sprite_(std::make_unique<Sprite>(scene))
     {
         scene.addUpdatable(this);
@@ -50,9 +48,7 @@ namespace mighter2d {
         state_{other.state_},
         isActive_{other.isActive_},
         transform_{other.transform_},
-        sprite_{std::make_unique<Sprite>(*other.sprite_)},
-        postStepId_{-1},
-        destructionId_{-1}
+        sprite_{std::make_unique<Sprite>(*other.sprite_)}
     {
         initEvents();
     }
@@ -91,8 +87,6 @@ namespace mighter2d {
         std::swap(transform_, other.transform_);
         std::swap(sprite_, other.sprite_);
         std::swap(userData_, other.userData_);
-        std::swap(postStepId_, other.postStepId_);
-        std::swap(destructionId_, other.destructionId_);
     }
 
     GameObject::Ptr GameObject::create(Scene &scene) {
@@ -177,10 +171,6 @@ namespace mighter2d {
     }
 
     void GameObject::initEvents() {
-        destructionId_ = scene_.get().onDestruction([this] {
-            postStepId_ = destructionId_ = -1;
-        });
-
         transform_.onPropertyChange([this](const Property& property) {
             const auto& name = property.getName();
             if (name == "position") {
@@ -201,11 +191,5 @@ namespace mighter2d {
 
     GameObject::~GameObject() {
         emitDestruction();
-        
-        if (postStepId_ != -1)
-            scene_.get().unsubscribe_("postStep", postStepId_);
-
-        if (destructionId_ != -1)
-            scene_.get().removeEventListener(destructionId_);
     }
 }

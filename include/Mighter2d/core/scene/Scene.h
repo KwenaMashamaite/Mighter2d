@@ -812,34 +812,6 @@ namespace mighter2d {
 
         /**
          * @internal
-         * @brief Add an event listener to a scene event
-         * @param event Event to add event listener to
-         * @param callback Function to be execute when the event is fired
-         * @return The callback id
-         *
-         * @warning This function is intended for internal use and should
-         * never be called outside of Mighter2d
-         */
-        template<typename ...Args>
-        int on_(const std::string& event, Callback<Args...> callback) {
-            return internalEmitter_.on(event, callback);
-        }
-
-        /**
-         * @internal
-         * @brief Unsubscribe from a scene event
-         * @param event The event to unsubscribe from
-         * @param id The event listeners id
-         * @return True if the event listener was unsubscribed or false if
-         *         @a event does not have a listener with the @a id
-         *
-         * @warning This function is intended for internal use and should
-         * never be called outside of Mighter2d
-         */
-        bool unsubscribe_(const std::string& event, int id);
-
-        /**
-         * @internal
          * @brief Add an updatable to the update list
          * @param updatable The updatable to be added
          *
@@ -866,7 +838,6 @@ namespace mighter2d {
         std::unique_ptr<Camera> camera_;      //!< Scene level camera
         input::InputManager inputManager_;    //!< Scene level input manager
         audio::AudioManager audioManager_;    //!< Scene level audio manager
-        EventEmitter internalEmitter_;        //!< Emits internal scene events
         TimerManager timerManager_;           //!< Scene level timer manager
         std::unique_ptr<ui::GuiContainer> guiContainer_;       //!< Scene level gui container
         RenderLayerContainer renderLayers_;   //!< Render layers for this scene
