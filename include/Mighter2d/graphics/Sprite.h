@@ -28,6 +28,7 @@
 #include "Mighter2d/common/Vector2.h"
 #include "Mighter2d/common/Rect.h"
 #include "Mighter2d/common/ITransformable.h"
+#include "Mighter2d/common/IUpdatable.h"
 #include "Mighter2d/core/object/Object.h"
 #include "Mighter2d/core/time/Time.h"
 #include "Mighter2d/graphics/Drawable.h"
@@ -38,22 +39,25 @@
 #include <memory>
 
 namespace mighter2d {
+    class Scene;
+
     /**
      * @brief Drawable representation of a texture
      *
      * The sprite can be static (display a single non changing texture)
      * or animated via its animator (see the getAnimator function)
      */
-    class MIGHTER2D_API Sprite : public ITransformable, public Drawable {
+    class MIGHTER2D_API Sprite : public Drawable, public ITransformable, public IUpdatable {
     public:
         using Ptr = std::unique_ptr<Sprite>; //!< Unique sprite pointer
 
         /**
          * @brief Construct an empty sprite
+         * @brief scene The scene the sprite belongs to
          *
          * @see setTexture and setTextureRect
          */
-        Sprite();
+        explicit Sprite(Scene& scene);
 
         /**
          * @brief Construct a sprite from a texture
@@ -65,7 +69,7 @@ namespace mighter2d {
          * sub-rectangle of the whole texture. To construct the sprite from
          * the whole texture (default), leave the @a rectangle argument unspecified
          */
-        explicit Sprite(const std::string& texture, const UIntRect& rectangle = {});
+        explicit Sprite(Scene& scene, const std::string& texture, const UIntRect& rectangle = {});
 
         /**
          * @brief Construct a sprite from a texture
@@ -76,7 +80,7 @@ namespace mighter2d {
          * sub-rectangle of the whole texture. To construct the sprite from
          * the whole texture (default), leave the @a rectangle argument unspecified
          */
-        explicit Sprite(const Texture& texture, const UIntRect& rectangle = {});
+        explicit Sprite(Scene& scene, const Texture& texture, const UIntRect& rectangle = {});
 
         /**
          * @brief Copy constructor
@@ -111,7 +115,7 @@ namespace mighter2d {
          *
          * @see copy
          */
-        static Sprite::Ptr create(const std::string& texture, const UIntRect& rectangle = {});
+        static Sprite::Ptr create(Scene& scene, const std::string& texture, const UIntRect& rectangle = {});
 
         /**
          * @brief Construct the sprite from a sub-rectangle of a source texture
@@ -125,7 +129,14 @@ namespace mighter2d {
          *
          * @see copy
          */
-        static Sprite::Ptr create(const Texture& texture, const UIntRect& rectangle);
+        static Sprite::Ptr create(Scene& scene, const Texture& texture, const UIntRect& rectangle);
+
+        /**
+         * @brief Get the scene the sprite belongs to
+         * @return The scene the sprite belongs to
+         */
+        Scene& getScene();
+        const Scene& getScene() const;
 
         /**
          * @brief Create a copy of the sprite
@@ -478,15 +489,14 @@ namespace mighter2d {
 
         /**
          * @internal
-         * @brief Update the current animation
-         * @param deltaTime Time passed since last animation update
+         * @brief Update the game object
+         * @param deltaTime Time past since last update
          *
-         * This function need only be called if the sprite is animatable
-         * and not just displaying a single static image
-         *
-         * @warning This function is intended for internal use only
+         * @note This function will be called automatically by Mighter2d.
+         * @a deltaTime is synced with the render FPS. In other words, it
+         * is frame-rate dependent.
          */
-        void updateAnimation(Time deltaTime);
+        void update(Time deltaTime) final;
 
         /**
          * @brief Swap this sprite with another sprite
@@ -500,6 +510,7 @@ namespace mighter2d {
         ~Sprite() override;
 
     private:
+        Scene* scene_;
         struct SpriteImpl;
         std::unique_ptr<SpriteImpl> pImpl_;
     };

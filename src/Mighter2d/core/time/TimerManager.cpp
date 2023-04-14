@@ -23,8 +23,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "Mighter2d/core/time/TimerManager.h"
+#include "Mighter2d/core/scene/Scene.h"
 
 namespace mighter2d {
+    TimerManager::TimerManager(Scene &scene) : scene_(&scene)
+    {
+
+    }
+
     Timer& TimerManager::addTimer(Timer::Ptr timer) {
         timer->start();
         activeTimers_.push_back(std::move(timer));
@@ -32,24 +38,19 @@ namespace mighter2d {
     }
 
     Timer& TimerManager::setTimeout(Time delay, Callback<Timer &> callback) {
-        return addTimer(Timer::create(delay, std::move(callback)));
+        return addTimer(Timer::create(*scene_, delay, std::move(callback)));
     }
 
     Timer& TimerManager::setTimeout(Time delay, Callback<> callback) {
-        return addTimer(Timer::create(delay, std::move(callback)));
+        return addTimer(Timer::create(*scene_, delay, std::move(callback)));
     }
 
     Timer& TimerManager::setInterval(Time delay, Callback<Timer&> callback, int repeatCount) {
-        return addTimer(Timer::create(delay, std::move(callback), repeatCount));
+        return addTimer(Timer::create(*scene_, delay, std::move(callback), repeatCount));
     }
 
     Timer& TimerManager::setInterval(Time delay, Callback<> callback, int repeatCount) {
-        return addTimer(Timer::create(delay, std::move(callback), repeatCount));
-    }
-
-    void TimerManager::update(Time deltaTime) {
-        for (Timer::Ptr& timer : activeTimers_)
-            timer->update(deltaTime);
+        return addTimer(Timer::create(*scene_, delay, std::move(callback), repeatCount));
     }
 
     std::size_t TimerManager::getTimerCount() const {

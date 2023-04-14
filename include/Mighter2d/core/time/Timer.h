@@ -27,17 +27,18 @@
 
 #include "Mighter2d/Config.h"
 #include "Mighter2d/core/time/Time.h"
+#include "Mighter2d/common/IUpdatable.h"
+#include "Mighter2d/core/object/Object.h"
 #include <functional>
 #include <memory>
 
 namespace mighter2d {
+    class Scene;
+
     /**
      * @brief Execute a callback after an interval/delay
-     *
-     * This class is not meant to be instantiated directly, use mighter2d::Scene::getTimer
-     * or mighter2d::Engine::getTimer
      */
-    class MIGHTER2D_API Timer {
+    class MIGHTER2D_API Timer : public Object, public IUpdatable {
     public:
         template <typename... Args>
         using Callback = std::function<void(Args...)>; //!< Event listener
@@ -59,11 +60,13 @@ namespace mighter2d {
 
         /**
          * @brief Constructor
+         * @param scene The scene the timer belongs to
          */
-        Timer();
+        explicit Timer(Scene& scene);
 
         /**
          * @brief Create a timer
+         * @param scene The scene the timer belongs to
          * @param interval Countdown starting point
          * @param callback Function to execute when the timer reaches zero
          * @param repeatCounter The number of timer the timer should repeat
@@ -79,11 +82,12 @@ namespace mighter2d {
          *
          * @see start and setRepeatCount
          */
-        static Timer::Ptr create(Time interval, const Callback<>& callback,
+        static Timer::Ptr create(Scene& scene, Time interval, const Callback<>& callback,
             int repeatCounter = 0);
 
         /**
          * @brief Create a timer
+         * @param scene The scene the timer belongs to
          * @param interval Countdown starting point
          * @param callback Function to execute when the timer reaches zero
          * @param repeatCounter The number of timer the timer should repeat
@@ -99,8 +103,15 @@ namespace mighter2d {
          *
          * @see start and setRepeatCount
          */
-        static Timer::Ptr create(Time interval, const Callback<Timer&>& callback,
+        static Timer::Ptr create(Scene& scene, Time interval, const Callback<Timer&>& callback,
             int repeatCounter = 0);
+
+        /**
+         * @brief Get the scene the timer belongs to
+         * @return The scene the timer belongs to
+         */
+        Scene& getScene();
+        const Scene& getScene() const;
 
         /**
          * @brief Set the countdown starting point
@@ -454,16 +465,23 @@ namespace mighter2d {
         void onUpdate(const Callback<Timer&>& callback);
 
         /**
+         * @brief Get the name of the class
+         * @return The name of the class
+         */
+        std::string getClassName() const override;
+
+        /**
          * @internal
          * @brief Update the time
          * @param deltaTime Time passed since last update
          *
-         * @warning This function is intended for internal use only and
-         * should never be called outside of Mighter2d
+         * @warning This function is automatically called by the
+         * the scene the timer belongs to
          */
-        void update(Time deltaTime);
+        void update(Time deltaTime) final;
 
     private:
+        Scene* scene_;
         Status status_;              //!< The current state of the timer
         float timescale_;            //!< The timescale factor
         bool isExecutionComplete_;   //!< A flag indicating whether or not the timer has completed the callback execution

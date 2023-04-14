@@ -26,6 +26,7 @@
 #include "Mighter2d/graphics/RenderTarget.h"
 #include "Mighter2d/utility/Helpers.h"
 #include "Mighter2d/core/resources/ResourceManager.h"
+#include "Mighter2d/core/scene/Scene.h"
 #include <SFML/Graphics/Sprite.hpp>
 #include <memory>
 
@@ -216,19 +217,26 @@ namespace mighter2d {
      # Sprite class
      =-----------------------------------------------------------------------*/
 
-    Sprite::Sprite() :
+    Sprite::Sprite(Scene& scene) :
+        scene_(&scene),
         pImpl_{std::make_unique<SpriteImpl>(*this)}
-    {}
+    {
+        scene.addUpdatable(this);
 
-    Sprite::Sprite(const std::string &texture, const UIntRect& rectangle) :
-        Sprite()
+        onDestruction([this] {
+            scene_->removeUpdatable(this);
+        });
+    }
+
+    Sprite::Sprite(Scene& scene, const std::string &texture, const UIntRect& rectangle) :
+        Sprite(scene)
     {
         pImpl_->setTexture(texture);
         setTextureRect(rectangle);
     }
 
-    Sprite::Sprite(const Texture &texture, const UIntRect& rectangle) :
-        Sprite()
+    Sprite::Sprite(Scene& scene, const Texture &texture, const UIntRect& rectangle) :
+        Sprite(scene)
     {
         pImpl_->setTexture(texture);
         setTextureRect(rectangle);
@@ -236,6 +244,7 @@ namespace mighter2d {
 
     Sprite::Sprite(const Sprite& other) :
         Drawable(other),
+        scene_(other.scene_),
         pImpl_{std::make_unique<SpriteImpl>(*other.pImpl_)}
     {
         pImpl_->setAnimationTarget(*this);
@@ -244,6 +253,7 @@ namespace mighter2d {
     Sprite &Sprite::operator=(const Sprite& other) {
         if (this != &other) {
             Sprite temp{other};
+            std::swap(scene_, temp.scene_);
             std::swap(pImpl_, temp.pImpl_);
             pImpl_->setAnimationTarget(*this);
         }
@@ -252,6 +262,7 @@ namespace mighter2d {
 
     Sprite::Sprite(Sprite&& other) noexcept :
         Drawable(std::move(other)),
+        scene_(other.scene_),
         pImpl_{std::move(other.pImpl_)}
     {
         pImpl_->setAnimationTarget(*this);
@@ -260,6 +271,7 @@ namespace mighter2d {
     Sprite &Sprite::operator=(Sprite&& other) noexcept {
         if (this != &other) {
             Drawable::operator=(std::move(other));
+            scene_ = other.scene_;
             *pImpl_ = std::move(*other.pImpl_);
             pImpl_->setAnimationTarget(*this);
         }
@@ -267,12 +279,20 @@ namespace mighter2d {
         return *this;
     }
 
-    Sprite::Ptr Sprite::create(const std::string &texture, const UIntRect &rectangle) {
-        return std::make_unique<Sprite>(texture, rectangle);
+    Sprite::Ptr Sprite::create(Scene& scene, const std::string &texture, const UIntRect &rectangle) {
+        return std::make_unique<Sprite>(scene, texture, rectangle);
     }
 
-    Sprite::Ptr Sprite::create(const Texture &texture, const UIntRect &rectangle) {
-        return std::make_unique<Sprite>(texture, rectangle);
+    Sprite::Ptr Sprite::create(Scene& scene, const Texture &texture, const UIntRect &rectangle) {
+        return std::make_unique<Sprite>(scene, texture, rectangle);
+    }
+
+    Scene &Sprite::getScene() {
+        return *scene_;
+    }
+
+    const Scene &Sprite::getScene() const {
+        return *scene_;
     }
 
     Sprite::Ptr Sprite::copy() const {
@@ -461,7 +481,7 @@ namespace mighter2d {
         return pImpl_->getAnimator();
     }
 
-    void Sprite::updateAnimation(Time deltaTime) {
+    void Sprite::update(Time deltaTime) {
         pImpl_->updateAnimation(deltaTime);
     }
 

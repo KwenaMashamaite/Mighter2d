@@ -839,6 +839,25 @@ namespace mighter2d {
         bool unsubscribe_(const std::string& event, int id);
 
         /**
+         * @internal
+         * @brief Add an updatable to the update list
+         * @param updatable The updatable to be added
+         *
+         * @warning This function is intended for internal use only
+         */
+        void addUpdatable(IUpdatable* updatable);
+
+        /**
+         * @internal
+         * @brief Remove an updatable from the update list
+         * @param updatable The updatable to be removed
+         * @return True if the updatable was removed or false if it does not exist
+         *
+         * @warning This function is intended for internal use only
+         */
+        bool removeUpdatable(IUpdatable* updatable);
+
+        /**
          * @brief Destructor
          */
         ~Scene() override;
@@ -849,10 +868,11 @@ namespace mighter2d {
         audio::AudioManager audioManager_;    //!< Scene level audio manager
         EventEmitter internalEmitter_;        //!< Emits internal scene events
         TimerManager timerManager_;           //!< Scene level timer manager
-        ui::GuiContainer guiContainer_;       //!< Scene level gui container
+        std::unique_ptr<ui::GuiContainer> guiContainer_;       //!< Scene level gui container
         RenderLayerContainer renderLayers_;   //!< Render layers for this scene
         GridMoverContainer gridMovers_;       //!< Stores grid movers that belong to the scene
-        std::unique_ptr<Grid> grid2D_;      //!< Scene level grid
+        std::unique_ptr<Grid> grid2D_;        //!< Scene level grid
+        std::vector<IUpdatable*> updateList_; //!< Update list
         float timescale_;                     //!< Controls the speed of the scene without affecting the render fps
         bool isEntered_;                      //!< A flag indicating whether or not the scene has been entered
         bool isInitialized_;                  //!< A flag indicating whether or not the scene has been initialized

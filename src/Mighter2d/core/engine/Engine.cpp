@@ -75,7 +75,6 @@ namespace mighter2d {
         processSettings();
         initResourceManager();
         initRenderTarget();
-        gui_.setTarget(*privWindow_);
 
         eventDispatcher_ = GlobalEventEmitter::instance();
         isInitialized_ = true;
@@ -132,7 +131,6 @@ namespace mighter2d {
             event.type = Event::Resized;
             event.size.width = window_->getSize().x;
             event.size.height = window_->getSize().y;
-            gui_.handleEvent(event);
             sceneManager_->handleEvent(event);
         });
     }
@@ -171,7 +169,6 @@ namespace mighter2d {
             else if (event.type == Event::MouseLeft)
                 window_->emitMouseCursor(false);
 
-            gui_.handleEvent(event);
             inputManager_.handleEvent(event);
             sceneManager_->handleEvent(event);
         }
@@ -244,7 +241,6 @@ namespace mighter2d {
 
         // Normal update
         inputManager_.update();
-        timerManager_.update(deltaTime);
         sceneManager_->update(deltaTime);
     }
 
@@ -254,7 +250,6 @@ namespace mighter2d {
 
     void Engine::render() {
         sceneManager_->render(*privWindow_);
-        gui_.draw();
     }
 
     void Engine::display() {
@@ -344,7 +339,6 @@ namespace mighter2d {
 
     void Engine::postFrameUpdate() {
         audioManager_.removePlayedAudio();
-        timerManager_.preUpdate();
 
         // Note: Always check pending pop first before pending pushes
         while (popCounter_ > 0) {
@@ -387,7 +381,6 @@ namespace mighter2d {
         configs_.clear();
         sceneManager_->clear();
         sceneManager_->clearCachedScenes();
-        timerManager_.clear();
         dataSaver_.clear();
         diskDataSaver_.clear();
         resourceManager_.reset();
@@ -430,17 +423,6 @@ namespace mighter2d {
 
     Time Engine::getElapsedTime() const {
         return elapsedTime_;
-    }
-
-    ui::GuiContainer &Engine::getGui() {
-        return const_cast<ui::GuiContainer&>(std::as_const(*this).getGui());
-    }
-
-    const ui::GuiContainer &Engine::getGui() const {
-        if (!isInitialized_)
-            throw AccessViolationException("mighter2d::Engine::getGui() must not be called before the engine is initialized, see mighter2d::Engine::initialize()");
-        else
-            return gui_;
     }
 
     PrefContainer &Engine::getConfigs() {
@@ -488,14 +470,6 @@ namespace mighter2d {
 
     const input::InputManager &Engine::getInputManager() const {
         return inputManager_;
-    }
-
-    TimerManager &Engine::getTimer() {
-        return timerManager_;
-    }
-
-    const TimerManager &Engine::getTimer() const {
-        return timerManager_;
     }
 
     priv::RenderTarget &Engine::getRenderTarget() {

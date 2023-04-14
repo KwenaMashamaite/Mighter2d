@@ -292,14 +292,6 @@ namespace mighter2d {
              */
             void updateScene(const Time& deltaTime, Scene* scene, bool fixedUpdate);
 
-            /**
-             * @brief Update external time components of a scene
-             * @param deltaTime Time passed since last update
-             * @param scene The scene to be updated
-             * @param fixedUpdate True if it's a fixed update, otherwise false
-             */
-            void updateExternalScene(Scene* scene, const Time& deltaTime, bool fixedUpdate);
-
         private:
             Engine* engine_;                //!< Pointer to the game engine
             std::stack<Scene::Ptr> scenes_; //!< Scenes container

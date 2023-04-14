@@ -141,53 +141,18 @@ namespace mighter2d {
         return sizeInFrames_.x;
     }
 
-    Sprite SpriteSheet::getSprite(Index index) const {
+    Sprite SpriteSheet::getSprite(Scene& scene, Index index) const {
         if (hasFrame(index))
-            return Sprite(getTexture(), frames_.at(index));
-        return Sprite();
+            return Sprite(scene, getTexture(), frames_.at(index));
+
+        return Sprite(scene);
     }
 
-    Sprite SpriteSheet::getSprite(const std::string &alias) const {
+    Sprite SpriteSheet::getSprite(Scene& scene, const std::string &alias) const {
         if (hasFrame(alias))
-            return Sprite(getTexture(), frames_.at(aliases_.at(alias)));
-        return Sprite();
-    }
+            return Sprite(scene, getTexture(), frames_.at(aliases_.at(alias)));
 
-    std::vector<Sprite> SpriteSheet::getSpritesOnRow(unsigned int row) const {
-        return getSpritesInRange({static_cast<int>(row), 0},
-            {static_cast<int>(row), static_cast<int>(getSizeInFrames().x - 1)});
-    }
-
-    std::vector<Sprite> SpriteSheet::getSpritesOnColumn(unsigned int column) const {
-        return getSpritesInRange({0, static_cast<int>(column)},
-            {static_cast<int>(getSizeInFrames().y - 1), static_cast<int>(column)});
-    }
-
-    std::vector<Sprite> SpriteSheet::getSpritesInRange(Index start, Index end) const {
-        std::vector<Sprite> sprites;
-
-        if (hasFrame(start) && hasFrame(end)) {
-            if (start.row == end.row) {
-                for (int colm = start.colm; colm <= end.colm; ++colm)
-                    sprites.emplace_back(getTexture(), frames_.at({ start.row, colm}));
-            } else if (start.colm == end.colm) {
-                for (int row = start.row; row <= end.row; ++row)
-                    sprites.emplace_back(getTexture(), frames_.at({row, start.colm}));
-            }
-        }
-
-        return sprites;
-    }
-
-    std::vector<Sprite> SpriteSheet::getAllSprites() const {
-        std::vector<Sprite> sprites;
-
-        for (auto row = 0u; row < sizeInFrames_.x; ++row) {
-            std::vector<Sprite> spritesOnRow = getSpritesOnRow(row);
-            std::move(spritesOnRow.begin(), spritesOnRow.end(), std::back_inserter(sprites));
-        }
-
-        return sprites;
+        return Sprite(scene);
     }
 
     bool SpriteSheet::hasFrame(Index index) const {

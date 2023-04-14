@@ -25,9 +25,11 @@
 #include "Mighter2d/core/scene/Scene.h"
 #include "Mighter2d/core/engine/Engine.h"
 #include "Mighter2d/core/exceptions/Exceptions.h"
+#include "Mighter2d/utility/Helpers.h"
 
 namespace mighter2d {
     Scene::Scene() :
+        timerManager_(*this),
         timescale_{1.0f},
         isEntered_{false},
         isInitialized_{false},
@@ -46,7 +48,9 @@ namespace mighter2d {
         renderLayers_.create("default");
     }
 
-    Scene::Scene(Scene&& other) noexcept {
+    Scene::Scene(Scene&& other) noexcept :
+        timerManager_(std::move(other.timerManager_))
+    {
         *this = std::move(other);
     }
 
@@ -99,13 +103,24 @@ namespace mighter2d {
             camera_ = std::make_unique<Camera>(engine.getRenderTarget());
             cache_ = std::make_unique<std::reference_wrapper<PropertyContainer>>(engine.getCache());
             sCache_ = std::make_unique<std::reference_wrapper<PrefContainer>>(engine.getSavableCache());
-            guiContainer_.setTarget(engine.getRenderTarget());
+            guiContainer_ = std::make_unique<ui::GuiContainer>(*this);
+            guiContainer_->setTarget(engine.getRenderTarget());
             onInit();
         }
     }
 
     bool Scene::unsubscribe_(const std::string &event, int id) {
         return internalEmitter_.removeEventListener(event, id);
+    }
+
+    void Scene::addUpdatable(IUpdatable *updatable) {
+        if (!utility::findIn(updateList_, updatable).first) {
+            updateList_.push_back(updatable);
+        }
+    }
+
+    bool Scene::removeUpdatable(IUpdatable *updatable) {
+        return utility::eraseIn(updateList_, updatable);
     }
 
     std::string Scene::getClassName() const {
@@ -373,10 +388,10 @@ namespace mighter2d {
     }
 
     const ui::GuiContainer &Scene::getGui() const {
-        if (!guiContainer_.isTargetSet())
+        if (!guiContainer_->isTargetSet())
             throw AccessViolationException("mighter2d::Scene::getGui() must not be called before the scene is initialized");
         else
-            return guiContainer_;
+            return *guiContainer_;
     }
 
     ShapeContainer &Scene::getShapes() {

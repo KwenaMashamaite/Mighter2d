@@ -28,12 +28,15 @@
 #include "Mighter2d/Config.h"
 #include "Mighter2d/common/Vector2.h"
 #include "Mighter2d/common/Rect.h"
+#include "Mighter2d/common/IUpdatable.h"
 #include "Mighter2d/ui/widgets/Widget.h"
 #include "Mighter2d/core/event/Event.h"
+#include "Mighter2d/core/object/Object.h"
 #include <string>
 #include <memory>
 
 namespace mighter2d {
+    class Scene;
 
     /// @internal
     namespace priv {
@@ -53,7 +56,7 @@ namespace mighter2d {
          * This class is not meant to be instantiated directly, use
          * mighter2d::Scene::getGui or mighter2d::Engine::getGui
          */
-        class MIGHTER2D_API GuiContainer {
+        class MIGHTER2D_API GuiContainer : public Object, public IUpdatable {
         public:
             using Ptr = std::shared_ptr<GuiContainer>; //!< Shared gui container pointer
 
@@ -65,7 +68,7 @@ namespace mighter2d {
              *
              * @see setTarget
              */
-            GuiContainer();
+            explicit GuiContainer(Scene& scene);
 
             /**
              * @brief Construct the gui and set the target on which the gui
@@ -77,7 +80,7 @@ namespace mighter2d {
              *
              * @see setTarget
              */
-            explicit GuiContainer(priv::RenderTarget& window);
+            GuiContainer(Scene& scene, priv::RenderTarget& window);
 
             /**
              * @brief Copy constructor
@@ -98,6 +101,13 @@ namespace mighter2d {
              * @brief Move assignment operator
              */
             GuiContainer& operator=(GuiContainer&&) noexcept;
+
+            /**
+             * @brief Get the scene the gui belongs to
+             * @return The scene the gui belongs to
+             */
+            Scene& getScene();
+            const Scene& getScene() const;
 
             /**
              * @brief Set the part of the window the gui will render on
@@ -230,6 +240,7 @@ namespace mighter2d {
             bool isTabKeyUsageEnabled() const;
 
             /**
+             * @internal
              * @brief Draw all the widgets that were added to the gui
              */
             void draw();
@@ -515,6 +526,12 @@ namespace mighter2d {
             size_t moveWidgetBackward(const std::string& widget);
 
             /**
+             * @brief Get the name of the class
+             * @return The name of the class
+             */
+            std::string getClassName() const override;
+
+            /**
              * @internal
              * @brief Handle event for all contained widgets
              * @param event Event to handle
@@ -535,7 +552,7 @@ namespace mighter2d {
              * @warning This function is intended for internal use only and
              * should never be called outside of Mighter2d
              */
-            void update(Time deltaTime);
+            void update(Time deltaTime) final;
 
             /**
              * @brief Destructor
@@ -543,6 +560,7 @@ namespace mighter2d {
             ~GuiContainer();
 
         private:
+            Scene* scene_;
             class GuiContainerImpl;
             std::unique_ptr<GuiContainerImpl> pimpl_;
         };

@@ -37,6 +37,7 @@
 
 namespace mighter2d {
     class Sprite;
+    class Scene;
 
     /**
      * @brief An ImageSprite which contains images of the same size arranged in
@@ -261,82 +262,25 @@ namespace mighter2d {
 
         /**
          * @brief Get a sprite from an index
+         * @param scene The scene the sprite belongs to
          * @param index Index to get the sprite from
          * @return The sprite at the given index, or an empty sprite if
          *         the index is out of bounds
          *
          * Note than @a index starts at {0, 0}
          */
-        Sprite getSprite(Index index) const;
+        Sprite getSprite(Scene& scene, Index index) const;
 
         /**
          * @brief Get a sprite from the index with a given alias
+         * @param scene The scene the sprite belongs to
          * @param alias The name given to a frame in the spritesheet
          * @return The sprite at the aliased index or an empty sprite
          *         if there is no frame with the specified alias
          *
          * @see assignAlias
          */
-        Sprite getSprite(const std::string& alias) const;
-
-        /**
-         * @brief Get all the sprites in a row
-         * @param row The row to get the sprites from
-         * @return All the sprites in the specified row or an empty
-         *         vector if the row is out of bounds
-         *
-         * Note that @a row starts at 0
-         *
-         * @see getSpritesOnColumn
-         */
-        std::vector<Sprite> getSpritesOnRow(unsigned int row) const;
-
-        /**
-         * @brief Get all the sprites in a column
-         * @param column The column to get the sprites from
-         * @return All the sprites in the specified column or an empty
-         *         vector if the column is out of bounds
-         *
-         * Note that @a column starts at 0
-         *
-         * @see getSpritesOnRows
-         */
-        std::vector<Sprite> getSpritesOnColumn(unsigned int column) const;
-
-        /**
-         * @brief Get all the sprites in a range
-         * @param start The start of the range (inclusive)
-         * @param end The end of the range (inclusive)
-         * @return All the sprites in the specified range or an empty
-         *         vector if the range is invalid
-         *
-         * The range must either be on a row or column. For rows the
-         * x components of the @a start and @a end arguments must be
-         * the same. Similarly, for columns, the y components of the
-         * @a start and @a end must be the same otherwise an empty
-         * vector will be returned. In addition for components that
-         * varies (row or column), the @a start component must be less
-         * than the @a end component. An empty vector will also be
-         * returned if the either the @a start or @a end index is out
-         * of bounds
-         *
-         * Note that @a start and @a end start at {0, 0}
-         *
-         * @code
-         * //Returns all the sprites in row 1 from column 2 to column 5
-         * spritesheet.getSpritesInRange(Index{1, 2}, Index{1, 5});
-         *
-         * //Returns all the sprites in column 4 from row 0 to row 5
-         * spritesheet.getSpritesInRange(Index{0, 4}, Index{5, 4});
-         * @endcode
-         */
-        std::vector<Sprite> getSpritesInRange(Index start, Index end) const;
-
-        /**
-         * @brief Get all the sprites in the spritesheet
-         * @return All the sprites in the spritesheet
-         */
-        std::vector<Sprite> getAllSprites() const;
+        Sprite getSprite(Scene& scene, const std::string& alias) const;
 
         /**
          * @brief Check if an index has a frame or not

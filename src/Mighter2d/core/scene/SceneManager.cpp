@@ -328,7 +328,7 @@ namespace mighter2d::priv {
             scene->renderLayers_.render(renderWindow);
 
             // render gui
-            scene->guiContainer_.draw();
+            scene->guiContainer_->draw();
 
             // Render camera outline
             static RectangleShape camOutline;
@@ -437,7 +437,7 @@ namespace mighter2d::priv {
             }
 
             scene->inputManager_.handleEvent(e);
-            scene->guiContainer_.handleEvent(e);
+            scene->guiContainer_->handleEvent(e);
             scene->gridMovers_.handleEvent(e);
             scene->onHandleEvent(e);
         };
@@ -510,34 +510,22 @@ namespace mighter2d::priv {
     }
 
     void SceneManager::updateScene(const Time& deltaTime, Scene* scene, bool fixedUpdate) {
-        if (!fixedUpdate) {
-            scene->inputManager_.update();
-            scene->timerManager_.update(deltaTime * scene->getTimescale());
-            scene->guiContainer_.update(deltaTime);
-        }
-
-        updateExternalScene(scene, deltaTime, fixedUpdate);
-    }
-
-    void SceneManager::updateExternalScene(Scene* scene, const Time& deltaTime, bool fixedUpdate) {
         if (fixedUpdate) {
-            scene->getGridMovers().update(deltaTime * scene->getTimescale());
+            for (auto& updatable : scene->updateList_) {
+                updatable->fixedUpdate(deltaTime * scene->getTimescale());
+            }
+
             scene->onFixedUpdate(deltaTime * scene->getTimescale());
-        } else {
-            if (scene->grid2D_)
+        }
+        else {
+            if (scene->grid2D_) {
                 scene->grid2D_->update(deltaTime * scene->getTimescale());
+            }
 
-            scene->getGameObjects().forEach([&scene, &deltaTime](GameObject* gameObject) {
-                if (gameObject->isActive()) {
-                    gameObject->getSprite().updateAnimation(deltaTime * scene->getTimescale());
-                    gameObject->update(deltaTime * scene->getTimescale());
-                }
-            });
-
-            // Update sprite animations
-            scene->getSprites().forEach([&scene, &deltaTime](Sprite* sprite) {
-                sprite->updateAnimation(deltaTime * scene->getTimescale());
-            });
+            // Normal update
+            for (auto& updatable : scene->updateList_) {
+                updatable->update(deltaTime * scene->getTimescale());
+            }
 
             // Update user scene after all internal updates
             scene->onUpdate(deltaTime * scene->getTimescale());

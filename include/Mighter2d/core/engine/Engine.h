@@ -440,22 +440,6 @@ namespace mighter2d {
         const Window& getWindow() const;
 
         /**
-         * @brief Get the engine level gui
-         * @return The engine level gui
-         * @throws AccessViolationException If this function is called before
-         *         the engine is initialized
-         *
-         * Unlike mighter2d::Scene::getGui, this gui is not destroyed when the scene
-         * is destroyed, but rather when the engine is shutdown. It may be
-         * useful when the same UI is required across multiple scenes. Note
-         * that this gui is rendered on top of the scene level gui
-         *
-         * @see initialize
-         */
-        ui::GuiContainer& getGui();
-        const ui::GuiContainer& getGui() const;
-
-        /**
          * @brief Get the engine level audio manager
          * @return The engine level audio manager
          *
@@ -476,17 +460,6 @@ namespace mighter2d {
          */
         input::InputManager& getInputManager();
         const input::InputManager& getInputManager() const;
-
-        /**
-         * @brief Get the engine level timer manager
-         * @return The engine level timer manager
-         *
-         * Unlike mighter2d::Scene::getTimer, event listeners registered to this
-         * timer manager are executed regardless of which scene is active
-         * and are destroyed when the engine is shutdown
-         */
-        TimerManager& getTimer();
-        const TimerManager& getTimer() const;
 
         /**
          * @brief Pause or resume execution of an event listener
@@ -718,8 +691,6 @@ namespace mighter2d {
         PropertyContainer dataSaver_;                      //!< Holds Data that persists across scenes
         PrefContainer diskDataSaver_;                      //!< Holds data that persists across scenes and can be read/saved from/to a file on the disk
         int popCounter_;                                   //!< Holds the number of scenes to be removed from the engine at the end of the current frame
-        TimerManager timerManager_;                        //!< Engine level timer manager
-        ui::GuiContainer gui_;                             //!< Engine level gui
         Callback<> onShutdownComplete_;                    //!< An optional callback function executed after an engine shutdown
 
         std::queue<Scene::Ptr> scenesPendingPush_; //!< Holds scenes to be pushed to the engine at the end of the current frame

@@ -24,9 +24,11 @@
 
 #include "Mighter2d/core/time/Timer.h"
 #include "Mighter2d/core/exceptions/Exceptions.h"
+#include "Mighter2d/core/scene/Scene.h"
 
 namespace mighter2d {
-    Timer::Timer() :
+    Timer::Timer(Scene& scene) :
+        scene_(&scene),
         status_{Status::Stopped},
         timescale_{1.0f},
         isExecutionComplete_{false},
@@ -34,20 +36,34 @@ namespace mighter2d {
         isDispatched_{false},
         repeatCount_{0},
         dispatchCount_{0}
-    {}
+    {
+        scene.addUpdatable(this);
 
-    Timer::Ptr Timer::create(Time interval, const Callback<>& callback, int repeatCount) {
-        auto timer = std::make_unique<Timer>();
+        onDestruction([&scene, this] {
+            scene.removeUpdatable(this);
+        });
+    }
+
+    Timer::Ptr Timer::create(Scene& scene, Time interval, const Callback<>& callback, int repeatCount) {
+        auto timer = std::make_unique<Timer>(scene);
         timer->setInterval(interval);
         timer->setRepeatCount(repeatCount);
         timer->onTimeout(callback);
         return timer;
     }
 
-    Timer::Ptr Timer::create(Time interval, const Callback<Timer &>& callback, int repeatCounter) {
-        auto timer = create(interval, []{}, repeatCounter);
+    Timer::Ptr Timer::create(Scene& scene, Time interval, const Callback<Timer &>& callback, int repeatCounter) {
+        auto timer = create(scene, interval, []{}, repeatCounter);
         timer->onTimeout(callback);
         return timer;
+    }
+
+    Scene &Timer::getScene() {
+        return *scene_;
+    }
+
+    const Scene &Timer::getScene() const {
+        return *scene_;
     }
 
     void Timer::setInterval(Time interval) {
@@ -275,5 +291,9 @@ namespace mighter2d {
 
     void Timer::onUpdate(const Timer::Callback<Timer &> &callback) {
         onUpdate_ = callback;
+    }
+
+    std::string Timer::getClassName() const {
+        return "Timer";
     }
 }

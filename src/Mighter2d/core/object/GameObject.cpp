@@ -32,8 +32,15 @@ namespace mighter2d {
         state_{-1},
         isActive_{true},
         postStepId_{-1},
-        destructionId_{-1}
+        destructionId_{-1},
+        sprite_(std::make_unique<Sprite>(scene))
     {
+        scene.addUpdatable(this);
+
+        onDestruction([this] {
+            scene_.get().removeUpdatable(this);
+        });
+
         initEvents();
     }
 
@@ -43,7 +50,7 @@ namespace mighter2d {
         state_{other.state_},
         isActive_{other.isActive_},
         transform_{other.transform_},
-        sprite_{other.sprite_},
+        sprite_{std::make_unique<Sprite>(*other.sprite_)},
         postStepId_{-1},
         destructionId_{-1}
     {
@@ -154,15 +161,19 @@ namespace mighter2d {
     }
 
     void GameObject::resetSpriteOrigin() {
-        transform_.setOrigin(sprite_.getLocalBounds().width / 2.0f, sprite_.getLocalBounds().height / 2.0f);
+        transform_.setOrigin(sprite_->getLocalBounds().width / 2.0f, sprite_->getLocalBounds().height / 2.0f);
     }
 
     Sprite &GameObject::getSprite() {
-        return sprite_;
+        return *sprite_;
     }
 
     const Sprite &GameObject::getSprite() const {
-        return sprite_;
+        return *sprite_;
+    }
+
+    void GameObject::update(Time deltaTime) {
+
     }
 
     void GameObject::initEvents() {
@@ -173,16 +184,16 @@ namespace mighter2d {
         transform_.onPropertyChange([this](const Property& property) {
             const auto& name = property.getName();
             if (name == "position") {
-                sprite_.setPosition(transform_.getPosition());
+                sprite_->setPosition(transform_.getPosition());
                 emitChange(Property{name, transform_.getPosition()});
             } else if (name == "origin") {
-                sprite_.setOrigin(transform_.getOrigin());
+                sprite_->setOrigin(transform_.getOrigin());
                 emitChange(Property{name, transform_.getOrigin()});
             } else if (name == "scale") {
-                sprite_.setScale(transform_.getScale());
+                sprite_->setScale(transform_.getScale());
                 emitChange(Property{name, transform_.getScale()});
             } else if (name == "rotation") {
-                sprite_.setRotation(transform_.getRotation());
+                sprite_->setRotation(transform_.getRotation());
                 emitChange(Property{name, transform_.getRotation()});
             }
         });

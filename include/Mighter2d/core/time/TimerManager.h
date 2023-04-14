@@ -33,6 +33,8 @@
 #include <stack>
 
 namespace mighter2d {
+    class Scene;
+
     /**
      * @brief Manages multiple Timer instances
      *
@@ -43,6 +45,12 @@ namespace mighter2d {
     public:
         template <typename... Args>
         using Callback = std::function<void(Args...)>; //!< Event listener
+
+        /**
+         * @brief Constructor
+         * @param scene The scene the timer manager belongs to
+         */
+        explicit TimerManager(Scene& scene);
 
         /**
          * @brief Schedule a one time callback
@@ -134,16 +142,6 @@ namespace mighter2d {
 
         /**
          * @internal
-         * @brief Update the active timers
-         * @param time Time passed since last update
-         *
-         * @warning This function is called internally by Mighter2d, do not
-         * call it directly
-         */
-        void update(Time time);
-
-        /**
-         * @internal
          * @brief Remove inactive timers
          *
          * @warning This function is called internally by Mighter2d, do not
@@ -160,6 +158,7 @@ namespace mighter2d {
         Timer& addTimer(Timer::Ptr timer);
 
     private:
+        Scene* scene_;
         std::list<Timer::Ptr> activeTimers_;   //!< Timers that are counting down
     };
 }

@@ -29,8 +29,10 @@
 #include "Mighter2d/common/Vector2.h"
 #include "Mighter2d/common/Transform.h"
 #include "Mighter2d/common/PropertyContainer.h"
+#include "Mighter2d/common/IUpdatable.h"
 #include "Mighter2d/core/object/Object.h"
 #include "Mighter2d/graphics/Sprite.h"
+#include <memory>
 
 namespace mighter2d {
     class Scene;
@@ -38,7 +40,7 @@ namespace mighter2d {
     /**
      * @brief Class for modelling game objects (players, enemies etc...)
      */
-    class MIGHTER2D_API GameObject : public Object {
+    class MIGHTER2D_API GameObject : public Object, public IUpdatable {
     public:
         using Ptr = std::unique_ptr<GameObject>;                      //!< Unique game object pointer
         using CollisionCallback = Callback<GameObject*, GameObject*>; //!< Collision callback
@@ -208,14 +210,14 @@ namespace mighter2d {
          * @brief Update the game object
          * @param deltaTime Time past since last update
          *
-         * This function is automatically called by Mighter2d. @a deltaTime is synced
-         * with the render FPS. In other words, it is frame-rate dependent.
+         * @note This function will be called automatically by Mighter2d.
+         * @a deltaTime is synced with the render FPS. In other words, it
+         * is frame-rate dependent.
          *
-         * Note that this function is provided for external use only, Mighter2d will
-         * never put anything inside it. This means that don't have to call
-         * the base class version when overriding it
+         * The base class version must be called if this function
+         * is overridden
          */
-        virtual void update(Time deltaTime) {MIGHTER2D_UNUSED(deltaTime);}
+        void update(Time deltaTime) override;
 
         /**
          * @brief Destructor
@@ -233,7 +235,7 @@ namespace mighter2d {
         int state_;                           //!< The current state of the game object
         bool isActive_;                       //!< A flag indicating whether or not the game object is active
         Transform transform_;                 //!< The objects transform
-        Sprite sprite_;                       //!< The objects visual representation
+        std::unique_ptr<Sprite> sprite_;       //!< The objects visual representation
         int postStepId_;                      //!< Scene post step handler id
         int destructionId_;                   //!< Scene destruction listener id
         PropertyContainer userData_;          //!< Used to store metadata about the object

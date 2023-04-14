@@ -41,6 +41,7 @@
 #include "Mighter2d/core/resources/ResourceManager.h"
 #include "Mighter2d/graphics/RenderTarget.h"
 #include "Mighter2d/utility/Helpers.h"
+#include "Mighter2d/core/scene/Scene.h"
 #include "Mighter2d/ui/widgets/TabsContainer.h"
 #include <TGUI/Backends/SFML/GuiSFML.hpp>
 #include <unordered_map>
@@ -267,17 +268,39 @@ namespace mighter2d::ui {
     // GuiContainer class delegation
     //////////////////////////////////////////////////////////////////////////
 
-    GuiContainer::GuiContainer() :
+    GuiContainer::GuiContainer(Scene& scene) :
+        scene_(&scene),
         pimpl_{std::make_unique<GuiContainerImpl>()}
-    {}
+    {
+        scene.addUpdatable(this);
 
-    GuiContainer::GuiContainer(priv::RenderTarget &window) :
+        onDestruction([&scene, this] {
+            scene.removeUpdatable(this);
+        });
+    }
+
+    GuiContainer::GuiContainer(Scene& scene, priv::RenderTarget &window) :
+        scene_(&scene),
         pimpl_{std::make_unique<GuiContainerImpl>(window)}
-    {}
+    {
+        scene.addUpdatable(this);
+
+        onDestruction([&scene, this] {
+            scene.removeUpdatable(this);
+        });
+    }
 
     GuiContainer::GuiContainer(GuiContainer &&) noexcept = default;
 
     GuiContainer &GuiContainer::operator=(GuiContainer &&) noexcept = default;
+
+    Scene& GuiContainer::getScene() {
+        return *scene_;
+    }
+
+    const Scene& GuiContainer::getScene() const {
+        return *scene_;
+    }
 
     void GuiContainer::setAbsoluteViewport(const FloatRect &viewport) {
         pimpl_->setAbsoluteViewport(viewport);
@@ -437,6 +460,10 @@ namespace mighter2d::ui {
 
     void GuiContainer::update(mighter2d::Time deltaTime) {
         pimpl_->update(deltaTime);
+    }
+
+    std::string GuiContainer::getClassName() const {
+        return "GuiContainer";
     }
 
     GuiContainer::~GuiContainer() = default;
