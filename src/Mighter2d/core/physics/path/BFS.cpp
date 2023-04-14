@@ -22,7 +22,7 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "Mighter2d/core/physics/grid/path/BFS.h"
+#include "Mighter2d/core/physics/path/BFS.h"
 #include "Mighter2d/core/grid/Grid2D.h"
 #include <algorithm>
 

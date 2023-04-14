@@ -23,7 +23,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "Mighter2d/core/physics/TargetGridMover.h"
-#include "Mighter2d/core/physics/grid/path/BFS.h"
+#include "Mighter2d/core/physics/path/BFS.h"
 #include "Mighter2d/graphics/shapes/RectangleShape.h"
 #include "Mighter2d/graphics/RenderTarget.h"
 #include "Mighter2d/utility/Utils.h"

@@ -22,7 +22,7 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "Mighter2d/core/physics/grid/path/DFS.h"
+#include "Mighter2d/core/physics/path/DFS.h"
 #include "Mighter2d/core/grid/Grid2D.h"
 
 namespace mighter2d {

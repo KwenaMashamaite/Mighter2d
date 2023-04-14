@@ -22,7 +22,7 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "Mighter2d/core/physics/grid/path/IPathFinderStrategy.h"
+#include "Mighter2d/core/physics/path/IPathFinderStrategy.h"
 
 namespace mighter2d {
     std::stack<Index> IPathFinderStrategy::backtrack(const std::vector<Node> &exploredNodes, const Index& targetTile)

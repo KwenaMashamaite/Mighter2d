@@ -22,7 +22,7 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "Mighter2d/core/physics/grid/path/AdjacencyList.h"
+#include "Mighter2d/core/physics/path/AdjacencyList.h"
 #include "Mighter2d/core/object/GridObject.h"
 #include "Mighter2d/core/grid/Grid2D.h"
 
