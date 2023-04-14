@@ -59,6 +59,9 @@ namespace mighter2d {
         cycleDirection_{other.cycleDirection_},
         cycleCount_{other.cycleCount_}
     {
+        animations_.clear();
+
+        // Copy animations
         for (const auto& [name, animation] : other.animations_) {
             animations_.insert({name, std::make_shared<Animation>(*animation)});
         }
