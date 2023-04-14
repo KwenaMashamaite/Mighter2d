@@ -110,8 +110,6 @@ set(MIGHTER2D_SRC
     graphics/Drawable.cpp
     graphics/Camera.cpp
     graphics/SpriteImage.cpp
-    utility/ConsoleLogger.cpp
-    utility/DiskFileLogger.cpp
     utility/DiskFileReader.cpp
     utility/Helpers.cpp
     utility/Utils.cpp)

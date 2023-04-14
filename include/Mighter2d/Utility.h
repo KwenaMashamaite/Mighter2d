@@ -31,7 +31,5 @@
 
 #include "Mighter2d/utility/Utils.h"
 #include "Mighter2d/utility/DiskFileReader.h"
-#include "Mighter2d/utility/DiskFileLogger.h"
-#include "Mighter2d/utility/ConsoleLogger.h"
 
 #endif //MIGHTER2D_UTILITY_H
