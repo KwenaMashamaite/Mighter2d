@@ -267,25 +267,24 @@ namespace mighter2d {
         std::vector<std::string> getEvents() const;
 
         /**
-         * @brief Set whether or not the emitter is active
-         * @param active True to activate or false to deactivate
+         * @brief Set whether or not the emitter is allowed to dispatch events
+         * @param enable True to enable or false to disable
          *
-         * When the emitter is deactivated, it stops emitting events. This
-         * means than all calls to emit() will be ignored
+         * When events dispatching is disabled, all calls to emit() will be ignored
          *
-         * By default, the emitter is activated
+         * By default, event dispatch is enabled
          *
          * @see isEnabled
          */
-        void setActive(bool active);
+        void setEventsDispatchEnable(bool enable);
 
         /**
          * @brief Check if the event emitter is active
          * @return True if active, otherwise false
          *
-         * @see setActive
+         * @see setEventsDispatchEnable
          */
-        bool isActive() const;
+        bool isEventsDispatchEnabled() const;
 
     private:
         /**

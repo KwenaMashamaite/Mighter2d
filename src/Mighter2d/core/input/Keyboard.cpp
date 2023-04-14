@@ -41,11 +41,11 @@ namespace mighter2d::input {
     }
 
     void Keyboard::setEnable(bool enable) {
-        eventEmitter_.setActive(enable);
+        eventEmitter_.setEventsDispatchEnable(enable);
     }
 
     bool Keyboard::isEnabled() const {
-        return eventEmitter_.isActive();
+        return eventEmitter_.isEventsDispatchEnabled();
     }
 
     std::string Keyboard::keyToString(Key key) {

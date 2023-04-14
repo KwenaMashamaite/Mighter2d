@@ -30,11 +30,11 @@
 
 namespace mighter2d::input {
     void Mouse::setEnable(bool enable) {
-        eventEmitter_.setActive(enable);
+        eventEmitter_.setEventsDispatchEnable(enable);
     }
 
     bool Mouse::isEnabled() const {
-        return eventEmitter_.isActive();
+        return eventEmitter_.isEventsDispatchEnabled();
     }
 
     std::string Mouse::buttonToString(Mouse::Button button) {

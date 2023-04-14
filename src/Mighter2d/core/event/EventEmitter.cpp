@@ -165,11 +165,11 @@ namespace mighter2d {
         return events;
     }
 
-    void EventEmitter::setActive(bool active) {
-        isActive_ = active;
+    void EventEmitter::setEventsDispatchEnable(bool enable) {
+        isActive_ = enable;
     }
 
-    bool EventEmitter::isActive() const {
+    bool EventEmitter::isEventsDispatchEnabled() const {
         return isActive_;
     }
 
