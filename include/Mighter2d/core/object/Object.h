@@ -48,13 +48,21 @@ namespace mighter2d {
 
         /**
          * @brief Copy constructor
+         * @param other The object to copy into this object
+         *
+         * @note The destruction listeners of @a other are not copied to
+         * this object
          */
-        Object(const Object&);
+        Object(const Object& other);
 
         /**
          * @brief Copy assignment operator
+         * @param other The object to copy assign to this one
+         *
+         * @note The destruction listeners of @a other are not assigned to
+         * this object
          */
-        Object& operator=(const Object&);
+        Object& operator=(const Object& other);
 
         /**
          * @brief Move constructor
@@ -190,12 +198,10 @@ namespace mighter2d {
          *
          * The destruction listener is called when the object reaches the end
          * of its lifetime. Note that an object may have multiple destruction
-         * listeners registered to it
+         * listeners registered to it and they are executed once.
          *
-         * @warning It's not advised to call virtual functions in the destruction
-         * callback as some parts of the object may have already been destroyed
-         * by the time the callback is invoked. In such an event, the behavior
-         * is undefined
+         * @note Destruction listeners are not copied when copy constructing
+         * or assigning the object
          *
          * @see removeEventListener
          */
@@ -206,6 +212,9 @@ namespace mighter2d {
          * @param other The object to compare against this object
          * @return True if @a other is the same instance as this object,
          *         otherwise false
+         *
+         * This function makes a comparison by looking at the object id's. If they
+         * are the same it returns true, otherwise false.
          */
         bool isSameObjectAs(const Object& other) const;
 
