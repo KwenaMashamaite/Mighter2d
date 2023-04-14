@@ -26,7 +26,7 @@
 #define MIGHTER2D_KEYBOARDCONTROLLED_H
 
 #include "Mighter2d/core/input/Keyboard.h"
-#include "Mighter2d/core/physics/grid/GridMover.h"
+#include "GridMover.h"
 
 namespace mighter2d {
     /**

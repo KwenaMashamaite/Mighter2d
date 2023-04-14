@@ -25,8 +25,8 @@
 #ifndef MIGHTER2D_TARGETGRIDMOVER_H
 #define MIGHTER2D_TARGETGRIDMOVER_H
 
-#include "Mighter2d/core/physics/grid/GridMover.h"
-#include "Mighter2d/core/physics/grid/path/IPathFinderStrategy.h"
+#include "GridMover.h"
+#include "Mighter2d/core/physics/path/IPathFinderStrategy.h"
 
 namespace mighter2d {
 

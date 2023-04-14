@@ -22,7 +22,7 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "Mighter2d/core/physics/grid/KeyboardGridMover.h"
+#include "Mighter2d/core/physics/KeyboardGridMover.h"
 #include "Mighter2d/core/event/Event.h"
 
 namespace mighter2d {

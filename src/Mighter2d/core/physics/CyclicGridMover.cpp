@@ -22,7 +22,7 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "Mighter2d/core/physics/grid/CyclicGridMover.h"
+#include "Mighter2d/core/physics/CyclicGridMover.h"
 
 namespace mighter2d {
     CyclicGridMover::CyclicGridMover(Grid2D &grid, GridObject *target) :

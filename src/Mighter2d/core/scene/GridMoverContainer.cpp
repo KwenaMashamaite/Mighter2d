@@ -23,8 +23,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "Mighter2d/core/scene/GridMoverContainer.h"
-#include "Mighter2d/core/physics/grid/KeyboardGridMover.h"
-#include "Mighter2d/core/physics/grid/TargetGridMover.h"
+#include "Mighter2d/core/physics/KeyboardGridMover.h"
+#include "Mighter2d/core/physics/TargetGridMover.h"
 
 namespace mighter2d {
     void GridMoverContainer::update(Time deltaTime) {

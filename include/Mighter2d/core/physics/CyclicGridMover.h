@@ -26,7 +26,7 @@
 #define MIGHTER2D_CYCLICGRIDMOVER_H
 
 #include "Mighter2d/Config.h"
-#include "Mighter2d/core/physics/grid/GridMover.h"
+#include "GridMover.h"
 
 namespace mighter2d {
     /**

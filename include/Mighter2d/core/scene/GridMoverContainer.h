@@ -26,7 +26,7 @@
 #define MIGHTER2D_GRIDMOVERCONTAINER_H
 
 #include "Mighter2d/Config.h"
-#include "Mighter2d/core/physics/grid/GridMover.h"
+#include "Mighter2d/core/physics/GridMover.h"
 #include "Mighter2d/core/object/ObjectContainer.h"
 #include "Mighter2d/core/event/Event.h"
 #include "Mighter2d/core/time/Time.h"

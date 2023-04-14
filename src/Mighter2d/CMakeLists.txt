@@ -29,15 +29,15 @@ set(MIGHTER2D_SRC
     core/resources/ResourceManager.cpp
     core/resources/ResourceHolder.cpp
     core/resources/ResourceLoader.cpp
-    core/physics/grid/path/AdjacencyList.cpp
-    core/physics/grid/path/BFS.cpp
-    core/physics/grid/path/DFS.cpp
-    core/physics/grid/path/IPathFinderStrategy.cpp
-    core/physics/grid/GridMover.cpp
-    core/physics/grid/TargetGridMover.cpp
-    core/physics/grid/KeyboardGridMover.cpp
-    core/physics/grid/RandomGridMover.cpp
-    core/physics/grid/CyclicGridMover.cpp
+    core/physics/path/AdjacencyList.cpp
+    core/physics/path/BFS.cpp
+    core/physics/path/DFS.cpp
+    core/physics/path/IPathFinderStrategy.cpp
+    core/physics/GridMover.cpp
+    core/physics/TargetGridMover.cpp
+    core/physics/KeyboardGridMover.cpp
+    core/physics/RandomGridMover.cpp
+    core/physics/CyclicGridMover.cpp
     core/scene/Scene.cpp
     core/scene/SceneManager.cpp
     core/scene/RenderLayer.cpp

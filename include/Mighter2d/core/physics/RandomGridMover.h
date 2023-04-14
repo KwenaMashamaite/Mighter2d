@@ -25,7 +25,7 @@
 #ifndef MIGHTER2D_RANDOMGRIDMOVER_H
 #define MIGHTER2D_RANDOMGRIDMOVER_H
 
-#include "Mighter2d/core/physics/grid/GridMover.h"
+#include "GridMover.h"
 #include <vector>
 
 namespace mighter2d {

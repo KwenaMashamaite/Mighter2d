@@ -23,7 +23,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "Mighter2d/core/object/GridObject.h"
-#include "Mighter2d/core/physics/grid/GridMover.h"
+#include "Mighter2d/core/physics/GridMover.h"
 #include "Mighter2d/core/scene/Scene.h"
 #include "Mighter2d/utility/Helpers.h"
 

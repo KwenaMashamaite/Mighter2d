@@ -22,7 +22,7 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "Mighter2d/core/physics/grid/GridMover.h"
+#include "Mighter2d/core/physics/GridMover.h"
 #include "Mighter2d/utility/Helpers.h"
 #include <string_view>
 

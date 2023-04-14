@@ -22,7 +22,7 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "Mighter2d/core/physics/grid/RandomGridMover.h"
+#include "Mighter2d/core/physics/RandomGridMover.h"
 #include "Mighter2d/utility/Utils.h"
 
 namespace mighter2d {
