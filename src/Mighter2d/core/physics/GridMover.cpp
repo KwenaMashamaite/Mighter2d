@@ -224,7 +224,7 @@ namespace mighter2d {
 
         if (!isTargetMoving() && targetDirection_ == Unknown) {
             targetDirection_ = dir;
-            eventEmitter_.emit("GridMover_directionChange", targetDirection_);
+            emit("GridMover_directionChange", targetDirection_);
             target_->setDirection(dir);
 
             return true;
@@ -290,7 +290,7 @@ namespace mighter2d {
                 // to smoothly move there
                 target_->getTransform().setPosition(currentPosition);
 
-                eventEmitter_.emit("GridMover_moveBegin");
+                emit("GridMover_moveBegin");
                 target_->emitGridEvent(Property{"moveBegin"});
             }
             else if (isMoving_) {
@@ -298,13 +298,13 @@ namespace mighter2d {
                     snapTargetToTargetTile();
                     onDestinationReached();
                 } else {
-                    eventEmitter_.emit("GridMover_preMove");
+                    emit("GridMover_preMove");
                     target_->emitGridEvent(Property("preMove"));
 
                     target_->getTransform().move(maxSpeed_.x * targetDirection_.x * deltaTime.asSeconds() * speedMultiplier_,
                                                  maxSpeed_.y * targetDirection_.y * deltaTime.asSeconds() * speedMultiplier_);
 
-                    eventEmitter_.emit("GridMover_postMove");
+                    emit("GridMover_postMove");
                     target_->emitGridEvent(Property("postMove"));
                 }
             }
@@ -385,7 +385,7 @@ namespace mighter2d {
             targetTile_ = prevTile_;
             targetDirection_ = Unknown;
 
-            eventEmitter_.emit("GridMover_tileCollision", hitTile->getIndex());
+            emit("GridMover_tileCollision", hitTile->getIndex());
             target_->emitGridEvent(Property{"tileCollision", hitTile->getIndex()});
 
             return true;
@@ -406,7 +406,7 @@ namespace mighter2d {
             targetTile_ = prevTile_;
             targetDirection_ = Unknown;
 
-            eventEmitter_.emit("GridMover_objectCollision", target_, obstacle);
+            emit("GridMover_objectCollision", target_, obstacle);
             target_->emitGridEvent(Property{"objectCollision", obstacle});
             obstacle->emitGridEvent(Property{"objectCollision", target_});
 
@@ -434,7 +434,7 @@ namespace mighter2d {
             targetTile_ = prevTile_;
             targetDirection_ = Unknown;
 
-            eventEmitter_.emit("GridMover_borderCollision", targetTile_->getIndex());
+            emit("GridMover_borderCollision", targetTile_->getIndex());
             target_->emitGridEvent(Property{"borderCollision"});
 
             return true;
@@ -465,12 +465,12 @@ namespace mighter2d {
             if (!canCollide(gameObject))
                 return;
 
-            eventEmitter_.emit("GridMover_objectCollision", target_, gameObject);
+            emit("GridMover_objectCollision", target_, gameObject);
             target_->emitGridEvent(Property{"objectCollision", gameObject});
             gameObject->emitGridEvent(Property{"objectCollision", target_});
         });
 
-        eventEmitter_.emit("GridMover_moveEnd", targetTile_->getIndex());
+        emit("GridMover_moveEnd", targetTile_->getIndex());
         target_->emitGridEvent(Property{"moveEnd"});
     }
 
@@ -499,36 +499,36 @@ namespace mighter2d {
             != grid_.getTileOccupiedByChild(target_).getIndex())
         {
             targetTile_ = &grid_.getTileOccupiedByChild(target_);
-            eventEmitter_.emit("GridMover_targetTileReset", targetTile_);
+            emit("GridMover_targetTileReset", targetTile_);
         }
     }
 
     int GridMover::onDirectionChange(const Callback<Direction> &callback, bool oneTime) {
-        return utility::addEventListener(eventEmitter_, "GridMover_directionChange", callback, oneTime);
+        return utility::addEventListener(*this, "GridMover_directionChange", callback, oneTime);
     }
 
     int GridMover::onMoveBegin(const Callback<Index> &callback, bool oneTime) {
-        return utility::addEventListener(eventEmitter_, "GridMover_moveBegin", callback, oneTime);
+        return utility::addEventListener(*this, "GridMover_moveBegin", callback, oneTime);
     }
 
     int GridMover::onMoveEnd(const Callback<Index> &callback, bool oneTime) {
-        return utility::addEventListener(eventEmitter_, "GridMover_moveEnd", callback, oneTime);
+        return utility::addEventListener(*this, "GridMover_moveEnd", callback, oneTime);
     }
 
     int GridMover::onObjectCollision(const Callback<GridObject *, GridObject *> &callback, bool oneTime) {
-        return utility::addEventListener(eventEmitter_, "GridMover_objectCollision", callback, oneTime);
+        return utility::addEventListener(*this, "GridMover_objectCollision", callback, oneTime);
     }
 
     int GridMover::onBorderCollision(const Callback<> &callback, bool oneTime) {
-        return utility::addEventListener(eventEmitter_, "GridMover_borderCollision", callback, oneTime);
+        return utility::addEventListener(*this, "GridMover_borderCollision", callback, oneTime);
     }
 
     int GridMover::onTileCollision(const Callback<Index> &callback, bool oneTime) {
-        return utility::addEventListener(eventEmitter_, "GridMover_tileCollision", callback, oneTime);
+        return utility::addEventListener(*this, "GridMover_tileCollision", callback, oneTime);
     }
 
     int GridMover::onTargetTileReset(const Callback<Index>& callback, bool oneTime) {
-        return utility::addEventListener(eventEmitter_, "GridMover_targetTileReset", callback, oneTime);
+        return utility::addEventListener(*this, "GridMover_targetTileReset", callback, oneTime);
     }
 
     GridMover::~GridMover() {

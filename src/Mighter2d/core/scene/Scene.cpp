@@ -61,7 +61,6 @@ namespace mighter2d {
             sCache_ = std::move(other.sCache_);
             inputManager_ = std::move(other.inputManager_);
             audioManager_ = std::move(other.audioManager_);
-            eventEmitter_ = std::move(other.eventEmitter_);
             internalEmitter_ = std::move(other.internalEmitter_);
             timerManager_ = std::move(other.timerManager_);
             guiContainer_ = std::move(other.guiContainer_);
@@ -326,18 +325,6 @@ namespace mighter2d {
 
     const TimerManager &Scene::getTimer() const {
         return timerManager_;
-    }
-
-    EventEmitter &Scene::getEventEmitter() {
-        return eventEmitter_;
-    }
-
-    const EventEmitter &Scene::getEventEmitter() const {
-        return eventEmitter_;
-    }
-
-    GlobalEventEmitter &Scene::getGlobalEventEmitter() {
-        return *GlobalEventEmitter::instance();
     }
 
     PropertyContainer &Scene::getCache() {

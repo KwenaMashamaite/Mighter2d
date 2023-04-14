@@ -37,7 +37,7 @@ namespace mighter2d {
     /**
      * @brief An abstract top-level base class for Mighter2d objects
      */
-    class MIGHTER2D_API Object {
+    class MIGHTER2D_API Object : public EventEmitter {
     public:
         using Ptr = std::unique_ptr<Object>; //!< Unique object pointer
 
@@ -184,54 +184,6 @@ namespace mighter2d {
         int onPropertyChange(const Callback<Property>& callback, bool oneTime = false);
 
         /**
-         * @brief Pause or resume execution of an event listener
-         * @param id The event listeners unique identification number
-         * @param suspend True to suspend/pause or false to unsuspend/resume
-         *
-         * @see isEventListenerSuspended
-         */
-        void suspendedEventListener(int id, bool suspend);
-
-        /**
-         * @brief Check if an event listener is suspended or not
-         * @param id The identification number of the listener to be checked
-         * @return True if suspended, otherwise false
-         *
-         * This function also returns false if the specified event listener
-         * does not exist
-         *
-         * @see suspendedEventListener
-         */
-        bool isEventListenerSuspended(int id) const;
-
-        /**
-         * @brief Remove an event listener from an event
-         * @param event The name of the event to remove an event listener from
-         * @param id The unique id of the event listener to be removed
-         * @return True if the event listener was removed or false if the
-         *         event or the event listener is does not exist
-         *
-         * @code
-         * // Display the tag of the object to console every time it changes
-         * auto tagChangeId = object.onPropertyChange("tag", [](mighter2d::Property tag) {
-         *      std::cout << name.getValue<std::string>() << std::endl;
-         * });
-         *
-         * // Stop displaying the tag of the object when it changes
-         * object.removeEventListener("tag", tagChangeId);
-         * @endcode
-         */
-        bool removeEventListener(const std::string& event, int id);
-
-        /**
-         * @brief Remove an event listener
-         * @param id The id of the event listener to be removed
-         * @return True if the event listener was removed or false if no
-         *         such handler exists
-         */
-        bool removeEventListener(int id);
-
-        /**
          * @brief Add a destruction listener
          * @param callback Function to be executed when the object is destroyed
          * @return The unique id of the destruction listener
@@ -284,9 +236,6 @@ namespace mighter2d {
          * call first will be the one that invokes the destruction listeners
          */
         void emitDestruction();
-
-        // Members
-        EventEmitter eventEmitter_; //!< Event dispatcher
 
     private:
         unsigned int id_;   //!< The id of the object

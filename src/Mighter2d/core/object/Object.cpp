@@ -35,19 +35,19 @@ namespace mighter2d {
     {}
 
     Object::Object(const Object& other) :
-        eventEmitter_{other.eventEmitter_},
+        EventEmitter(other),
         id_{objectIdCounter++},
         tag_{other.tag_}
     {
-        eventEmitter_.removeAllEventListeners("Object_destruction");
+        removeAllEventListeners("Object_destruction");
     }
 
     Object &Object::operator=(const Object & other) {
         // We don't want to assign the object id, each must have a unique one
         if (this != &other) {
             tag_ = other.tag_;
-            eventEmitter_ = other.eventEmitter_;
-            eventEmitter_.removeAllEventListeners("Object_destruction");
+            EventEmitter::operator=(other);
+            removeAllEventListeners("Object_destruction");
         }
 
         return *this;
@@ -73,37 +73,15 @@ namespace mighter2d {
     }
 
     int Object::onPropertyChange(const std::string &property, const Callback<Property>& callback, bool oneTime) {
-        return utility::addEventListener(eventEmitter_, "Object_" + property + "Change", callback, oneTime);
+        return utility::addEventListener(*this, "Object_" + property + "Change", callback, oneTime);
     }
 
     int Object::onPropertyChange(const Callback<Property> &callback, bool oneTime) {
-        return utility::addEventListener(eventEmitter_, "Object_propertyChange", callback, oneTime);
-    }
-
-    void Object::suspendedEventListener(int id, bool suspend) {
-        eventEmitter_.suspendEventListener(id, suspend);
-    }
-
-    bool Object::isEventListenerSuspended(int id) const {
-        return eventEmitter_.isEventListenerSuspended(id);
-    }
-
-    bool Object::removeEventListener(const std::string &event, int id) {
-        if ((eventEmitter_.removeEventListener("Object_" + event, id)) ||
-            (eventEmitter_.removeEventListener("Object_" + event + "Change", id)))
-        {
-            return true;
-        }
-        else
-            return eventEmitter_.removeEventListener(event, id);
-    }
-
-    bool Object::removeEventListener(int id) {
-        return eventEmitter_.removeEventListener(id);
+        return utility::addEventListener(*this, "Object_propertyChange", callback, oneTime);
     }
 
     int Object::onDestruction(const Callback<>& callback) {
-        return eventEmitter_.addOnceEventListener("Object_destruction", callback);
+        return addOnceEventListener("Object_destruction", callback);
     }
 
     bool Object::isSameObjectAs(const Object &other) const {
@@ -111,12 +89,12 @@ namespace mighter2d {
     }
 
     void Object::emitChange(const Property &property) {
-        eventEmitter_.emit("Object_" + property.getName() + "Change", property);
-        eventEmitter_.emit("Object_propertyChange", property);
+        emit("Object_" + property.getName() + "Change", property);
+        emit("Object_propertyChange", property);
     }
 
     void Object::emitDestruction() {
-        eventEmitter_.emit("Object_destruction");
+        emit("Object_destruction");
     }
 
     Object::~Object() {

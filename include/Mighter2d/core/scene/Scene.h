@@ -624,35 +624,6 @@ namespace mighter2d {
         const GridMoverContainer& getGridMovers() const;
 
         /**
-         * @brief Get the scene level event EventEmitter
-         * @return The scene level event event emitter
-         *
-         * The event emitter is local to the scene instance. This means
-         * that events registered on it are only dispatched when the
-         * scene is active and de-registered when the scene is destroyed.
-         *
-         * @see getGlobalEventEmitter
-         */
-        EventEmitter& getEventEmitter();
-        const EventEmitter& getEventEmitter() const;
-
-        /**
-         * @brief Get the global event emitter
-         * @return The global event emitter
-         *
-         * The global event emitter is available to anything that needs it
-         * (a class, function etc...). Events registered to it are always
-         * dispatched regardless of the active scene. As a result you must
-         * remove event listeners that are local to the scene when the
-         * scene is destroyed. For example, a lambda that captures "this"
-         * will result in undefined behavior if not removed after the scene
-         * is destroyed
-         *
-         * @warning Always remove local event listeners
-         */
-        GlobalEventEmitter& getGlobalEventEmitter();
-
-        /**
          * @brief Get the scene level input manager
          * @return The scene level input manager
          *
@@ -876,7 +847,6 @@ namespace mighter2d {
         std::unique_ptr<Camera> camera_;      //!< Scene level camera
         input::InputManager inputManager_;    //!< Scene level input manager
         audio::AudioManager audioManager_;    //!< Scene level audio manager
-        EventEmitter eventEmitter_;           //!< scene level event dispatcher
         EventEmitter internalEmitter_;        //!< Emits internal scene events
         TimerManager timerManager_;           //!< Scene level timer manager
         ui::GuiContainer guiContainer_;       //!< Scene level gui container

@@ -183,39 +183,39 @@ namespace mighter2d {
     }
 
     int GridObject::onGridEnter(const Callback<GridObject*> &callback, bool oneTime) {
-        return utility::addEventListener(eventEmitter_, "GridObject_gridEnter", callback, oneTime);
+        return utility::addEventListener(*this, "GridObject_gridEnter", callback, oneTime);
     }
 
     int GridObject::onGridExit(const Callback<GridObject*> &callback, bool oneTime) {
-        return utility::addEventListener(eventEmitter_, "GridObject_gridExit", callback, oneTime);
+        return utility::addEventListener(*this, "GridObject_gridExit", callback, oneTime);
     }
 
     int GridObject::onGridMoveBegin(const Callback<GridObject*>& callback, bool oneTime) {
-        return utility::addEventListener(eventEmitter_, "GridObject_moveBegin", callback, oneTime);
+        return utility::addEventListener(*this, "GridObject_moveBegin", callback, oneTime);
     }
 
     int GridObject::onGridPreMove(const Callback<GridObject *> &callback, bool oneTime) {
-        return utility::addEventListener(eventEmitter_, "GridObject_preMove", callback, oneTime);
+        return utility::addEventListener(*this, "GridObject_preMove", callback, oneTime);
     }
 
     int GridObject::onGridPostMove(const Callback<GridObject *> &callback, bool oneTime) {
-        return utility::addEventListener(eventEmitter_, "GridObject_postMove", callback, oneTime);
+        return utility::addEventListener(*this, "GridObject_postMove", callback, oneTime);
     }
 
     int GridObject::onGridMoveEnd(const Callback<GridObject*>& callback, bool oneTime) {
-        return utility::addEventListener(eventEmitter_, "GridObject_moveEnd", callback, oneTime);
+        return utility::addEventListener(*this, "GridObject_moveEnd", callback, oneTime);
     }
 
     int GridObject::onGridObjectCollision(const Callback<GridObject*, GridObject*> &callback, bool oneTime) {
-        return utility::addEventListener(eventEmitter_, "GridObject_objectCollision", callback, oneTime);
+        return utility::addEventListener(*this, "GridObject_objectCollision", callback, oneTime);
     }
 
     int GridObject::onGridBorderCollision(const Callback<GridObject*> &callback, bool oneTime) {
-        return utility::addEventListener(eventEmitter_, "GridObject_borderCollision", callback, oneTime);
+        return utility::addEventListener(*this, "GridObject_borderCollision", callback, oneTime);
     }
 
     int GridObject::onGridTileCollision(const Callback<GridObject*, Index> &callback, bool oneTime) {
-        return utility::addEventListener(eventEmitter_, "GridObject_tileCollision", callback, oneTime);
+        return utility::addEventListener(*this, "GridObject_tileCollision", callback, oneTime);
     }
 
     void GridObject::setGridMover(GridMover *gridMover) {
@@ -229,10 +229,10 @@ namespace mighter2d {
                     setGrid(nullptr);
 
                 grid_ = grid;
-                eventEmitter_.emit("GridObject_gridEnter", this);
+                emit("GridObject_gridEnter", this);
             } else if (grid_) {
                 grid_ = nullptr;
-                eventEmitter_.emit("GridObject_gridExit", this);
+                emit("GridObject_gridExit", this);
             }
         }
     }
@@ -244,15 +244,15 @@ namespace mighter2d {
             (property.getName() == "preMove") ||
             (property.getName() == "postMove"))
         {
-            eventEmitter_.emit("GridObject_" + property.getName(), this);
+            emit("GridObject_" + property.getName(), this);
         }
         else {
             MIGHTER2D_ASSERT(property.hasValue(), "Internal error: Raising grid event without arguments")
 
             if (property.getName() == "tileCollision")
-                eventEmitter_.emit("GridObject_" + property.getName(), this, property.getValue<Index>());
+                emit("GridObject_" + property.getName(), this, property.getValue<Index>());
             else if (property.getName() == "objectCollision")
-                eventEmitter_.emit("GridObject_" + property.getName(), this, property.getValue<GridObject*>());
+                emit("GridObject_" + property.getName(), this, property.getValue<GridObject*>());
         }
     }
 
