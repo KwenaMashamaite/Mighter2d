@@ -41,8 +41,8 @@ namespace mighter2d {
      # RectangleShape class
      =-----------------------------------------------------------------------*/
 
-    RectangleShape::RectangleShape(const Vector2f &size) :
-        Shape(std::make_unique<priv::ShapeImpl<sf::RectangleShape>>(
+    RectangleShape::RectangleShape(Scene& scene, const Vector2f &size) :
+        Shape(scene, std::make_unique<priv::ShapeImpl<sf::RectangleShape>>(
             std::make_shared<sf::RectangleShape>(sf::Vector2f({size.x, size.y}))),Type::Rectangle),
         pimpl_{std::make_unique<RecShapeImpl>(std::static_pointer_cast<sf::Shape>(getInternalPtr()))}
     {}
@@ -63,8 +63,8 @@ namespace mighter2d {
     RectangleShape::RectangleShape(RectangleShape &&) noexcept = default;
     RectangleShape &RectangleShape::operator=(RectangleShape &&) noexcept = default;
 
-    RectangleShape::Ptr RectangleShape::create(const Vector2f &size) {
-        return std::make_unique<RectangleShape>(size);
+    RectangleShape::Ptr RectangleShape::create(Scene& scene, const Vector2f &size) {
+        return std::make_unique<RectangleShape>(scene, size);
     }
 
     RectangleShape::Ptr RectangleShape::copy() const {

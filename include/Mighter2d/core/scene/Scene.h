@@ -844,6 +844,7 @@ namespace mighter2d {
         GridMoverContainer gridMovers_;       //!< Stores grid movers that belong to the scene
         std::unique_ptr<Grid> grid2D_;        //!< Scene level grid
         std::vector<IUpdatable*> updateList_; //!< Update list
+        std::vector<Drawable*> drawList_; //!< Update list
         float timescale_;                     //!< Controls the speed of the scene without affecting the render fps
         bool isEntered_;                      //!< A flag indicating whether or not the scene has been entered
         bool isInitialized_;                  //!< A flag indicating whether or not the scene has been initialized

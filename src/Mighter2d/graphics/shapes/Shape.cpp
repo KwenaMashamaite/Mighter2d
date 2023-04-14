@@ -27,13 +27,16 @@
 #include "Mighter2d/graphics/shapes/ShapeImpl.h"
 
 namespace mighter2d {
-    Shape::Shape(std::unique_ptr<priv::IShapeImpl> impl, Type type) :
+    Shape::Shape(Scene& scene, std::unique_ptr<priv::IShapeImpl> impl, Type type) :
+        Drawable(scene),
+        scene_(&scene),
         pimpl_{std::move(impl)},
         type_{type}
     {}
 
     Shape::Shape(const Shape& other) :
         Drawable(other),
+        scene_(other.scene_),
         pimpl_{other.pimpl_->clone()},
         type_{other.type_}
     {
@@ -42,6 +45,7 @@ namespace mighter2d {
     Shape &Shape::operator=(const Shape& rhs) {
         if (this != &rhs) {
             Drawable::operator=(rhs);
+            scene_ = rhs.scene_;
             pimpl_ = rhs.pimpl_->clone();
             type_ = rhs.type_;
         }
@@ -51,6 +55,14 @@ namespace mighter2d {
 
     Shape::Shape(Shape &&) noexcept = default;
     Shape &Shape::operator=(Shape &&) noexcept = default;
+
+    Scene &Shape::getScene() {
+        return *scene_;
+    }
+
+    const Scene &Shape::getScene() const {
+        return *scene_;
+    }
 
     std::string Shape::getClassType() const {
         return "Shape";

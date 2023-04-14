@@ -39,11 +39,12 @@ namespace mighter2d {
 
         /**
          * @brief Default constructor
+         * @param scene The scene the shape belongs to
          * @param radius The radius of the circle
          * 
          * By default the radius is zero
          */
-        explicit CircleShape(float radius = 0.0f);
+        explicit CircleShape(Scene& scene, float radius = 0.0f);
 
         /**
          * @brief Copy constructor
@@ -67,10 +68,11 @@ namespace mighter2d {
 
         /**
          * @brief Create a new circle shape
+         * @param scene The scene the shape belongs to
          * @param radius The radius of the circle
          * @return The created circle shape
          */
-        static CircleShape::Ptr create(float radius = 0.0f);
+        static CircleShape::Ptr create(Scene& scene, float radius = 0.0f);
 
         /**
          * @brief Create a copy of this shape

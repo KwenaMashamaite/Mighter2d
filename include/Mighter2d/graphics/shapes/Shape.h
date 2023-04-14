@@ -33,6 +33,7 @@
 #include <memory>
 
 namespace mighter2d {
+    class Scene;
 
     /// @internal
     namespace priv {
@@ -60,10 +61,11 @@ namespace mighter2d {
         /**
          * @internal
          * @brief Constructor
+         * @param scene The scene the shape belongs to
          * @param impl The widgets implementation
          * @param type The type of this shape
          */
-        Shape(std::unique_ptr<priv::IShapeImpl> impl, Type type);
+        Shape(Scene& scene, std::unique_ptr<priv::IShapeImpl> impl, Type type);
 
         /**
          * @brief Copy constructor
@@ -84,6 +86,13 @@ namespace mighter2d {
          * @brief Move assignment operator
          */
         Shape& operator=(Shape&&) noexcept;
+
+        /**
+         * @brief Get the scene the shape belongs to
+         * @return The scene the shape belongs to
+         */
+        Scene& getScene();
+        const Scene& getScene() const;
 
         /**
          * @brief Get the name of this class
@@ -412,6 +421,7 @@ namespace mighter2d {
     private:
         std::unique_ptr<priv::IShapeImpl> pimpl_;
         Type type_;              //!< The type of this shape
+        Scene* scene_;
     };
 }
 

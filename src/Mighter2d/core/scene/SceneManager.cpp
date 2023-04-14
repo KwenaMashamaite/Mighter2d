@@ -320,10 +320,10 @@ namespace mighter2d::priv {
             const sf::View& view = std::any_cast<std::reference_wrapper<const sf::View>>(camera->getInternalView()).get();
             renderWindow.getThirdPartyWindow().setView(view);
 
-            if (scene->hasGrid2D_) {
+            /*if (scene->hasGrid2D_) {
                 scene->grid2D_->draw(renderWindow);
                 scene->gridMovers_.render(renderWindow);
-            }
+            }*/
 
             scene->renderLayers_.render(renderWindow);
 
@@ -331,7 +331,7 @@ namespace mighter2d::priv {
             scene->guiContainer_->draw();
 
             // Render camera outline
-            static RectangleShape camOutline;
+            RectangleShape camOutline(*scene);
 
             auto [x, y, width, height] = camera->getBounds();
             camOutline.setSize({width, height});

@@ -33,6 +33,8 @@
 #include <memory>
 
 namespace mighter2d {
+    class Scene;
+
     /**
      * @brief A Grid tile
      */
@@ -43,7 +45,7 @@ namespace mighter2d {
          * @param size Size of the tile
          * @param position Position of the tile
          */
-        Tile(Vector2u size, Vector2f position);
+        Tile(Scene& scene, Vector2u size, Vector2f position);
 
         /**
          * @brief Copy constructor
@@ -106,25 +108,6 @@ namespace mighter2d {
          * @return The size of the tile
          */
         Vector2u getSize() const;
-
-        /**
-         * @brief Show or hide the tile
-         * @param visible True to show or false to hide
-         *
-         * When hidden the tile will not be shown on the render target,
-         * However it can still be collided with if its collidable
-         *
-         * By default, the tile is visible
-         *
-         * @see setCollidable
-         */
-        void setVisible(bool visible);
-
-        /**
-         * @brief Check whether or not the tile is visible
-         * @return True if visible, otherwise false
-         */
-        bool isVisible() const;
 
         /**
          * @brief Set the index of the tile in the grid
@@ -221,14 +204,6 @@ namespace mighter2d {
         bool contains(Vector2f point) const;
 
         /**
-         * @brief Toggle the visibility of the tile
-         *
-         * This function will hide the tile if its currently
-         * visible or show it if it is currently hidden
-         */
-        void toggleVisibility();
-
-        /**
          * @brief Swap the contents of this tile with that of another tile
          * @param other The tile to swap contents with
          */
@@ -252,7 +227,6 @@ namespace mighter2d {
         char id_;               //!< Tile id
         Index index_;           //!< Position of the tile in the grid
         RectangleShape tile_;   //!< Tile
-        Colour prevFillColour_; //!< Tiles fill colour before it was hidden
         bool isCollidable_;     //!< A flag indicating whether or not the tile is collidable
     };
 }

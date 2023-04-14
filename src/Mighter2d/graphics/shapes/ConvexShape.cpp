@@ -41,8 +41,8 @@ namespace mighter2d {
     # ConvexShape class
     =-----------------------------------------------------------------------*/
 
-    ConvexShape::ConvexShape(std::size_t pointCount) :
-        Shape(std::make_unique<priv::ShapeImpl<sf::ConvexShape>>(
+    ConvexShape::ConvexShape(Scene& scene, std::size_t pointCount) :
+        Shape(scene, std::make_unique<priv::ShapeImpl<sf::ConvexShape>>(
             std::make_shared<sf::ConvexShape>(pointCount)), Type::Convex),
         pimpl_{std::make_unique<ConvexShapeImpl>(std::static_pointer_cast<sf::Shape>(getInternalPtr()))}
     {}
@@ -63,8 +63,8 @@ namespace mighter2d {
     ConvexShape::ConvexShape(ConvexShape &&) noexcept = default;
     ConvexShape &ConvexShape::operator=(ConvexShape &&) noexcept = default;
 
-    ConvexShape::Ptr ConvexShape::create(std::size_t pointCount) {
-        return std::make_unique<ConvexShape>(pointCount);
+    ConvexShape::Ptr ConvexShape::create(Scene& scene, std::size_t pointCount) {
+        return std::make_unique<ConvexShape>(scene, pointCount);
     }
 
     ConvexShape::Ptr ConvexShape::copy() const {

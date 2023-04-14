@@ -27,6 +27,7 @@
 #include "Mighter2d/graphics/shapes/RectangleShape.h"
 #include "Mighter2d/graphics/RenderTarget.h"
 #include "Mighter2d/utility/Utils.h"
+#include "Mighter2d/core/scene/Scene.h"
 
 namespace mighter2d {
     TargetGridMover::TargetGridMover(Grid &grid, GridObject* target) :
@@ -271,7 +272,7 @@ namespace mighter2d {
                 Index index = path.top();
                 path.pop();
                 Vector2u gridTileSize = getGrid().getTileSize();
-                static RectangleShape shape;
+                RectangleShape shape(getScene());
                 shape.setSize(Vector2f{static_cast<float>(gridTileSize.x), static_cast<float>(gridTileSize.y)});
                 shape.setPosition(getGrid().getTile(index).getPosition());
 

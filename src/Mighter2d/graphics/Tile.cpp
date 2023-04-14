@@ -26,14 +26,14 @@
 #include "Mighter2d/graphics/RenderTarget.h"
 
 namespace mighter2d {
-    Tile::Tile(Vector2u size, Vector2f position) :
+    Tile::Tile(Scene& scene, Vector2u size, Vector2f position) :
+        Drawable(scene),
         id_{'\0'},
         index_{-1, -1},
-        tile_({static_cast<float>(size.x), static_cast<float>(size.y)}),
+        tile_(scene, {static_cast<float>(size.x), static_cast<float>(size.y)}),
         isCollidable_{false}
     {
         tile_.setFillColour(Colour::White);
-        prevFillColour_ = tile_.getFillColour();
         tile_.setPosition(position);
     }
 
@@ -42,7 +42,6 @@ namespace mighter2d {
         id_{other.id_},
         index_{other.index_},
         tile_{other.tile_},
-        prevFillColour_{other.prevFillColour_},
         isCollidable_{other.isCollidable_}
     {}
 
@@ -57,7 +56,6 @@ namespace mighter2d {
         swap(id_, other.id_);
         swap(index_, other.index_);
         swap(tile_, other.tile_);
-        swap(prevFillColour_, other.prevFillColour_);
         swap(isCollidable_, other.isCollidable_);
     }
 
@@ -131,28 +129,6 @@ namespace mighter2d {
 
     void Tile::draw(priv::RenderTarget &renderTarget) const {
         renderTarget.draw(tile_);
-    }
-
-    void Tile::setVisible(bool visible) {
-        if (isVisible() == visible)
-            return;
-
-        if (visible)
-            tile_.setFillColour(prevFillColour_);
-        else {
-            prevFillColour_ = tile_.getFillColour();
-            tile_.setFillColour(Colour::Transparent);
-        }
-
-        emitChange(Property{"visible", isVisible()});
-    }
-
-    bool Tile::isVisible() const {
-        return tile_.getFillColour() != Colour::Transparent;
-    }
-
-    void Tile::toggleVisibility() {
-        setVisible(!isVisible());
     }
 
     bool Tile::isCollidable() const {

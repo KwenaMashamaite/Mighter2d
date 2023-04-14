@@ -40,8 +40,9 @@ namespace mighter2d {
         /**
          * @brief Default constructor
          * @param pointCount The number of points of the polygon
+         * @param scene The scene the shape belongs to
          */
-        explicit ConvexShape(std::size_t pointCount = 0);
+        explicit ConvexShape(Scene& scene, std::size_t pointCount = 0);
 
         /**
          * @brief Copy constructor
@@ -66,9 +67,10 @@ namespace mighter2d {
         /**
          * @brief Create a new convex shape
          * @param pointCount The number of points of the polygon
+         * @param scene The scene the shape belongs to
          * @return The created convex shape shape
          */
-        static ConvexShape::Ptr create(std::size_t pointCount = 0);
+        static ConvexShape::Ptr create(Scene& scene, std::size_t pointCount = 0);
 
         /**
          * @brief Create a copy of this shape

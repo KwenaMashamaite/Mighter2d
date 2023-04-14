@@ -124,6 +124,13 @@ namespace mighter2d {
         static GridMover::Ptr create(Grid& grid, GridObject* gameObject = nullptr);
 
         /**
+         * @brief Get the scene the grid mover belongs to
+         * @return The scene the grid mover belongs to
+         */
+        Scene& getScene();
+        Scene& getScene() const;
+
+        /**
          * @brief Get the name of this class
          * @return The name of this class
          *
@@ -638,7 +645,8 @@ namespace mighter2d {
 
     private:
         Type type_;                    //!< The type of the grid mover
-        Grid& grid_;             //!< Grid to move entity in
+        Grid& grid_;                   //!< Grid to move entity in
+        Scene* scene_;                 //!< The scene the grid mover belongs to
         GridObject* target_;           //!< Target to be moved in the grid
         Vector2f maxSpeed_;            //!< The maximum speed of the game object
         float speedMultiplier_;        //!< A normal speed multiplier
@@ -652,7 +660,6 @@ namespace mighter2d {
         MoveRestriction moveRestrict_; //!< Specified permitted directions of travel for the game object
         int targetDestructionId_;      //!< Target destruction handler id
         int targetPropertyChangeId_;   //!< Target property change listener id
-        bool isInternalHandler_;       //!< A flag indicating whether or not an event handler is internal
     };
 }
 

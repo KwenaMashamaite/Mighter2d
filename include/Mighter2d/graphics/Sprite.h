@@ -244,30 +244,6 @@ namespace mighter2d {
         unsigned int getOpacity() const;
 
         /**
-         * @brief Show or hide the sprite
-         * @param visible True to show or false to hide
-         *
-         * When hidden the sprite will not be shown on the render target
-         *
-         * By default, the sprite is visible
-         */
-        void setVisible(bool visible);
-
-        /**
-         * @brief Check whether or not the sprite is visible
-         * @return True if visible, otherwise false
-         */
-        bool isVisible() const;
-
-        /**
-         * @brief Toggle the visibility of the sprite
-         *
-         * This function will hide the sprite if its currently
-         * visible or show it if it is currently hidden
-         */
-        void toggleVisibility();
-
-        /**
          * @brief Get the local bounding rectangle of the sprite
          * @return Local bounding rectangle of the sprite
          *

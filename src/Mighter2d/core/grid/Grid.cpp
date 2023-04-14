@@ -41,7 +41,8 @@ namespace mighter2d {
     Grid::Grid(unsigned int tileWidth, unsigned int tileHeight, Scene& scene) :
         scene_{scene},
         tileSpacing_{1u},
-        invalidTile_({0, 0}, {-1, -1})
+        invalidTile_(scene, {0, 0}, {-1, -1}),
+        backgroundTile_(scene)
     {
         invalidTile_.setIndex({-1, -1});
         mapPos_ = {0, 0};
@@ -183,7 +184,7 @@ namespace mighter2d {
         for (auto i = 0u; i < mapData_.size(); i++) {
             auto row = std::vector<Tile>{};
             for (auto j = 0u; j < mapData_[i].size(); j++) {
-                row.emplace_back(Tile(tileSize_, {-99, -99}));
+                row.emplace_back(Tile(scene_, tileSize_, {-99, -99}));
                 if (i == 0 && j == 0)
                     row.back().setPosition(mapPos_.x + tileSpacing_, mapPos_.y + tileSpacing_);
                 else if (j == 0)

@@ -27,7 +27,7 @@
 #include "Mighter2d/graphics/RenderTarget.h"
 #include <algorithm>
 
-namespace mighter2d {
+namespace mighter2d::priv {
     RenderLayer::RenderLayer(unsigned int index, const std::string& name) :
         index_{index},
         name_{name},
@@ -110,7 +110,10 @@ namespace mighter2d {
 
     void RenderLayer::render(priv::RenderTarget &window) const {
         std::for_each(drawables_.begin(), drawables_.end(), [&window](auto& pair) {
-            pair.second.first.get().draw(window);
+            auto& drawable = pair.second.first.get();
+
+            if (drawable.isVisible())
+                drawable.draw(window);
         });
     }
 

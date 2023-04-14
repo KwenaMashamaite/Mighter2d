@@ -26,11 +26,18 @@
 #define MIGHTER2D_RENDERLAYERCONTAINER_H
 
 #include "Mighter2d/Config.h"
-#include "Mighter2d/core/scene/RenderLayer.h"
+#include "Mighter2d/core/object/Object.h"
+#include "Mighter2d/graphics/Drawable.h"
 #include <functional>
 #include <map>
+#include <memory>
 
 namespace mighter2d {
+    namespace priv {
+        class RenderLayer;
+        class RenderTarget;
+    }
+
     /**
      * @brief Stores and manages a scene's render layers
      *
@@ -59,8 +66,6 @@ namespace mighter2d {
      */
     class MIGHTER2D_API RenderLayerContainer : public Object {
     public:
-        using Callback = std::function<void(const RenderLayer::Ptr&)>; //!< Callback
-
         /**
          * @brief Copy constructor
          */
@@ -82,23 +87,7 @@ namespace mighter2d {
         RenderLayerContainer& operator=(RenderLayerContainer&&) noexcept = default;
 
         /**
-         * @brief Create a layer
-         * @param name The name of the layer to be created
-         * @return The created layer
-         *
-         * Note that the container keeps a pointer to the layer after it is
-         * created, therefore you don't need to keep the returned pointer
-         * alive after using it
-         *
-         * @warning The name of the layer must be unique, that is, another
-         * layer must not exist in the container with the same name as
-         * @a name otherwise it is undefined behaviour
-         *
-         * @see removeByTag, removeByIndex and removeAll
-         */
-        RenderLayer::Ptr create(const std::string& name);
-
-        /**
+         * @internal
          * @brief Add a drawable object to a render layer in the container
          * @param drawable The drawable object to be added
          * @param renderOrder The render order of the object in the render layer
@@ -112,6 +101,8 @@ namespace mighter2d {
          * to this function already exists in the container otherwise undefined
          * behavior
          *
+         * @note This function is internal fro internal use only
+         *
          * @see mighter2d::Scene::getRenderLayers
          */
         void add(Drawable& drawable, int renderOrder = 0u, const std::string& renderLayer = "default");
@@ -121,44 +112,6 @@ namespace mighter2d {
          * @return The name of this class
          */
         std::string getClassName() const override;
-
-        /**
-         * @brief Get the render layer at the front
-         * @return The layer at the front or a nullptr if the container is
-         *         empty
-         *
-         * @see back
-         */
-        RenderLayer::Ptr front() const;
-
-        /**
-         * @brief Get the render layer at the back
-         * @return The render layer at the back or a nullptr if the container
-         *         is empty
-         *
-         * @see front
-         */
-        RenderLayer::Ptr back() const;
-
-        /**
-         * @brief Get the layer at a given index
-         * @param index The index of the layer to retrieve
-         * @return The index at the specified index or a nullptr if the index
-         *         is out of bounds
-         *
-         * @see findByTag
-         */
-        RenderLayer::Ptr findByIndex(unsigned int index) const;
-
-        /**
-         * @brief Get a layer with the given name
-         * @param name The name of the layer to retrieve
-         * @return The layer with the given name or a nullptr if the layer
-         *         does not exits
-         *
-         * @see findByIndex
-         */
-        RenderLayer::Ptr findByName(const std::string& name) const;
 
         /**
          * @brief Check if a given index is within bounds or not
@@ -322,12 +275,6 @@ namespace mighter2d {
         std::size_t getCount() const;
 
         /**
-         * @brief Execute a callback for each layer in the container
-         * @param callback The callback to be executed
-         */
-        void forEachLayer(const Callback& callback) const;
-
-        /**
          * @internal
          * @brief Render all the layers
          * @param window The window to render layers on
@@ -336,6 +283,39 @@ namespace mighter2d {
          * should never be called outside of Mighter2d
          */
         void render(priv::RenderTarget& window) const;
+
+        /**
+         * @internal
+         * @brief Create a layer
+         * @param name The name of the layer to be created
+         * @return The created layer
+         *
+         * Note that the container keeps a pointer to the layer after it is
+         * created, therefore you don't need to keep the returned pointer
+         * alive after using it
+         *
+         * @warning The name of the layer must be unique, that is, another
+         * layer must not exist in the container with the same name as
+         * @a name otherwise it is undefined behaviour
+         *
+         * @note This function is internal fro internal use only
+         *
+         * @see removeByTag, removeByIndex and removeAll
+         */
+        std::shared_ptr<priv::RenderLayer> create(const std::string& name);
+
+        /**
+         * @internal
+         * @brief Get a layer with the given name
+         * @param name The name of the layer to retrieve
+         * @return The layer with the given name or a nullptr if the layer
+         *         does not exits
+         *
+         * @note This function is internal fro internal use only
+         *
+         * @see findByIndex
+         */
+        std::shared_ptr<priv::RenderLayer> findByName(const std::string& name) const;
         
         /**
          * @brief Destructor
@@ -349,7 +329,7 @@ namespace mighter2d {
         RenderLayerContainer() = default;
 
     private:
-        std::map<unsigned int, RenderLayer::Ptr> layers_;   //!< Layers container
+        std::map<unsigned int, std::shared_ptr<priv::RenderLayer>> layers_;   //!< Layers container
         std::map<std::string, unsigned int> inverseLayers_; //!< Layers container with keys and values swapped
 
         //!> Needs access to the constructor

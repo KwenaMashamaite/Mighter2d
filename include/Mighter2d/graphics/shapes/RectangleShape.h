@@ -40,8 +40,9 @@ namespace mighter2d {
         /**
          * @brief Default constructor
          * @param size The size of the rectangle
+         * @param scene The scene the shape belongs to
          */
-        explicit RectangleShape(const Vector2f& size = Vector2f(0, 0));
+        explicit RectangleShape(Scene& scene, const Vector2f& size = Vector2f(0, 0));
 
         /**
          * @brief Copy constructor
@@ -66,9 +67,10 @@ namespace mighter2d {
         /**
          * @brief Create a new rectangle shape
          * @param size The size of the rectangle
+         * @param scene The scene the shape belongs to
          * @return The created rectangle shape
          */
-        static RectangleShape::Ptr create(const Vector2f& size = Vector2f(0, 0));
+        static RectangleShape::Ptr create(Scene& scene, const Vector2f& size = Vector2f(0, 0));
 
         /**
          * @brief Create a copy of this shape

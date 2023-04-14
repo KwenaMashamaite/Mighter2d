@@ -36,16 +36,12 @@ namespace mighter2d {
     //////////////////////////////////////////////////////////////////////////
     struct Sprite::SpriteImpl {
         explicit SpriteImpl(Sprite& sprite) :
-            isVisible_{true},
-            prevSpriteColour_{Colour::Transparent},
             animator_{sprite},
             texture_{std::make_shared<Texture>()}
         {}
 
         SpriteImpl(const SpriteImpl& other) :
             sprite_{other.sprite_},
-            isVisible_{other.isVisible_},
-            prevSpriteColour_{other.prevSpriteColour_},
             animator_{other.animator_},
             texture_{std::make_shared<Texture>(*other.texture_)}
         {}
@@ -72,8 +68,6 @@ namespace mighter2d {
 
         void swap(SpriteImpl &other) {
             std::swap(sprite_, other.sprite_);
-            std::swap(isVisible_, other.isVisible_);
-            std::swap(prevSpriteColour_, other.prevSpriteColour_);
             std::swap(animator_, other.animator_);
             std::swap(texture_, other.texture_);
         }
@@ -142,8 +136,7 @@ namespace mighter2d {
         }
 
         void draw(priv::RenderTarget &renderTarget) const {
-            if (isVisible_)
-                renderTarget.getThirdPartyWindow().draw(sprite_);
+            renderTarget.getThirdPartyWindow().draw(sprite_);
         }
 
         void setColour(Colour colour) {
@@ -161,24 +154,6 @@ namespace mighter2d {
 
         Colour getColour() const {
             return utility::convertFrom3rdPartyColour(sprite_.getColor());
-        }
-
-        void setVisible(bool visible) {
-            if (isVisible_ == visible)
-                return;
-
-            if (visible) {
-                isVisible_ = true;
-                setColour(prevSpriteColour_);
-            } else {
-                isVisible_ = false;
-                prevSpriteColour_ = getColour();
-                sprite_.setColor(sf::Color::Transparent);
-            }
-        }
-
-        bool isVisible() const {
-            return isVisible_;
         }
 
         void setOrigin(float x, float y) {
@@ -207,8 +182,6 @@ namespace mighter2d {
 
     private:
         sf::Sprite sprite_;           //!< Third party sprite
-        bool isVisible_;              //!< Flags whether or not the sprite is visible
-        Colour prevSpriteColour_;     //!< Sprite colour before it was hidden
         Animator animator_;           //!< Sprite animator
         std::shared_ptr<Texture> texture_; //!< Keeps sf::Texture alive for sf::Sprite
     }; // class Impl
@@ -218,6 +191,7 @@ namespace mighter2d {
      =-----------------------------------------------------------------------*/
 
     Sprite::Sprite(Scene& scene) :
+        Drawable(scene),
         scene_(&scene),
         pImpl_{std::make_unique<SpriteImpl>(*this)}
     {
@@ -430,22 +404,6 @@ namespace mighter2d {
 
     unsigned int Sprite::getOpacity() const {
         return pImpl_->getOpacity();
-    }
-
-    void Sprite::setVisible(bool visible) {
-        if (isVisible() == visible)
-            return;
-
-        pImpl_->setVisible(visible);
-        emitChange(Property{"visible", visible});
-    }
-
-    bool Sprite::isVisible() const {
-        return pImpl_->isVisible();
-    }
-
-    void Sprite::toggleVisibility() {
-        setVisible(!isVisible());
     }
 
     void Sprite::setOrigin(float x, float y) {

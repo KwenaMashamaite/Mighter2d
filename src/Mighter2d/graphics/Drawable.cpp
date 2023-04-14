@@ -23,8 +23,63 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "Mighter2d/graphics/Drawable.h"
+#include "Mighter2d/core/scene/Scene.h"
+#include "Mighter2d/core/scene/RenderLayer.h"
 
 namespace mighter2d {
+    namespace {
+        priv::RenderLayer* getLayer(Scene& scene, const std::string& name) {
+            RenderLayerContainer& renderLayers = scene.getRenderLayers();
+            priv::RenderLayer::Ptr renderLayer = renderLayers.findByName(name);
+
+            if (renderLayer)
+                return renderLayer.get();
+            else
+                return renderLayers.create(name).get();
+        }
+    }
+
+    Drawable::Drawable(Scene &scene) :
+        scene_(&scene),
+        isVisible_(true)
+    {
+        setRenderLayer("default", 0);
+    }
+
+    void Drawable::setRenderLayer(const std::string &renderLayer, int renderOrder) {
+        if (renderLayer_ != renderLayer) {
+            renderLayer_ = renderLayer;
+            renderOrder_ = renderOrder;
+
+            getLayer(*scene_, renderLayer)->add(*this, renderOrder);
+            emitChange(Property{"renderLayer", renderLayer});
+        }
+    }
+
+    std::string Drawable::getRenderLayer() const {
+        return renderLayer_;
+    }
+
+    unsigned int Drawable::getRenderOrder() const {
+        return renderOrder_;
+    }
+
+    void Drawable::setVisible(bool visible) {
+        if (isVisible_ != visible) {
+            isVisible_ = visible;
+
+            emitChange(Property{"visible", visible});
+        }
+    }
+
+    bool Drawable::isVisible() const {
+        return isVisible_;
+    }
+
+    void Drawable::toggleVisibility() {
+        setVisible(!isVisible());
+    }
+
     std::string Drawable::getClassType() const {
         return "Drawable";
     }

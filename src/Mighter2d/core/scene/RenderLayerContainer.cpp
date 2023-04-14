@@ -23,13 +23,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "Mighter2d/core/scene/RenderLayerContainer.h"
+#include "Mighter2d/core/scene/RenderLayer.h"
 #include <algorithm>
 
 namespace mighter2d {
-    RenderLayer::Ptr RenderLayerContainer::create(const std::string& name) {
+    priv::RenderLayer::Ptr RenderLayerContainer::create(const std::string& name) {
         MIGHTER2D_ASSERT(!hasLayer(name), "The render layer '" + name + "' already exists, try a different name");
         auto index = layers_.empty() ? 0 : ((*(layers_.rbegin())).first + 1);
-        auto layer = RenderLayer::Ptr(new RenderLayer(index, name));
+        auto layer = priv::RenderLayer::Ptr(new priv::RenderLayer(index, name));
 
         layers_.insert({index, layer});
         inverseLayers_.insert({name, index});
@@ -63,28 +64,7 @@ namespace mighter2d {
         return "RenderLayerContainer";
     }
 
-    RenderLayer::Ptr RenderLayerContainer::front() const {
-        if (layers_.empty())
-            return nullptr;
-
-        return layers_.begin()->second;
-    }
-
-    RenderLayer::Ptr RenderLayerContainer::back() const {
-        if (layers_.empty())
-            return nullptr;
-
-        return (layers_.rbegin())->second;
-    }
-
-    RenderLayer::Ptr RenderLayerContainer::findByIndex(unsigned int index) const {
-        if (isIndexValid(index))
-            return layers_.at(index);
-
-        return nullptr;
-    }
-
-    RenderLayer::Ptr RenderLayerContainer::findByName(const std::string &name) const {
+    priv::RenderLayer::Ptr RenderLayerContainer::findByName(const std::string &name) const {
         if (hasLayer(name))
             return layers_.at(inverseLayers_.at(name));
 
@@ -225,12 +205,6 @@ namespace mighter2d {
 
     std::size_t RenderLayerContainer::getCount() const {
         return layers_.size();
-    }
-
-    void RenderLayerContainer::forEachLayer(const Callback& callback) const {
-        std::for_each(layers_.begin(), layers_.end(), [&callback](auto& pair) {
-            callback(pair.second);
-        });
     }
 
     void RenderLayerContainer::render(priv::RenderTarget &window) const {

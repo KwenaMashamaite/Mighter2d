@@ -40,6 +40,7 @@ namespace mighter2d {
     GridMover::GridMover(Type type, Grid &grid, GridObject* target) :
         type_{type},
         grid_(grid),
+        scene_(&grid.getScene()),
         target_{nullptr},
         maxSpeed_{Vector2f{60.f, 60.f}},
         speedMultiplier_{1.0f},
@@ -50,16 +51,14 @@ namespace mighter2d {
         isMoveFrozen_{false},
         moveRestrict_{MoveRestriction::None},
         targetDestructionId_{-1},
-        targetPropertyChangeId_{-1},
-        isInternalHandler_{false}
+        targetPropertyChangeId_{-1}
     {
         setTarget(target);
 
-        auto& scene = grid.getScene();
-        scene.addUpdatable(this);
+        scene_->addUpdatable(this);
 
-        onDestruction([&scene, this] {
-            scene.removeUpdatable(this);
+        onDestruction([this] {
+            scene_->removeUpdatable(this);
         });
     }
 
@@ -69,6 +68,14 @@ namespace mighter2d {
 
     GridMover::Ptr GridMover::create(Grid &grid, GridObject *gameObject) {
         return std::make_unique<GridMover>(grid, gameObject);
+    }
+
+    Scene &GridMover::getScene() {
+        return *scene_;
+    }
+
+    Scene &GridMover::getScene() const {
+        return *scene_;
     }
 
     std::string GridMover::getClassType() const {

@@ -41,8 +41,8 @@ namespace mighter2d {
      # CircleShape class
      =-----------------------------------------------------------------------*/
 
-    CircleShape::CircleShape(float radius) :
-        Shape(std::make_unique<priv::ShapeImpl<sf::CircleShape>>(
+    CircleShape::CircleShape(Scene& scene, float radius) :
+        Shape(scene, std::make_unique<priv::ShapeImpl<sf::CircleShape>>(
             std::make_shared<sf::CircleShape>(radius)),Type::Circle),
         pimpl_{std::make_unique<CircleShapeImpl>(std::static_pointer_cast<sf::Shape>(getInternalPtr()))}
     {}
@@ -64,8 +64,8 @@ namespace mighter2d {
     CircleShape::CircleShape(CircleShape &&) noexcept = default;
     CircleShape &CircleShape::operator=(CircleShape &&) noexcept = default;
 
-    CircleShape::Ptr CircleShape::create(float radius) {
-        return std::make_unique<CircleShape>(radius);
+    CircleShape::Ptr CircleShape::create(Scene& scene, float radius) {
+        return std::make_unique<CircleShape>(scene, radius);
     }
 
     CircleShape::Ptr CircleShape::copy() const {

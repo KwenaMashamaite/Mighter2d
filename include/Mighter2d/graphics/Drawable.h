@@ -29,6 +29,7 @@
 #include "Mighter2d/core/object/Object.h"
 
 namespace mighter2d {
+    class Scene;
 
     /// @internal
     namespace priv {
@@ -36,10 +37,74 @@ namespace mighter2d {
     }
 
     /**
-     * @brief Interface for drawable objects
+     * @brief Class for objects drawable on a widow
      */
     class MIGHTER2D_API Drawable : public Object {
     public:
+        /**
+         * @brief Constructor
+         * @param scene The scene the drawable belongs to
+         */
+        explicit Drawable(Scene& scene);
+
+        /**
+         * @brief Set the drawables render layer
+         * @param renderLayer The render layer to set
+         * @param renderOrder The render order of the drawable
+         */
+        void setRenderLayer(const std::string& renderLayer, int renderOrder = 0);
+
+        /**
+         * @brief Get the render layer
+         * @return The render layer
+         */
+        std::string getRenderLayer() const;
+
+        /**
+         * @brief Get the render order
+         * @return The render order
+         */
+        unsigned int getRenderOrder() const;
+
+        /**
+         * @brief Show or hide the drawable
+         * @param visible True to show or false to hide
+         *
+         * When hidden the drawable will not be shown on the render target
+         *
+         * By default, the drawable is visible
+         *
+         * @see isVisible
+         */
+        void setVisible(bool visible);
+
+        /**
+         * @brief Check whether or not the drawable is visible
+         * @return True if visible, otherwise false
+         *
+         * @see setVisible
+         */
+        bool isVisible() const;
+
+        /**
+         * @brief Toggle the visibility of the drawable
+         *
+         * This function will hide the sprite if its currently
+         * visible or show it if it is currently hidden
+         *
+         * @see setVisible
+         */
+        void toggleVisibility();
+
+        /**
+         * @brief Draw object on a render target
+         * @param renderTarget Target to draw object on
+         *
+         * @note Note that this function will be called automatically
+         * by the scene the drawable belongs to
+         */
+        virtual void draw(priv::RenderTarget &renderTarget) const = 0;
+
         /**
          * @brief Get the name of this class
          * @return The name of this class
@@ -52,17 +117,15 @@ namespace mighter2d {
         std::string getClassType() const override;
 
         /**
-         * @brief Draw object on a render target
-         * @param renderTarget Target to draw object on
-         *
-         * @note This function is intended for internal use only
-         */
-        virtual void draw(priv::RenderTarget &renderTarget) const = 0;
-
-        /**
          * @brief Destructor
          */
         ~Drawable() override;
+
+    private:
+        Scene* scene_;
+        std::string renderLayer_;
+        int renderOrder_;
+        bool isVisible_;
     };
 }
 
