@@ -274,9 +274,11 @@ namespace mighter2d::ui {
         pimpl_{std::make_unique<GuiContainerImpl>()}
     {
         scene.addUpdatable(this);
+        scene.addSystemEventHandler(this);
 
-        onDestruction([&scene, this] {
-            scene.removeUpdatable(this);
+        onDestruction([this] {
+            scene_->removeUpdatable(this);
+            scene_->removeSystemEventHandler(this);
         });
     }
 
@@ -328,7 +330,7 @@ namespace mighter2d::ui {
         return pimpl_->getView();
     }
 
-    void GuiContainer::handleEvent(Event event) {
+    void GuiContainer::handleEvent(const Event& event) {
         pimpl_->handleEvent(event);
     }
 

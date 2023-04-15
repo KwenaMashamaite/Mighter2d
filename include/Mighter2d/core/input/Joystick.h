@@ -27,9 +27,11 @@
 
 #include "Mighter2d/Config.h"
 #include "Mighter2d/core/event/EventEmitter.h"
+#include "Mighter2d/common/ISystemEventHandler.h"
 
 namespace mighter2d {
     class Event;
+    class Scene;
 
     namespace input {
         /**
@@ -50,7 +52,7 @@ namespace mighter2d {
          * This class is not meant to be instantiated directly, use
          * mighter2d::Scene::getInput or mighter2d::Engine::getInputManager
          */
-        class MIGHTER2D_API Joystick {
+        class MIGHTER2D_API Joystick : public ISystemEventHandler {
         public:
             /**
              * @brief Joystick related constants
@@ -98,8 +100,9 @@ namespace mighter2d {
              * @internal
              * @brief Constructor
              * @param index The index of the joystick
+             * @param scene The scene the joystick belongs to
              */
-            explicit Joystick(unsigned int index);
+            explicit Joystick(Scene& scene, unsigned int index);
 
             /**
              * @brief Check if the joystick is connected or not
@@ -269,10 +272,12 @@ namespace mighter2d {
              * @brief Handle a system event
              * @param event Event to be handled
              *
-             * @warning This function is intended for internal use only and
-             * should never be called outside of Mighter2d
+             * @note This function will be called automatically by the scene
+             * the joystick belongs to
+             *
+             * @warning This function is intended for internal use only
              */
-            void handleEvent(Event event);
+            void handleEvent(const Event& event) override;
 
             /**
              * @internal
@@ -283,7 +288,13 @@ namespace mighter2d {
              */
             void update();
 
+            /**
+             * @brief Destructor
+             */
+            ~Joystick();
+
         private:
+            Scene* scene_;
             bool isEnabled_;                                 //!< A flag indicating whether or not the joystick is enabled
             unsigned int index_;                             //!< Joystick identifier
             EventEmitter emitter_;                           //!< Emits events

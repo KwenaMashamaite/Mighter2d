@@ -24,13 +24,17 @@
 
 #include "Mighter2d/core/input/Joystick.h"
 #include "Mighter2d/core/event/Event.h"
+#include "Mighter2d/core/scene/Scene.h"
 #include <SFML/Window/Joystick.hpp>
 
 namespace mighter2d::input {
-    Joystick::Joystick(unsigned int index) :
+    Joystick::Joystick(Scene& scene, unsigned int index) :
+        scene_(&scene),
         isEnabled_{true},
         index_{index}
     {
+        scene_->addSystemEventHandler(this);
+
         for (auto i = 0u; i < Joystick::ButtonCount - 1; ++i)
             wasDown_[i] = false;
     }
@@ -125,7 +129,7 @@ namespace mighter2d::input {
         }
     }
 
-    void Joystick::handleEvent(Event event) {
+    void Joystick::handleEvent(const Event& event) {
         if (event.joystickButton.joystickId == index_) {
             if (event.type == Event::JoystickConnected || event.type == Event::JoystickDisconnected) {
                 emitter_.emit(event.type == Event::JoystickConnected ? "connect" : "disconnect");
@@ -158,5 +162,9 @@ namespace mighter2d::input {
                     emitter_.emit("buttonHeld", button);
             }
         }
+    }
+
+    Joystick::~Joystick() {
+        scene_->removeSystemEventHandler(this);
     }
 }

@@ -27,10 +27,12 @@
 
 #include "Mighter2d/Config.h"
 #include "Mighter2d/core/event/EventEmitter.h"
+#include "Mighter2d/common/ISystemEventHandler.h"
 #include <unordered_map>
 
 namespace mighter2d {
     class Event;
+    class Scene;
 
     /**
      * @brief Keyboard events
@@ -48,7 +50,7 @@ namespace mighter2d {
          * This class is not meant to be instantiated directly, use
          * mighter2d::Scene::getInput or mighter2d::Engine::getInputManager
          */
-        class MIGHTER2D_API Keyboard {
+        class MIGHTER2D_API Keyboard : public ISystemEventHandler {
         public:
             /**
              * @brief keyboard key codes
@@ -162,8 +164,9 @@ namespace mighter2d {
 
             /**
              * @brief Default constructor
+             * @param scene The scene the keyboard belongs to
              */
-            Keyboard();
+            explicit Keyboard(Scene& scene);
 
             /**
              * @brief Enable or disable the keyboard
@@ -286,12 +289,20 @@ namespace mighter2d {
              * @brief Handle a system event
              * @param event Event to be handled
              *
-             * @warning This function is intended for internal use only and
-             * should never be called outside of Mighter2d
+             * @note This function will be called automatically by the
+             * scene the keyboard belongs to
+             *
+             * @warning This function is intended for internal use only
              */
-            void handleEvent(Event event);
+            void handleEvent(const Event& event) override;
+
+            /**
+             * @brief Destructor
+             */
+            ~Keyboard();
 
         private:
+            Scene* scene_;                          //!< The scene the keyboard belongs to
             EventEmitter eventEmitter_;             //!< Event publisher
             std::unordered_map<int, bool> wasDown_; //!< The state of a key in the previous frame
             inline static std::unordered_map<std::string, Key> stringKeyPairs_{};

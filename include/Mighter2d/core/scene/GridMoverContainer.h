@@ -55,16 +55,6 @@ namespace mighter2d {
 
         /**
          * @internal
-         * @brief Handle a system event
-         * @param event The system event to be handled
-         *
-         * @warning This function is intended for internal use only and
-         * should never be called outside of Mighter2d
-         */
-        void handleEvent(Event event);
-
-        /**
-         * @internal
          * @brief Render the grid movers path
          * @param window Window to render path on
          *

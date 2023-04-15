@@ -28,9 +28,11 @@
 #include "Mighter2d/Config.h"
 #include "Mighter2d/common/Vector2.h"
 #include "Mighter2d/core/event/EventEmitter.h"
+#include "Mighter2d/common/ISystemEventHandler.h"
 
 namespace mighter2d {
     class Event;
+    class Scene;
 
     /**
      * @brief Mouse events
@@ -49,7 +51,7 @@ namespace mighter2d {
          * This class is not meant to be instantiated directly, use
          * mighter2d::Scene::getInput or mighter2d::Engine::getInputManager
          */
-        class MIGHTER2D_API Mouse {
+        class MIGHTER2D_API Mouse : public ISystemEventHandler {
         public:
             /**
              * @brief Mouse buttons
@@ -69,6 +71,12 @@ namespace mighter2d {
                 VerticalWheel,  //!< The vertical mouse wheel
                 HorizontalWheel //!< The horizontal mouse wheel
             };
+
+            /**
+             * @brief Constructor
+             * @param scene The scene the mouse belongs to
+             */
+            explicit Mouse(Scene& scene);
 
             /**
              * @brief Enable or disable the mouse
@@ -239,15 +247,23 @@ namespace mighter2d {
 
             /**
              * @internal
-            * @brief Handle a system event
-            * @param event Event to be handled
+             * @brief Handle a system event
+             * @param event Event to be handled
              *
-             * @warning This function is intended for internal use only and
-             * should never be called outside of Mighter2d
-            */
-            void handleEvent(Event event);
+             * @note This function will be called automatically by thw scene
+             * th mouse belongs to
+             *
+             * @warning This function is intended for internal use only
+             */
+            void handleEvent(const Event& event) override;
+
+            /**
+             * @brief Destructor
+             */
+            ~Mouse();
 
         private:
+            Scene* scene_;
             EventEmitter eventEmitter_; //!< Event publisher
         };
     }

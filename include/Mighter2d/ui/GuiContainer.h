@@ -33,6 +33,7 @@
 #include "Mighter2d/core/event/Event.h"
 #include "Mighter2d/core/object/Object.h"
 #include "Mighter2d/graphics/Drawable.h"
+#include "Mighter2d/common/ISystemEventHandler.h"
 #include <string>
 #include <memory>
 
@@ -57,7 +58,7 @@ namespace mighter2d {
          * This class is not meant to be instantiated directly, use
          * mighter2d::Scene::getGui or mighter2d::Engine::getGui
          */
-        class MIGHTER2D_API GuiContainer : public Drawable, public IUpdatable {
+        class MIGHTER2D_API GuiContainer : public Drawable, public IUpdatable, public ISystemEventHandler {
         public:
             using Ptr = std::shared_ptr<GuiContainer>; //!< Shared gui container pointer
 
@@ -528,16 +529,15 @@ namespace mighter2d {
 
             /**
              * @internal
-             * @brief Handle event for all contained widgets
-             * @param event Event to handle
+             * @brief Handle a system event
+             * @param event The event to be handled
              *
-             * This function will pass the event to all the contained widgets
-             * such that each widget is given a chance to handle the event
+             * Note that this function will be called automatically by thw
+             * scene the gui container belongs to
              *
-             * @warning This function is intended for internal use only and
-             * should never be called outside of Mighter2d
+             * @warning This function is intended for internal use only
              */
-            void handleEvent(Event event);
+            void handleEvent(const Event& event) override;
 
             /**
              * @internal

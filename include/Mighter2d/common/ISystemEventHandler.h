@@ -22,21 +22,25 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "Mighter2d/core/scene/GridMoverContainer.h"
-#include "Mighter2d/core/physics/KeyboardGridMover.h"
-#include "Mighter2d/core/physics/TargetGridMover.h"
+#ifndef MIGHTER2D_ISYSTEMEVENTHANDLER_H
+#define MIGHTER2D_ISYSTEMEVENTHANDLER_H
+
+#include "Mighter2d/Config.h"
 
 namespace mighter2d {
-    void GridMoverContainer::update(Time deltaTime) {
-        forEach([&deltaTime](GridMover* gridMover) {
-            gridMover->update(deltaTime);
-        });
-    }
+    class Event;
 
-    void GridMoverContainer::render(priv::RenderTarget &window) const {
-        forEach([&window](GridMover* gridMover) {
-            if (gridMover->getType() == GridMover::Type::Target)
-                static_cast<TargetGridMover*>(gridMover)->renderPath(window);
-        });
-    }
+    /**
+     * @brief Interface for system event handlers
+     */
+    class MIGHTER2D_API ISystemEventHandler {
+    public:
+        /**
+         * @brief Handle a system event
+         * @param event The event to be handled
+         */
+        virtual void handleEvent(const Event& event) = 0;
+    };
 }
+
+#endif //MIGHTER2D_ISYSTEMEVENTHANDLER_H

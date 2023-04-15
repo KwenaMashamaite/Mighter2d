@@ -24,12 +24,19 @@
 
 #include "Mighter2d/core/input/InputManager.h"
 #include "Mighter2d/core/exceptions/Exceptions.h"
+#include "Mighter2d/core/scene/Scene.h"
 #include <algorithm>
 
 namespace mighter2d::input {
-    InputManager::InputManager() {
+    InputManager::InputManager(Scene& scene) :
+        scene_(&scene),
+        keyboard_(scene),
+        mouse_(scene)
+    {
+        scene_->addSystemEventHandler(this);
+
         for (unsigned int joyId = 0; joyId < Joystick::Count; joyId++)
-            joysticks_.emplace_back(joyId);
+            joysticks_.emplace_back(scene, joyId);
     }
 
     void InputManager::setInputEnable(InputType inputType, bool enable) {
@@ -233,13 +240,7 @@ namespace mighter2d::input {
         return removed;
     }
 
-    void InputManager::handleEvent(Event event) {
-        keyboard_.handleEvent(event);
-        mouse_.handleEvent(event);
-
-        for (auto& joystick : joysticks_)
-            joystick.handleEvent(event);
-
+    void InputManager::handleEvent(const Event& event) {
         switch (event.type) {
             case Event::JoystickButtonPressed:
                 if (getJoystick(event.joystickButton.joystickId).isEnabled())
@@ -271,5 +272,9 @@ namespace mighter2d::input {
         std::for_each(joysticks_.begin(), joysticks_.end(), [](Joystick& joystick) {
             joystick.update();
         });
+    }
+
+    InputManager::~InputManager() {
+        scene_->removeSystemEventHandler(this);
     }
 }

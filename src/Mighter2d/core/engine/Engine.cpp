@@ -169,7 +169,6 @@ namespace mighter2d {
             else if (event.type == Event::MouseLeft)
                 window_->emitMouseCursor(false);
 
-            inputManager_.handleEvent(event);
             sceneManager_->handleEvent(event);
         }
     }
@@ -239,8 +238,6 @@ namespace mighter2d {
             accumulator -= frameTime;
         }
 
-        // Normal update
-        inputManager_.update();
         sceneManager_->update(deltaTime);
     }
 
@@ -384,7 +381,6 @@ namespace mighter2d {
         dataSaver_.clear();
         diskDataSaver_.clear();
         resourceManager_.reset();
-        inputManager_ = input::InputManager();
         eventDispatcher_.reset();
 
         while (!scenesPendingPush_.empty())
@@ -462,14 +458,6 @@ namespace mighter2d {
 
     const audio::AudioManager &Engine::getAudioManager() const {
         return audioManager_;
-    }
-
-    input::InputManager &Engine::getInputManager() {
-        return inputManager_;
-    }
-
-    const input::InputManager &Engine::getInputManager() const {
-        return inputManager_;
     }
 
     priv::RenderTarget &Engine::getRenderTarget() {

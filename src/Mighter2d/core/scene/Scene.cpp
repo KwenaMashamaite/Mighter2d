@@ -29,6 +29,7 @@
 
 namespace mighter2d {
     Scene::Scene() :
+        inputManager_(*this),
         timerManager_(*this),
         timescale_{1.0f},
         isEntered_{false},
@@ -49,6 +50,7 @@ namespace mighter2d {
     }
 
     Scene::Scene(Scene&& other) noexcept :
+        inputManager_(std::move(other.inputManager_)),
         timerManager_(std::move(other.timerManager_))
     {
         *this = std::move(other);
@@ -115,6 +117,16 @@ namespace mighter2d {
 
     bool Scene::removeUpdatable(IUpdatable *updatable) {
         return utility::eraseIn(updateList_, updatable);
+    }
+
+    void Scene::addSystemEventHandler(ISystemEventHandler *sysEventHandler) {
+        if (!utility::findIn(systemEventHandlerList_, sysEventHandler).first) {
+            systemEventHandlerList_.push_back(sysEventHandler);
+        }
+    }
+
+    bool Scene::removeSystemEventHandler(ISystemEventHandler *sysEventHandler) {
+        return utility::eraseIn(systemEventHandlerList_, sysEventHandler);
     }
 
     std::string Scene::getClassName() const {

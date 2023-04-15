@@ -24,6 +24,7 @@
 
 #include "Mighter2d/core/input/Keyboard.h"
 #include "Mighter2d/core/event/Event.h"
+#include "Mighter2d/core/scene/Scene.h"
 #include <SFML/Window/Keyboard.hpp>
 #include <iostream>
 
@@ -33,7 +34,9 @@ namespace mighter2d::input {
         std::string keyToString(Keyboard::Key key);
     }
 
-    Keyboard::Keyboard() {
+    Keyboard::Keyboard(Scene& scene) : scene_(&scene) {
+        scene.addSystemEventHandler(this);
+
         for (auto i = 0; i < static_cast<int>(Key::KeyCount); ++i) {
             wasDown_[i] = false;
             stringKeyPairs_.insert({keyToString(static_cast<Key>(i)), static_cast<Key>(i)});
@@ -104,7 +107,7 @@ namespace mighter2d::input {
         }
     }
 
-    void Keyboard::handleEvent(Event event) {
+    void Keyboard::handleEvent(const Event& event) {
         if (isEnabled()) {
             switch (event.type) {
                 case Event::KeyPressed:
@@ -123,6 +126,10 @@ namespace mighter2d::input {
                     break;
             }
         }
+    }
+
+    Keyboard::~Keyboard() {
+        scene_->removeSystemEventHandler(this);
     }
 
     namespace {

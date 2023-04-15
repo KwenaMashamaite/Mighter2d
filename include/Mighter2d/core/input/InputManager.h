@@ -30,8 +30,11 @@
 #include "Mighter2d/core/input/Mouse.h"
 #include "Mighter2d/core/input/Joystick.h"
 #include "Mighter2d/core/event/Event.h"
+#include "Mighter2d/common/ISystemEventHandler.h"
 
 namespace mighter2d {
+    class Scene;
+
     namespace input {
         /**
          * @brief Action triggers for key binds
@@ -59,12 +62,13 @@ namespace mighter2d {
          * This class is not meant to be instantiated directly, use
          * mighter2d::Scene::getInput or mighter2d::Engine::getInputManager
          */
-        class MIGHTER2D_API InputManager {
+        class MIGHTER2D_API InputManager : public ISystemEventHandler {
         public:
             /**
-             * @brief Default constructor
+             * @brief Constructor
+             * @param scene The scene the input manager belongs to
              */
-            InputManager();
+            explicit InputManager(Scene& scene);
 
             /**
              * @brief Enable or disable an input
@@ -404,7 +408,7 @@ namespace mighter2d {
              * @warning This function is intended for internal use only and
              * should never be called outside of Mighter2d
              */
-            void handleEvent(Event event);
+            void handleEvent(const Event& event) override;
 
             /**
              * @internal
@@ -415,7 +419,13 @@ namespace mighter2d {
              */
             void update();
 
+            /**
+             * @brief Destructor
+             */
+            ~InputManager();
+
         private:
+            Scene* scene_;                    //!< The scene the input manager belongs to
             Keyboard keyboard_;               //!< Managed keyboard
             Mouse mouse_;                     //!< Managed Mouse
             std::vector<Joystick> joysticks_; //!< Managed Joysticks

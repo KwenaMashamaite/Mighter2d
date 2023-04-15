@@ -41,6 +41,7 @@
 #include "Mighter2d/ui/GuiContainer.h"
 #include "Mighter2d/graphics/Camera.h"
 #include "Mighter2d/core/grid/Grid.h"
+#include "Mighter2d/common/ISystemEventHandler.h"
 #include <string>
 #include <memory>
 #include <vector>
@@ -818,11 +819,32 @@ namespace mighter2d {
         bool removeUpdatable(IUpdatable* updatable);
 
         /**
+         * @internal
+         * @brief Add a system event handler to the event list
+         * @param sysEventHandler The event handler to be added
+         *
+         * @warning This function is intended for internal use only
+         */
+        void addSystemEventHandler(ISystemEventHandler* sysEventHandler);
+
+        /**
+         * @internal
+         * @brief Remove an updatable from the update list
+         * @param sysEventHandler The system event handler to be removed
+         * @return True if the system event handler was removed or false if it does not exist
+         *
+         * @warning This function is intended for internal use only
+         */
+        bool removeSystemEventHandler(ISystemEventHandler* sysEventHandler);
+
+        /**
          * @brief Destructor
          */
         ~Scene() override;
 
     private:
+        std::vector<IUpdatable*> updateList_; //!< Update list
+        std::vector<ISystemEventHandler*> systemEventHandlerList_; //!< Update list
         std::unique_ptr<Camera> camera_;      //!< Scene level camera
         input::InputManager inputManager_;    //!< Scene level input manager
         audio::AudioManager audioManager_;    //!< Scene level audio manager
@@ -831,8 +853,6 @@ namespace mighter2d {
         RenderLayerContainer renderLayers_;   //!< Render layers for this scene
         GridMoverContainer gridMovers_;       //!< Stores grid movers that belong to the scene
         std::unique_ptr<Grid> grid2D_;        //!< Scene level grid
-        std::vector<IUpdatable*> updateList_; //!< Update list
-        std::vector<Drawable*> drawList_; //!< Update list
         float timescale_;                     //!< Controls the speed of the scene without affecting the render fps
         bool isEntered_;                      //!< A flag indicating whether or not the scene has been entered
         bool isInitialized_;                  //!< A flag indicating whether or not the scene has been initialized

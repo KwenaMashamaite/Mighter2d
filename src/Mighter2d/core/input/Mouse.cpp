@@ -25,10 +25,15 @@
 #include "Mighter2d/core/input/Mouse.h"
 #include "Mighter2d/core/event/Event.h"
 #include "Mighter2d/graphics/RenderTarget.h"
+#include "Mighter2d/core/scene/Scene.h"
 #include <SFML/Window/Mouse.hpp>
 #include <iostream>
 
 namespace mighter2d::input {
+    Mouse::Mouse(Scene &scene) : scene_(&scene) {
+        scene_->addSystemEventHandler(this);
+    }
+
     void Mouse::setEnable(bool enable) {
         eventEmitter_.setEventsDispatchEnable(enable);
     }
@@ -116,7 +121,7 @@ namespace mighter2d::input {
         }
     }
 
-    void Mouse::handleEvent(Event event) {
+    void Mouse::handleEvent(const Event& event) {
         if (isEnabled()) {
             switch (event.type) {
                 case Event::MouseWheelScrolled:
@@ -140,5 +145,9 @@ namespace mighter2d::input {
                     break;
             }
         }
+    }
+
+    Mouse::~Mouse() {
+        scene_->removeSystemEventHandler(this);
     }
 }

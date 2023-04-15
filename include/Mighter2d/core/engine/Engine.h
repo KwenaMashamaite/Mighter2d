@@ -451,17 +451,6 @@ namespace mighter2d {
         const audio::AudioManager& getAudioManager() const;
 
         /**
-         * @brief Get the engine level input manager
-         * @return The engine level input manager
-         *
-         * Unlike mighter2d::Scene::getInput, event listeners registered to this input
-         * manager are executed regardless of which scene is active and are
-         * only destroyed when the engine is shutdown
-         */
-        input::InputManager& getInputManager();
-        const input::InputManager& getInputManager() const;
-
-        /**
          * @brief Pause or resume execution of an event listener
          * @param id The event listeners unique identification number
          * @param suspend True to suspend/pause or false to unsuspend/resume
@@ -685,7 +674,6 @@ namespace mighter2d {
         EventEmitter eventEmitter_;                        //!< Emits engine events
         std::unique_ptr<priv::SceneManager> sceneManager_; //!< The scene manager
         audio::AudioManager audioManager_;                 //!< The engine level audio manager
-        input::InputManager inputManager_;                 //!< The engine level input manager
         std::shared_ptr<ResourceManager> resourceManager_; //!< The engine level resource manager
         GlobalEventEmitter::Ptr eventDispatcher_;             //!< System wide event emitter (Engine only keeps an instance alive for the application)
         PropertyContainer dataSaver_;                      //!< Holds Data that persists across scenes

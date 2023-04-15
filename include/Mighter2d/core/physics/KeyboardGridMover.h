@@ -152,16 +152,6 @@ namespace mighter2d {
         void onInput(const InputCallback& callback);
 
         /**
-         * @internal
-         * @brief Handle an event
-         * @param event Event to handle
-         *
-         * @warning This function is intended for internal use only and
-         * should never be called outside of Mighter2d
-         */
-        void handleEvent(Event event);
-
-        /**
          * @brief Destructor
          */
         ~KeyboardGridMover() override;
@@ -184,9 +174,9 @@ namespace mighter2d {
         void removeInputEventListeners();
 
     private:
+        input::Keyboard keyboard_;               //!< Detects keyboard inputs
         MovementTrigger trigger_;                //!< Key event that triggers target movement
         std::pair<int, int> onTriggerHandlerId_; //!< Movement trigger Handler id
-        input::Keyboard keyboard_;               //!< Detects keyboard inputs
         std::pair<bool, Direction> newDir_;      //!< A flag indicating whether or not the direction was changed while target was moving
         TriggerKeys triggerKeys_;                //!< Keyboard keys that control the actors direction of motion
         InputCallback onInput_;                  //!< A function called when the grid mover receives input

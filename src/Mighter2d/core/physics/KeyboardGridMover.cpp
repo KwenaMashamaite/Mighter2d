@@ -28,6 +28,7 @@
 namespace mighter2d {
     KeyboardGridMover::KeyboardGridMover(Grid &grid, GridObject* target) :
         GridMover(Type::KeyboardControlled, grid, target),
+        keyboard_(getScene()),
         trigger_(MovementTrigger::None),
         onTriggerHandlerId_{-1, -1},
         triggerKeys_{Key::A, Key::D, Key::W, Key::S}
@@ -172,10 +173,6 @@ namespace mighter2d {
             newDir_.second = targetDirection;
         } else if (targetDirection != Vector2i{0, 0})
             requestMove(targetDirection);
-    }
-
-    void KeyboardGridMover::handleEvent(Event event) {
-        keyboard_.handleEvent(event);
     }
 
     KeyboardGridMover::~KeyboardGridMover() {

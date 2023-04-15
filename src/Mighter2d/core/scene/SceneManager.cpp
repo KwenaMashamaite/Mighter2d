@@ -379,7 +379,6 @@ namespace mighter2d::priv {
         // Update all system components of a scene
         static auto updateSystem = [](Scene* scene, Event e) {
             if (e.type == Event::Resized) {
-
                 updateCameraScale(&scene->getCamera(), e.size.width, e.size.height);
             }
 
@@ -406,9 +405,10 @@ namespace mighter2d::priv {
                 return;
             }
 
-            scene->inputManager_.handleEvent(e);
-            scene->guiContainer_->handleEvent(e);
-            scene->gridMovers_.handleEvent(e);
+            for (auto& sysEventHandler : scene->systemEventHandlerList_) {
+                sysEventHandler->handleEvent(e);
+            }
+
             scene->onHandleEvent(e);
         };
 
