@@ -59,6 +59,7 @@ namespace mighter2d {
          * @param gameTitle The name of the game run by the engine
          * @param settingsFilename The name of the file that contains the engine
          *                     settings
+         * @throws MultipleEngineInstanceException if an Engine instance already exist
          *
          * If the @a settingsFilename argument is left unspecified the engine
          * will be constructed with default settings
@@ -69,6 +70,7 @@ namespace mighter2d {
          * @brief Constructor
          * @param gameName The name of the game run by the engine
          * @param settings Settings to construct the engine with
+         * @throws MultipleEngineInstanceException if an Engine instance already exist
          */
         Engine(const std::string& gameName, const PrefContainer& settings);
 

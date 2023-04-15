@@ -32,6 +32,8 @@
 
 namespace mighter2d {
     namespace {
+        bool isEngineInstantiated = false; // Only one engine instance can exist at a time
+
         template <class T>
         void setDefaultValueIfNotSet(PrefContainer& settings, const std::string& preference,
              PrefType  prefType , T&& defaultValue, const std::string& description)
@@ -66,7 +68,12 @@ namespace mighter2d {
         fixedUpdateFPS_{60},
         sceneManager_{std::make_unique<priv::SceneManager>(this)},
         popCounter_{0}
-    {}
+    {
+        if (isEngineInstantiated)
+            throw MultipleEngineInstanceException("Only one mighter2d::Engine instance can be created at a time");
+        else
+            isEngineInstantiated = true;
+    }
 
     void Engine::initialize() {
         if (isSettingsLoadedFromFile_)
@@ -515,5 +522,7 @@ namespace mighter2d {
         onShutdownComplete_ = callback;
     }
 
-    Engine::~Engine() = default;
+    Engine::~Engine() {
+        isEngineInstantiated = false;
+    }
 }

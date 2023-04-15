@@ -76,6 +76,18 @@ namespace mighter2d {
          */
         explicit InvalidParseException(const std::string& message) : std::runtime_error(message) {}
     };
+
+    /**
+     * @brief Exception thrown when an Engine class is instantiated more than once
+     */
+    class MultipleEngineInstanceException : public std::runtime_error {
+    public:
+        /**
+         * @brief Constructor
+         * @param message Exception message
+         */
+        explicit MultipleEngineInstanceException(const std::string& message) : std::runtime_error(message) {}
+    };
 }
 
 #endif // MIGHTER2D_EXCEPTIONS_H
