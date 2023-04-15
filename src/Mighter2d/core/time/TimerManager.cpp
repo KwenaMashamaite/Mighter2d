@@ -28,7 +28,11 @@
 namespace mighter2d {
     TimerManager::TimerManager(Scene &scene) : scene_(&scene)
     {
-
+        scene.getStateObserver().onFrameEnd([this] {
+            activeTimers_.erase(std::remove_if(activeTimers_.begin(), activeTimers_.end(), [](Timer::Ptr& timer) {
+                return timer->getStatus() == Timer::Status::Stopped;
+            }), activeTimers_.end());
+        });
     }
 
     Timer& TimerManager::addTimer(Timer::Ptr timer) {
@@ -59,11 +63,5 @@ namespace mighter2d {
 
     void TimerManager::clear() {
         activeTimers_.clear();
-    }
-
-    void TimerManager::preUpdate() {
-        activeTimers_.erase(std::remove_if(activeTimers_.begin(), activeTimers_.end(), [](Timer::Ptr& timer) {
-            return timer->getStatus() == Timer::Status::Stopped;
-        }), activeTimers_.end());
     }
 }

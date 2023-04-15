@@ -26,7 +26,7 @@
 #define MIGHTER2D_GRIDOBJECT_H
 
 #include "Mighter2d/Config.h"
-#include "Mighter2d/core/object/GridObject.h"
+#include "Mighter2d/core/object/GameObject.h"
 #include "Mighter2d/core/object/ExcludeList.h"
 #include "Mighter2d/core/grid/Grid.h"
 #include <memory>

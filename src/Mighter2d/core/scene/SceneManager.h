@@ -258,12 +258,6 @@ namespace mighter2d {
             void handleEvent(SystemEvent event);
 
             /**
-             * @brief Execute a callback for every scene in the scene manager
-             * @param callback The callback to be executed
-             */
-            void forEachScene(const Callback<const Scene::Ptr&>& callback);
-
-            /**
              * @brief Destructor
              */
             ~SceneManager();
@@ -283,6 +277,11 @@ namespace mighter2d {
              * @param fixedUpdate True if it's a fixed update, otherwise false
              */
             void updateScene(const Time& deltaTime, Scene* scene, bool fixedUpdate);
+
+            /**
+             * @brief Update previous scene pointer
+             */
+            void updatePreviousScene();
 
         private:
             Engine* engine_;                //!< Pointer to the game engine

@@ -39,6 +39,7 @@
 #include "Mighter2d/graphics/Camera.h"
 #include "Mighter2d/core/grid/Grid.h"
 #include "Mighter2d/common/ISystemEventHandler.h"
+#include "Mighter2d/core/scene/SceneStateObserver.h"
 #include <string>
 #include <memory>
 #include <vector>
@@ -89,22 +90,6 @@ namespace mighter2d {
          * @return The created scene
          */
         static Scene::Ptr create();
-
-        /**
-         * @brief Handle a scene initialization
-         *
-         * This function is called by Mighter2d when the base scene is ready
-         * to be used. It is called once after the constructor but before
-         * onEnter(). Note that mighter2d::Scene functions cannot be called in the
-         * constructor, doing so is undefined behavior. Thus, this function is
-         * intended for situation where Mighter2d scene functions need to be accessed
-         * before the scene is entered.
-         *
-         * Note that implementing this function is optional. Mighter2d will never put
-         * anything inside this function, therefore you don't have to call the
-         * base class method in your implementation
-         */
-        virtual void onInit() {};
 
         /**
          * @brief Handle a scene enter
@@ -261,7 +246,7 @@ namespace mighter2d {
          * @brief Handle a scene cache event
          *
          * This function is called by Mighter2d when this scene is cached.
-         * (see setCached() and mighter2d::Engine::cacheScene)
+         * (see setCacheOnExit() and mighter2d::Engine::cacheScene)
          *
          * Note that implementing this function is optional. Mighter2d will never put
          * anything inside this function, therefore you don't have to call the
@@ -295,7 +280,7 @@ namespace mighter2d {
          * anything inside this function, therefore you don't have to call the
          * base class method in your implementation
          *
-         * @see setCached, mighter2d::Engine::cacheScene
+         * @see setCacheOnExit, mighter2d::Engine::cacheScene
          */
         virtual void onExit() {};
 
@@ -521,7 +506,7 @@ namespace mighter2d {
         bool isBackgroundSceneEventsEnabled() const;
 
         /**
-         * @brief Cache or uncahe the scene
+         * @brief Set whether or not the scene is cached when popped from the engine
          * @param cache True to cache or false to uncache
          * @param alias A unique name for identification during retrieval
          *
@@ -533,19 +518,19 @@ namespace mighter2d {
          *
          * Unlike mighter2d::Engine::cacheScene, this function will cache the scene
          * after it was active. To remove the scene from the cache simply call
-         * @e setCached(false)
+         * @e setCacheOnExit(false)
          *
-         * By default the scene is not cached
+         * By default the scene is not cached when popped
          *
          * @see isCached, mighter2d::Engine::cacheScene, mighter2d::Engine::uncacheScene
          */
-        void setCached(bool cache, const std::string& alias = "");
+        void setCacheOnExit(bool cache, const std::string& alias = "");
 
         /**
          * @brief Check if the scene is cached or not
          * @return True if cached, otherwise false
          *
-         * @see setCached
+         * @see setCacheOnExit
          */
         bool isCached() const;
 
@@ -595,6 +580,22 @@ namespace mighter2d {
          */
         Window& getWindow();
         const Window& getWindow() const;
+
+        /**
+         * @brief Get the scene state observer
+         * @return The scene state observer
+         *
+         * This object allows you to add event listeners to the
+         * state changes of the scene:
+         *
+         * @code
+         * scene.getStateObserver().onPause([] {
+         *      std::cout << "scene paused";
+         * });
+         * @endcode
+         */
+        SceneStateObserver& getStateObserver();
+        const SceneStateObserver& getStateObserver() const;
 
         /**
          * @brief Get the scene level camera
@@ -770,26 +771,47 @@ namespace mighter2d {
         bool removeSystemEventHandler(ISystemEventHandler* sysEventHandler);
 
         /**
-         * @internal
-         * @brief Execute a callback when the scene is ready
-         * @param callback Function to be execute when the scene is ready
-         *
-         * Note that the callback is executed once
-         *
-         * @warning This function is intended for internal use only
-         */
-        void onReady(Callback<> callback);
-
-        /**
          * @brief Destructor
          */
         ~Scene() override;
+
+    private:
+        /**
+         * @brief Helper function for entering a scene
+         */
+        void enter();
+
+        /**
+         * @brief Helper function for pausing a scene
+         */
+        void pause();
+
+        /**
+         * @brief Helper function for resuming a scene
+         */
+        void resume(bool fromCache = false);
+
+        /**
+         * @brief Helper function for exiting a scene
+         */
+        void exit();
+
+        /**
+         * @brief Helper function for executing scene frame begin
+         */
+        void frameBegin();
+
+        /**
+         * @brief Helper function for executing scene frame end
+         */
+        void frameEnd();
 
     private:
         std::vector<IUpdatable*> updateList_; //!< Update list
         std::vector<ISystemEventHandler*> systemEventHandlerList_; //!< Update list
         Engine* engine_;                      //!< Game engine
         std::unique_ptr<Camera> camera_;      //!< Scene level camera
+        SceneStateObserver sceneStateObserver_;
         input::InputManager inputManager_;    //!< Scene level input manager
         audio::AudioManager audioManager_;    //!< Scene level audio manager
         TimerManager timerManager_;           //!< Scene level timer manager
@@ -807,6 +829,7 @@ namespace mighter2d {
         std::pair<bool, std::string> cacheState_;
         Scene* parentScene_;                  //!< The parent scene of this scene when it is in the background of another scene
         Scene::Ptr backgroundScene_;          //!< The background scene of this scene
+
         friend class priv::SceneManager;      //!< Pre updates the scene
     };
 }

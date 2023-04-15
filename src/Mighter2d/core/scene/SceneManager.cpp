@@ -29,25 +29,6 @@
 #include "Mighter2d/utility/Helpers.h"
 
 namespace mighter2d::priv {
-    namespace {
-        void resetGui(ui::GuiContainer& gui) {
-            // Reset focus state
-            gui.unfocusAllWidgets();
-
-            // Reset hover state
-            SystemEvent event;
-            event.type = SystemEvent::MouseMoved;
-            event.mouseMove.x = -9999;
-            gui.handleEvent(event);
-
-            // Reset left mouse down state
-            event.type = SystemEvent::MouseButtonReleased;
-            event.mouseButton.button = input::Mouse::Button::Left;
-            event.mouseButton.x = -9999;
-            gui.handleEvent(event);
-        }
-    }
-
     SceneManager::SceneManager(Engine* engine) :
         engine_{engine},
         prevScene_{nullptr}
@@ -55,75 +36,36 @@ namespace mighter2d::priv {
         MIGHTER2D_ASSERT(engine, "Engine pointer cannot be a nullptr")
 
         engine->onFrameStart([this] {
-            if (!scenes_.empty() && scenes_.top()->isEntered()) {
-                Scene* activeScene = scenes_.top().get();
-                Scene* bgScene = activeScene->getBackgroundScene();
-
-                if (bgScene)
-                    bgScene->onFrameBegin();
-
-                activeScene->onFrameBegin();
-            }
+            if (!scenes_.empty())
+                scenes_.top()->frameBegin();
         });
 
         engine->onFrameEnd([this] {
-            if (!scenes_.empty() && scenes_.top()->isEntered()) {
-                Scene* activeScene = scenes_.top().get();
-                Scene* bgScene = activeScene->getBackgroundScene();
-
-                if (bgScene)
-                    bgScene->onFrameEnd();
-
-                activeScene->onFrameEnd();
-            }
+            if (!scenes_.empty())
+                scenes_.top()->frameEnd();
         });
     }
 
     void SceneManager::pushScene(Scene::Ptr scene, bool enterScene) {
         MIGHTER2D_ASSERT(scene, "Scene must not be a nullptr")
+
         if (!scenes_.empty()) {
             prevScene_ = scenes_.top().get();
 
-            if (prevScene_->isEntered() && !prevScene_->isPaused()) {
-                prevScene_->isPaused_ = true;
-                prevScene_->isActive_ = false;
-                resetGui(prevScene_->getGui());
-
-                Scene* bgScene = prevScene_->getBackgroundScene();
-
-                if (bgScene) {
-                    resetGui(bgScene->getGui());
-                    bgScene->isPaused_ = true;
-                    prevScene_->isActive_ = false;
-                    bgScene->onPause();
-                }
-
-                prevScene_->onPause();
-            }
+            if (prevScene_->isEntered())
+                prevScene_->pause();
         }
 
         scenes_.push(std::move(scene));
-        Scene* activeScene = scenes_.top().get();
+        Scene* newScene = scenes_.top().get();
 
-        if (activeScene->isEntered()) {
-            if (activeScene->isCached()) {
-                activeScene->isPaused_ = false;
-                activeScene->isActive_ = true;
-                Scene* bgScene = activeScene->getBackgroundScene();
+        newScene->init(*engine_);
 
-                if (bgScene) {
-                    bgScene->isPaused_ = false;
-                    bgScene->isActive_ = true;
-                    bgScene->onResumeFromCache();
-                }
-
-                activeScene->onResumeFromCache();
-            }
-        } else if (enterScene) {
-            activeScene->init(*engine_);
-            activeScene->isEntered_ = true;
-            activeScene->isActive_ = true;
-            activeScene->onEnter();
+        if (enterScene) {
+            if (newScene->isEntered())
+                newScene->resume(newScene->isCached());
+            else
+                newScene->enter();
         }
     }
 
@@ -155,14 +97,7 @@ namespace mighter2d::priv {
         auto [iter, inserted] = cachedScenes_.insert(std::pair{name, std::move(scene)});
 
         if (inserted) {
-            iter->second->setCached(true, name);
-
-            Scene* bgScene = iter->second->getBackgroundScene();
-
-            if (bgScene) {
-                bgScene->setCached(true, name + "BackgroundScene");
-                bgScene->onCache();
-            }
+            iter->second->setCacheOnExit(true, name);
 
             iter->second->onCache();
         }
@@ -184,63 +119,28 @@ namespace mighter2d::priv {
 
         prevScene_ = nullptr;
 
-        // Call onExit() after removing state from container because onExit may
+        // Call onExit() after removing scene from container because onExit may
         // push a scene and the new scene will be removed instead of this one
         Scene::Ptr poppedScene = std::move(scenes_.top());
         scenes_.pop();
-
-        // Notify popped scene that it's removed from the engine
-        if (poppedScene->isEntered()) {
-            Scene* bgScene = poppedScene->getBackgroundScene();
-
-            if (bgScene)
-                bgScene->onExit();
-
-            poppedScene->onExit();
-        }
+        poppedScene->exit();
 
         // Attempt to cache the removed scene
         if (const auto& [isCached, cacheAlias] = poppedScene->cacheState_; isCached) {
-            resetGui(poppedScene->getGui());
-            poppedScene->isActive_ = false;
-
-            if (Scene* bgScene = poppedScene->getBackgroundScene(); bgScene) {
-                resetGui(bgScene->getGui());
-                bgScene->isActive_ = false;
-            }
-
             cache(cacheAlias, std::move(poppedScene));
         }
 
         // Activate a new scene
         if (!scenes_.empty()) {
-            if (scenes_.size() >= 2) {
-                Scene::Ptr currentScene = std::move(scenes_.top());
-                scenes_.pop();
-                prevScene_ = scenes_.top().get();
-                scenes_.push(std::move(currentScene));
-            }
+            updatePreviousScene();
 
-            Scene* activeScene = scenes_.top().get();
+            Scene* newTopScene = scenes_.top().get();
 
-            if (activeScene->isEntered() && resumePrev) {
-                activeScene->isPaused_ = false;
-                activeScene->isActive_ = true;
-
-                Scene* bgScene = activeScene->getBackgroundScene();
-
-                if (bgScene) {
-                    bgScene->isPaused_ = false;
-                    bgScene->isActive_ = true;
-                    bgScene->onResume();
-                }
-
-                activeScene->onResume();
-            } else if (resumePrev) {
-                activeScene->init(*engine_);
-                activeScene->isEntered_ = true;
-                activeScene->isActive_ = true;
-                activeScene->onEnter();
+            if (resumePrev) {
+                if (newTopScene->isEntered())
+                    newTopScene->resume();
+                else
+                    newTopScene->enter();
             }
         }
     }
@@ -293,14 +193,8 @@ namespace mighter2d::priv {
     }
 
     void SceneManager::enterTopScene() const {
-        if (scenes_.empty())
-            return;
-
-        if (!scenes_.top()->isEntered()) {
-            scenes_.top()->init(*engine_);
-            scenes_.top()->isEntered_ = true;
-            scenes_.top()->onEnter();
-        }
+        if (!scenes_.empty())
+            scenes_.top()->enter();
     }
 
     bool SceneManager::isEmpty() const {
@@ -423,20 +317,6 @@ namespace mighter2d::priv {
         update(deltaTime, true);
     }
 
-    void SceneManager::forEachScene(const Callback<const Scene::Ptr&>& callback) {
-        std::stack<Scene::Ptr> temp;
-        while (!scenes_.empty()) {
-            callback(scenes_.top());
-            temp.push(std::move(scenes_.top()));
-            scenes_.pop();
-        }
-
-        while (!temp.empty()) {
-            scenes_.push(std::move(temp.top()));
-            temp.pop();
-        }
-    }
-
     void SceneManager::preUpdate(Time deltaTime) {
         if (scenes_.empty())
             return;
@@ -444,24 +324,15 @@ namespace mighter2d::priv {
         if (!scenes_.top()->isEntered())
             return;
 
-        //@todo Remove - Classes must be able to react to a frame end event directly
-        static auto update = [](Scene* scene, Time dt) {
-            scene->timerManager_.preUpdate();
-            scene->audioManager_.removePlayedAudio();
-        };
-
         Scene* activeScene = scenes_.top().get();
 
         // Update the active scenes background scene
         Scene* bgScene = activeScene->getBackgroundScene();
 
         if (bgScene && activeScene->isBackgroundSceneUpdateEnabled()) {
-            update(bgScene, deltaTime);
             bgScene->onPreUpdate(deltaTime * bgScene->getTimescale());
         }
 
-        // Update active scene
-        update(activeScene, deltaTime);
         activeScene->onPreUpdate(deltaTime * activeScene->getTimescale());
     }
 
@@ -496,6 +367,15 @@ namespace mighter2d::priv {
 
             // Normal update is always called after fixed update: fixedUpdate -> update -> postUpdate
             scene->onPostUpdate(deltaTime * scene->getTimescale());
+        }
+    }
+
+    void SceneManager::updatePreviousScene() {
+        if (scenes_.size() >= 2) {
+            Scene::Ptr currentScene = std::move(scenes_.top());
+            scenes_.pop();
+            prevScene_ = scenes_.top().get();
+            scenes_.push(std::move(currentScene));
         }
     }
 

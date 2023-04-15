@@ -44,14 +44,16 @@ namespace mighter2d {
         isBackgroundSceneUpdated_{true},
         isBackgroundSceneEventsEnabled_{false},
         cacheState_{false, ""},
-        parentScene_{nullptr}
+        parentScene_{nullptr},
+        sceneStateObserver_(*this)
     {
         renderLayers_.create("default");
     }
 
     Scene::Scene(Scene&& other) noexcept :
         inputManager_(std::move(other.inputManager_)),
-        timerManager_(std::move(other.timerManager_))
+        timerManager_(std::move(other.timerManager_)),
+        sceneStateObserver_(std::move(other.sceneStateObserver_))
     {
         *this = std::move(other);
     }
@@ -79,6 +81,7 @@ namespace mighter2d {
             isPaused_ = other.isPaused_;
             parentScene_ = other.parentScene_;
             backgroundScene_ = std::move(other.backgroundScene_);
+            sceneStateObserver_ = std::move(sceneStateObserver_);
         }
 
         return *this;
@@ -94,9 +97,7 @@ namespace mighter2d {
             engine_ = &engine;
             camera_ = std::make_unique<Camera>(*this, engine.getRenderTarget());
             guiContainer_ = std::make_unique<ui::GuiContainer>(*this);
-            emit("internal_scene_ready");
-
-            onInit();
+            emit("mighter2d_Scene_ready");
         }
     }
 
@@ -121,15 +122,11 @@ namespace mighter2d {
         return utility::eraseIn(systemEventHandlerList_, sysEventHandler);
     }
 
-    void Scene::onReady(Callback<> callback) {
-        addOnceEventListener("internal_scene_ready", std::move(callback));
-    }
-
     std::string Scene::getClassName() const {
         return "Scene";
     }
 
-    void Scene::setCached(bool cache, const std::string& alias) {
+    void Scene::setCacheOnExit(bool cache, const std::string& alias) {
         cacheState_.first = cache;
         cacheState_.second = alias;
     }
@@ -294,6 +291,14 @@ namespace mighter2d {
             return engine_->getWindow();
     }
 
+    SceneStateObserver &Scene::getStateObserver() {
+        return const_cast<SceneStateObserver&>(std::as_const(*this).getStateObserver());
+    }
+
+    const SceneStateObserver &Scene::getStateObserver() const {
+        return sceneStateObserver_;
+    }
+
     Camera &Scene::getCamera() {
         return const_cast<Camera&>(std::as_const(*this).getCamera());
     }
@@ -364,10 +369,84 @@ namespace mighter2d {
     }
 
     const ui::GuiContainer &Scene::getGui() const {
-        if (!guiContainer_->isTargetSet())
+        if (!isInitialized_)
             throw AccessViolationException("mighter2d::Scene::getGui() must not be called before the scene is initialized");
         else
             return *guiContainer_;
+    }
+
+    void Scene::enter() {
+        if (!isEntered_ && isInitialized_) {
+            isEntered_ = isActive_ = true;
+
+            if (backgroundScene_)
+                backgroundScene_->enter();
+
+            emit("mighter2d_Scene_enter");
+            onEnter();
+        }
+    }
+
+    void Scene::pause() {
+        if (!isPaused_ && isEntered_) {
+            if (backgroundScene_)
+                backgroundScene_->pause();
+
+            isActive_ = false;
+            isPaused_ = true;
+
+            emit("mighter2d_Scene_pause");
+            onPause();
+        }
+    }
+
+    void Scene::resume(bool fromCache) {
+        if (isEntered_) {
+            if (backgroundScene_)
+                backgroundScene_->resume(fromCache);
+
+            isPaused_ = false;
+            isActive_ = true;
+
+            emit("mighter2d_Scene_resume");
+
+            if (fromCache)
+                onResumeFromCache();
+            else
+                onResume();
+        }
+    }
+
+    void Scene::exit() {
+        if (isEntered_) {
+            if (backgroundScene_)
+                backgroundScene_->exit();
+
+            isActive_ = false;
+
+            emit("mighter2d_Scene_exit");
+            onExit();
+        }
+    }
+
+    void Scene::frameBegin() {
+        if (isActive_) {
+            if (backgroundScene_)
+                backgroundScene_->frameBegin();
+
+            emit("mighter2d_Scene_frameBegin");
+            onFrameBegin();
+        }
+    }
+
+    void Scene::frameEnd() {
+        if (isActive_) {
+            if (backgroundScene_)
+                backgroundScene_->frameEnd();
+
+            emit("mighter2d_Scene_frameEnd");
+            onFrameEnd();
+        }
     }
 
     Scene::~Scene() {

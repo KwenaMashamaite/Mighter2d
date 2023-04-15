@@ -291,7 +291,7 @@ namespace mighter2d::ui {
                 scene_->getWindow().removeEventListener(pimpl_->winDestructListenerId_);
         });
 
-        scene.onReady([this] {
+        scene.getStateObserver().onReady([this] {
             pimpl_->setTarget(scene_->getEngine().getRenderTarget());
 
             Window& window = scene_->getWindow();
@@ -313,6 +313,32 @@ namespace mighter2d::ui {
             pimpl_->winDestructListenerId_ = window.onDestruction([this] {
                 pimpl_->winResizeHandlerId_ = pimpl_->winDestructListenerId_ = -1;
             });
+        });
+
+        // Reset gui state
+        static auto resetGui = [](ui::GuiContainer& gui) {
+            // Reset focus state
+            gui.unfocusAllWidgets();
+
+            // Reset hover state
+            SystemEvent event;
+            event.type = SystemEvent::MouseMoved;
+            event.mouseMove.x = -9999;
+            gui.handleEvent(event);
+
+            // Reset left mouse down state
+            event.type = SystemEvent::MouseButtonReleased;
+            event.mouseButton.button = input::Mouse::Button::Left;
+            event.mouseButton.x = -9999;
+            gui.handleEvent(event);
+        };
+
+        scene.getStateObserver().onPause([this] {
+            resetGui(*this);
+        });
+
+        scene.getStateObserver().onExit([this] {
+            resetGui(*this);
         });
     }
 

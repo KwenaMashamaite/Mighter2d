@@ -140,15 +140,6 @@ namespace mighter2d {
          */
         void clear();
 
-        /**
-         * @internal
-         * @brief Remove inactive timers
-         *
-         * @warning This function is called internally by Mighter2d, do not
-         * call it directly
-         */
-        void preUpdate();
-
     private:
         /**
          * @brief Add a timer to active timers

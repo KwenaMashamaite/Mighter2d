@@ -277,7 +277,7 @@ namespace mighter2d {
          * Note that after the push, the scene is removed from the cache and
          * will be added back once its popped (if its cache state is still true)
          *
-         * @see cacheScene, mighter2d::Scene::setCached and popScene
+         * @see cacheScene, mighter2d::Scene::setCacheOnExit and popScene
          */
         bool pushCachedScene(const std::string& name);
 
@@ -321,10 +321,10 @@ namespace mighter2d {
          * a new main menu scene every time the user wants to go to the main
          * menu, you can instantiate it once, cache it and use pushCachedScene()
          *
-         * Unlike mighter2d::Scene::setCached, this function will cache the scene
+         * Unlike mighter2d::Scene::setCacheOnExit, this function will cache the scene
          * immediately
          *
-         * @see pushCachedScene, uncacheScene, mighter2d::Scene::setCached
+         * @see pushCachedScene, uncacheScene, mighter2d::Scene::setCacheOnExit
          */
         void cacheScene(const std::string& name, Scene::Ptr scene);
 
@@ -333,7 +333,7 @@ namespace mighter2d {
          * @param name The name of the scene to be removed
          * @return True if the scene was removed or false if it does not exist
          *
-         * Unlike calling mighter2d::Scene::setCached with a @a false argument, which
+         * Unlike calling mighter2d::Scene::setCacheOnExit with a @a false argument, which
          * destroys the scene after it gets popped, this function will destroy
          * the scene immediately
          *
