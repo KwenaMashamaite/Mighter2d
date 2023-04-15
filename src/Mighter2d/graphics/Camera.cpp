@@ -127,7 +127,7 @@ namespace mighter2d {
         }
 
         void setOutlineThickness(float thickness) {
-            outlineRect_.setOutlineThickness(thickness);
+            outlineRect_.setOutlineThickness(-thickness);
         }
 
         float getOutlineThickness() const {
