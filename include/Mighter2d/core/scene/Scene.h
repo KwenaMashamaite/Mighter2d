@@ -346,6 +346,15 @@ namespace mighter2d {
         bool isEntered() const;
 
         /**
+         * @brief Check if the scene is active or not
+         * @return True if active, otherwise false
+         *
+         * The scene is active if the engine is currently running it.
+         * Note that only one scene can be active at a time
+         */
+        bool isActive() const;
+
+        /**
          * @brief Check if the scene is paused or not
          * @return True if paused, otherwise false
          *
@@ -832,6 +841,7 @@ namespace mighter2d {
         float timescale_;                     //!< Controls the speed of the scene without affecting the render fps
         bool isEntered_;                      //!< A flag indicating whether or not the scene has been entered
         bool isInitialized_;                  //!< A flag indicating whether or not the scene has been initialized
+        bool isActive_;                       //!< A flag indicating whether or not the scene is active
         bool isPaused_;                       //!< A flag indicating whether or not the scene is paused
         bool isVisibleWhenPaused_;            //!< A flag indicating whether or not the scene is rendered behind the active scene when it is paused
         bool isBackgroundSceneDrawable_;      //!< A flag indicating whether or not the scenes background scene is rendered

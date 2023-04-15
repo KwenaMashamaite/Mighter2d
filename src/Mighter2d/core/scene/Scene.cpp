@@ -34,6 +34,7 @@ namespace mighter2d {
         timescale_{1.0f},
         isEntered_{false},
         isInitialized_{false},
+        isActive_{false},
         isPaused_{false},
         isVisibleWhenPaused_{false},
         isBackgroundSceneDrawable_{true},
@@ -80,6 +81,7 @@ namespace mighter2d {
             cacheState_ = other.cacheState_;
             isEntered_ = other.isEntered_;
             isInitialized_ = other.isInitialized_;
+            isActive_ = other.isActive_;
             isPaused_ = other.isPaused_;
             parentScene_ = other.parentScene_;
             backgroundScene_ = std::move(other.backgroundScene_);
@@ -247,6 +249,10 @@ namespace mighter2d {
 
     bool Scene::isEntered() const {
         return isEntered_;
+    }
+
+    bool Scene::isActive() const {
+        return isActive_;
     }
 
     bool Scene::isPaused() const {

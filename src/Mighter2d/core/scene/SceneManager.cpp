@@ -86,6 +86,7 @@ namespace mighter2d::priv {
 
             if (prevScene_->isEntered() && !prevScene_->isPaused()) {
                 prevScene_->isPaused_ = true;
+                prevScene_->isActive_ = false;
                 resetGui(prevScene_->getGui());
 
                 Scene* bgScene = prevScene_->getBackgroundScene();
@@ -93,6 +94,7 @@ namespace mighter2d::priv {
                 if (bgScene) {
                     resetGui(bgScene->getGui());
                     bgScene->isPaused_ = true;
+                    prevScene_->isActive_ = false;
                     bgScene->onPause();
                 }
 
@@ -106,10 +108,12 @@ namespace mighter2d::priv {
         if (activeScene->isEntered()) {
             if (activeScene->isCached()) {
                 activeScene->isPaused_ = false;
+                activeScene->isActive_ = true;
                 Scene* bgScene = activeScene->getBackgroundScene();
 
                 if (bgScene) {
                     bgScene->isPaused_ = false;
+                    bgScene->isActive_ = true;
                     bgScene->onResumeFromCache();
                 }
 
@@ -118,6 +122,7 @@ namespace mighter2d::priv {
         } else if (enterScene) {
             activeScene->init(*engine_);
             activeScene->isEntered_ = true;
+            activeScene->isActive_ = true;
             activeScene->onEnter();
         }
     }
@@ -197,9 +202,12 @@ namespace mighter2d::priv {
         // Attempt to cache the removed scene
         if (const auto& [isCached, cacheAlias] = poppedScene->cacheState_; isCached) {
             resetGui(poppedScene->getGui());
+            poppedScene->isActive_ = false;
 
-            if (Scene* bgScene = poppedScene->getBackgroundScene(); bgScene)
+            if (Scene* bgScene = poppedScene->getBackgroundScene(); bgScene) {
                 resetGui(bgScene->getGui());
+                bgScene->isActive_ = false;
+            }
 
             cache(cacheAlias, std::move(poppedScene));
         }
@@ -217,11 +225,13 @@ namespace mighter2d::priv {
 
             if (activeScene->isEntered() && resumePrev) {
                 activeScene->isPaused_ = false;
+                activeScene->isActive_ = true;
 
                 Scene* bgScene = activeScene->getBackgroundScene();
 
                 if (bgScene) {
                     bgScene->isPaused_ = false;
+                    bgScene->isActive_ = true;
                     bgScene->onResume();
                 }
 
@@ -229,6 +239,7 @@ namespace mighter2d::priv {
             } else if (resumePrev) {
                 activeScene->init(*engine_);
                 activeScene->isEntered_ = true;
+                activeScene->isActive_ = true;
                 activeScene->onEnter();
             }
         }
