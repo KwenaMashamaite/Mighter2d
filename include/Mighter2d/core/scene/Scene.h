@@ -36,7 +36,6 @@
 #include "Mighter2d/common/PrefContainer.h"
 #include "Mighter2d/core/scene/GameObjectContainer.h"
 #include "Mighter2d/core/scene/RenderLayerContainer.h"
-#include "Mighter2d/core/scene/DrawableContainer.h"
 #include "Mighter2d/core/scene/GridMoverContainer.h"
 #include "Mighter2d/ui/GuiContainer.h"
 #include "Mighter2d/graphics/Camera.h"
@@ -735,19 +734,6 @@ namespace mighter2d {
         const ui::GuiContainer& getGui() const;
 
         /**
-         * @brief Get the scene geometry shape container
-         * @return The geometry shape container
-         *
-         * You may use this class to create geometry shape instead of using
-         * their respective constructors. Consult the ShapeContainer class
-         * definition for more info
-         *
-         * @warning Do not keep the returned reference
-         */
-        ShapeContainer& getShapes();
-        const ShapeContainer& getShapes() const;
-
-        /**
          * @brief Get the scene level game object container
          * @return The scene level game object container
          *
@@ -758,16 +744,6 @@ namespace mighter2d {
          */
         GameObjectContainer& getGameObjects();
         const GameObjectContainer& getGameObjects() const;
-
-        /**
-         * @brief Get the scene level sprite container
-         * @return The scene level sprite container
-         *
-         * This class stores the sprites in the scene. The sprite's animator
-         * will automatically be updated
-         */
-        SpriteContainer& getSprites();
-        const SpriteContainer& getSprites() const;
 
         /**
          * @brief Create the scene level grid instance
@@ -869,9 +845,7 @@ namespace mighter2d {
 
         std::unique_ptr<std::reference_wrapper<Engine>> engine_;           //!< A reference to the game engine
         std::unique_ptr<std::reference_wrapper<Window>> window_;           //!< A reference to the game window
-        std::unique_ptr<SpriteContainer> spriteContainer_;                 //!< Stores sprites that belong to the scene
         std::unique_ptr<GameObjectContainer> entityContainer_;             //!< Stores game objects that belong to the scene
-        std::unique_ptr<ShapeContainer> shapeContainer_;                   //!< Stores shapes that belong to the scene
         std::unique_ptr<std::reference_wrapper<PropertyContainer>> cache_; //!< The engine level cache
         std::unique_ptr<std::reference_wrapper<PrefContainer>> sCache_; //!< The engine level savable cache
     };

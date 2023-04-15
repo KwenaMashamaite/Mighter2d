@@ -42,9 +42,7 @@ namespace mighter2d {
         hasGrid2D_{false},
         cacheState_{false, ""},
         parentScene_{nullptr},
-        spriteContainer_{std::make_unique<SpriteContainer>(renderLayers_)},
-        entityContainer_{std::make_unique<GameObjectContainer>(renderLayers_)},
-        shapeContainer_{std::make_unique<ShapeContainer>(renderLayers_)}
+        entityContainer_{std::make_unique<GameObjectContainer>(renderLayers_)}
     {
         renderLayers_.create("default");
     }
@@ -72,7 +70,6 @@ namespace mighter2d {
             renderLayers_ = std::move(other.renderLayers_);
             entityContainer_ = std::move(other.entityContainer_);
             gridMovers_ = std::move(other.gridMovers_);
-            shapeContainer_ = std::move(other.shapeContainer_);
             grid2D_ = std::move(other.grid2D_);
             timescale_ = other.timescale_;
             isVisibleWhenPaused_ = other.isVisibleWhenPaused_;
@@ -389,28 +386,12 @@ namespace mighter2d {
             return *guiContainer_;
     }
 
-    ShapeContainer &Scene::getShapes() {
-        return *shapeContainer_;
-    }
-
-    const ShapeContainer &Scene::getShapes() const {
-        return *shapeContainer_;
-    }
-
     GameObjectContainer &Scene::getGameObjects() {
         return *entityContainer_;
     }
 
     const GameObjectContainer &Scene::getGameObjects() const {
         return *entityContainer_;
-    }
-
-    SpriteContainer &Scene::getSprites() {
-        return *spriteContainer_;
-    }
-
-    const SpriteContainer &Scene::getSprites() const {
-        return *spriteContainer_;
     }
 
     void Scene::createGrid2D(unsigned int tileWidth, unsigned int tileHeight) {
