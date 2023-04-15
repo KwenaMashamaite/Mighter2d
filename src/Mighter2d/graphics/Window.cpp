@@ -48,6 +48,10 @@ namespace mighter2d {
         });
     }
 
+    std::string Window::getClassName() const {
+        return "Window";
+    }
+
     void Window::setStyle(Uint32 windowStyle) {
         if (isOpen())
             windowStyle_ |= windowStyle;
@@ -155,7 +159,7 @@ namespace mighter2d {
             renderTarget_.create(getTitle(), sizeBeforeFullScreen_.x, sizeBeforeFullScreen_.y, windowStyleBeforeFullScreen_);
         }
 
-        eventEmitter_.emit("fullScreenToggle", fullScreen);
+        emit("fullScreenToggle", fullScreen);
     }
 
     bool Window::isFullScreen() const {
@@ -257,48 +261,36 @@ namespace mighter2d {
         return renderTarget_.isOpen();
     }
 
-    void Window::suspendedEventListener(int id, bool suspend) {
-        eventEmitter_.suspendEventListener(id, suspend);
-    }
-
-    bool Window::isEventListenerSuspended(int id) const {
-        return eventEmitter_.isEventListenerSuspended(id);
-    }
-
     void Window::setDefaultOnCloseHandlerEnable(bool enable) {
-        eventEmitter_.suspendEventListener("close", defaultWinCloseHandlerId_, !enable);
+        suspendEventListener("close", defaultWinCloseHandlerId_, !enable);
     }
 
     int Window::onClose(const Callback<>& callback, bool oneTime) {
-        return utility::addEventListener(eventEmitter_, "close", callback, oneTime);
+        return utility::addEventListener(*this, "close", callback, oneTime);
     }
 
     int Window::onLoseFocus(const Callback<>& callback, bool oneTime) {
-        return utility::addEventListener(eventEmitter_, "loseFocus", callback, oneTime);
+        return utility::addEventListener(*this, "loseFocus", callback, oneTime);
     }
 
     int Window::onGainFocus(const Callback<>& callback, bool oneTime) {
-        return utility::addEventListener(eventEmitter_, "gainFocus", callback, oneTime);
+        return utility::addEventListener(*this, "gainFocus", callback, oneTime);
     }
 
     int Window::onMouseEnter(const Callback<>& callback, bool oneTime) {
-        return utility::addEventListener(eventEmitter_, "mouseEnter", callback, oneTime);
+        return utility::addEventListener(*this, "mouseEnter", callback, oneTime);
     }
 
     int Window::onMouseExit(const Callback<>& callback, bool oneTime) {
-        return utility::addEventListener(eventEmitter_, "mouseExit", callback, oneTime);
+        return utility::addEventListener(*this, "mouseExit", callback, oneTime);
     }
 
     int Window::onFullScreenToggle(const Callback<bool> &callback, bool oneTime) {
-        return utility::addEventListener(eventEmitter_, "fullScreenToggle", callback, oneTime);
+        return utility::addEventListener(*this, "fullScreenToggle", callback, oneTime);
     }
 
     int Window::onResize(const Callback<Vector2u>& callback, bool oneTime) {
-        return utility::addEventListener(eventEmitter_, "resize", callback, oneTime);
-    }
-
-    bool Window::removeEventListener(int id) {
-        return eventEmitter_.removeEventListener(id);
+        return utility::addEventListener(*this, "resize", callback, oneTime);
     }
 
     Vector2u Window::boundSize(const Vector2u &size) const {
@@ -324,24 +316,28 @@ namespace mighter2d {
     }
 
     void Window::emitCloseEvent() {
-        eventEmitter_.emit("close");
+        emit("close");
     }
 
     void Window::emitFocusChange(bool focused) {
         if (focused)
-            eventEmitter_.emit("gainFocus");
+            emit("gainFocus");
         else
-            eventEmitter_.emit("loseFocus");
+            emit("loseFocus");
     }
 
     void Window::emitMouseCursor(bool entered) {
         if (entered)
-            eventEmitter_.emit("mouseEnter");
+            emit("mouseEnter");
         else
-            eventEmitter_.emit("mouseExit");
+            emit("mouseExit");
     }
 
     void Window::emitResize(const Vector2u &newSize) {
-        eventEmitter_.emit("resize", newSize);
+        emit("resize", newSize);
+    }
+
+    Window::~Window() {
+        emitDestruction();
     }
 }

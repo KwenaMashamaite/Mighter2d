@@ -30,6 +30,7 @@
 #include "Mighter2d/graphics/WindowStyles.h"
 #include "Mighter2d/graphics/Colour.h"
 #include "Mighter2d/core/event/EventEmitter.h"
+#include "Mighter2d/core/object/Object.h"
 #include <string>
 #include <memory>
 
@@ -44,7 +45,7 @@ namespace mighter2d {
     /**
      * @brief Game window
      */
-    class MIGHTER2D_API Window {
+    class MIGHTER2D_API Window : public Object {
     public:
         /**
          * @brief Copy constructor
@@ -65,6 +66,12 @@ namespace mighter2d {
          * @brief Move assignment operator
          */
         Window& operator=(Window&&) = delete;
+
+        /**
+         * @brief Get the name of the class
+         * @return The name of the class
+         */
+        std::string getClassName() const override;
 
         /**
          * @brief Set the window style
@@ -449,27 +456,6 @@ namespace mighter2d {
         bool isOpen() const;
 
         /**
-         * @brief Pause or resume execution of an event listener
-         * @param id The event listeners unique identification number
-         * @param suspend True to suspend/pause or false to unsuspend/resume
-         *
-         * @see isEventListenerSuspended
-         */
-        void suspendedEventListener(int id, bool suspend);
-
-        /**
-         * @brief Check if an event listener is suspended or not
-         * @param id The identification number of the listener to be checked
-         * @return True if suspended, otherwise false
-         *
-         * This function also returns false if the specified event listener
-         * does not exist
-         *
-         * @see suspendedEventListener
-         */
-        bool isEventListenerSuspended(int id) const;
-
-        /**
          * @brief Enable or disable the default window close handler
          * @param enable True to enable of false to disable
          *
@@ -588,12 +574,9 @@ namespace mighter2d {
         int onResize(const Callback<Vector2u>& callback, bool oneTime = false);
 
         /**
-         * @brief Remove an event listener from an event
-         * @param id The unique identification number of the event listener
-         * @return True if the event listener was removed or false if no such
-         *         event listener exists
+         * @brief Destructor
          */
-        bool removeEventListener(int id);
+        ~Window();
 
     private:
         /**
@@ -645,7 +628,6 @@ namespace mighter2d {
         bool isCursorVisible_;               //!< A flag indicating whether or not the mouse cursor is visible
         bool isCursorGrabbed_;               //!< A flag indicating whether or not the mouse cursor is grabbed by the window
         Vector2u sizeBeforeFullScreen_;      //!< The size of the window before full screen mode
-        EventEmitter eventEmitter_;          //!< Dispatches events
         Colour clearColour_;                 //!< The fill colour of the window when cleared
         int defaultWinCloseHandlerId_;       //!< The identification number of the default window close event handler
         friend class Engine;                 //!< Needs access to constructor
