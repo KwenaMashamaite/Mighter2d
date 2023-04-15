@@ -32,7 +32,6 @@
 #include "Mighter2d/core/grid/Index.h"
 #include "Mighter2d/graphics/Sprite.h"
 #include "Mighter2d/graphics/shapes/RectangleShape.h"
-#include "Mighter2d/core/scene/GameObjectContainer.h"
 #include "Mighter2d/core/grid/GridRenderer.h"
 #include "Mighter2d/graphics/Drawable.h"
 #include <unordered_map>

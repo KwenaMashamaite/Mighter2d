@@ -486,10 +486,6 @@ namespace mighter2d::priv {
             scene->onFixedUpdate(deltaTime * scene->getTimescale());
         }
         else {
-            if (scene->grid2D_) {
-                scene->grid2D_->update(deltaTime * scene->getTimescale());
-            }
-
             // Normal update
             for (auto& updatable : scene->updateList_) {
                 updatable->update(deltaTime * scene->getTimescale());

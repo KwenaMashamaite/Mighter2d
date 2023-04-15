@@ -59,7 +59,6 @@
 #include "Mighter2d/core/physics/CyclicGridMover.h"
 #include "Mighter2d/core/resources/ResourceLoader.h"
 #include "Mighter2d/core/scene/Scene.h"
-#include "Mighter2d/core/scene/GameObjectContainer.h"
 #include "Mighter2d/core/grid/Index.h"
 #include "Mighter2d/core/grid/Grid.h"
 #include "Mighter2d/core/time/Clock.h"

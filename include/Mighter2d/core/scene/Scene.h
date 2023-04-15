@@ -34,9 +34,7 @@
 #include "Mighter2d/core/time/TimerManager.h"
 #include "Mighter2d/common/PropertyContainer.h"
 #include "Mighter2d/common/PrefContainer.h"
-#include "Mighter2d/core/scene/GameObjectContainer.h"
 #include "Mighter2d/core/scene/RenderLayerContainer.h"
-#include "Mighter2d/core/scene/GridMoverContainer.h"
 #include "Mighter2d/ui/GuiContainer.h"
 #include "Mighter2d/graphics/Camera.h"
 #include "Mighter2d/core/grid/Grid.h"
@@ -614,13 +612,6 @@ namespace mighter2d {
         const Camera& getCamera() const;
 
         /**
-         * @brief Get the scene level GridMover container
-         * @return The scene level grid mover container
-         */
-        GridMoverContainer& getGridMovers();
-        const GridMoverContainer& getGridMovers() const;
-
-        /**
          * @brief Get the scene level input manager
          * @return The scene level input manager
          *
@@ -713,22 +704,6 @@ namespace mighter2d {
         const RenderLayerContainer& getRenderLayers() const;
 
         /**
-         * @brief Get the scene level grid
-         * @return The scene level grid
-         * @throws AccessViolationException If this function is called without
-         *         creating the grid first
-         *
-         * Note that only one grid can be created per scene
-         *
-         * @warning The grid must be created before it is used. Calling
-         * this function before the grid is created is undefined behavior
-         *
-         * @see createGrid2D
-         */
-        Grid& getGrid();
-        const Grid& getGrid() const;
-
-        /**
          * @brief Get the scene level gui container
          * @return The scene level gui container
          * @throws AccessViolationException If this function is called before
@@ -741,34 +716,6 @@ namespace mighter2d {
          */
         ui::GuiContainer& getGui();
         const ui::GuiContainer& getGui() const;
-
-        /**
-         * @brief Get the scene level game object container
-         * @return The scene level game object container
-         *
-         * This class stores game objects that belong to this scene. All
-         * game objects in this container are automatically updated
-         *
-         * @warning Do not keep the returned reference
-         */
-        GameObjectContainer& getGameObjects();
-        const GameObjectContainer& getGameObjects() const;
-
-        /**
-         * @brief Create the scene level grid instance
-         * @param tileWidth The width of the grid
-         * @param tileHeight The height of the grid
-         *
-         * Note that this function only creates a grid instance so that
-         * it can be used. You still need to construct the grid using
-         * the appropriate member function
-         *
-         * @warning Only a single grid can be created, therefore calling
-         * this function will destroy the previous grid
-         *
-         * @see getGrid
-         */
-        void createGrid2D(unsigned int tileWidth, unsigned int tileHeight);
 
         /**
          * @internal
@@ -848,8 +795,6 @@ namespace mighter2d {
         TimerManager timerManager_;           //!< Scene level timer manager
         std::unique_ptr<ui::GuiContainer> guiContainer_;       //!< Scene level gui container
         RenderLayerContainer renderLayers_;   //!< Render layers for this scene
-        GridMoverContainer gridMovers_;       //!< Stores grid movers that belong to the scene
-        std::unique_ptr<Grid> grid2D_;        //!< Scene level grid
         float timescale_;                     //!< Controls the speed of the scene without affecting the render fps
         bool isEntered_;                      //!< A flag indicating whether or not the scene has been entered
         bool isInitialized_;                  //!< A flag indicating whether or not the scene has been initialized
@@ -863,8 +808,6 @@ namespace mighter2d {
         Scene* parentScene_;                  //!< The parent scene of this scene when it is in the background of another scene
         Scene::Ptr backgroundScene_;          //!< The background scene of this scene
         friend class priv::SceneManager;      //!< Pre updates the scene
-
-        std::unique_ptr<GameObjectContainer> entityContainer_;//!< A reference to the game engine
     };
 }
 

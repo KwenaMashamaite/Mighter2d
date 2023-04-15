@@ -44,8 +44,7 @@ namespace mighter2d {
         isBackgroundSceneUpdated_{true},
         isBackgroundSceneEventsEnabled_{false},
         cacheState_{false, ""},
-        parentScene_{nullptr},
-        entityContainer_{std::make_unique<GameObjectContainer>(renderLayers_)}
+        parentScene_{nullptr}
     {
         renderLayers_.create("default");
     }
@@ -68,8 +67,6 @@ namespace mighter2d {
             timerManager_ = std::move(other.timerManager_);
             guiContainer_ = std::move(other.guiContainer_);
             renderLayers_ = std::move(other.renderLayers_);
-            gridMovers_ = std::move(other.gridMovers_);
-            grid2D_ = std::move(other.grid2D_);
             timescale_ = other.timescale_;
             isVisibleWhenPaused_ = other.isVisibleWhenPaused_;
             isBackgroundSceneDrawable_ = other.isBackgroundSceneDrawable_;
@@ -308,14 +305,6 @@ namespace mighter2d {
             return *camera_;
     }
 
-    GridMoverContainer &Scene::getGridMovers() {
-        return gridMovers_;
-    }
-
-    const GridMoverContainer &Scene::getGridMovers() const {
-        return gridMovers_;
-    }
-
     input::InputManager &Scene::getInput() {
         return inputManager_;
     }
@@ -370,17 +359,6 @@ namespace mighter2d {
         return renderLayers_;
     }
 
-    Grid &Scene::getGrid() {
-        return const_cast<Grid&>(std::as_const(*this).getGrid());
-    }
-
-    const Grid &Scene::getGrid() const {
-        if (!grid2D_)
-            throw AccessViolationException("mighter2d::Scene::createGrid2D() must be called first before calling mighter2d::Scene::getGrid()");
-        else
-            return *grid2D_;
-    }
-
     ui::GuiContainer &Scene::getGui() {
         return const_cast<ui::GuiContainer&>(std::as_const(*this).getGui());
     }
@@ -390,18 +368,6 @@ namespace mighter2d {
             throw AccessViolationException("mighter2d::Scene::getGui() must not be called before the scene is initialized");
         else
             return *guiContainer_;
-    }
-
-    GameObjectContainer &Scene::getGameObjects() {
-        return *entityContainer_;
-    }
-
-    const GameObjectContainer &Scene::getGameObjects() const {
-        return *entityContainer_;
-    }
-
-    void Scene::createGrid2D(unsigned int tileWidth, unsigned int tileHeight) {
-        grid2D_ = std::make_unique<Grid>(tileWidth, tileHeight, *this);
     }
 
     Scene::~Scene() {
