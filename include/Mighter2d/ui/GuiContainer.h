@@ -32,6 +32,7 @@
 #include "Mighter2d/ui/widgets/Widget.h"
 #include "Mighter2d/core/event/Event.h"
 #include "Mighter2d/core/object/Object.h"
+#include "Mighter2d/graphics/Drawable.h"
 #include <string>
 #include <memory>
 
@@ -56,7 +57,7 @@ namespace mighter2d {
          * This class is not meant to be instantiated directly, use
          * mighter2d::Scene::getGui or mighter2d::Engine::getGui
          */
-        class MIGHTER2D_API GuiContainer : public Object, public IUpdatable {
+        class MIGHTER2D_API GuiContainer : public Drawable, public IUpdatable {
         public:
             using Ptr = std::shared_ptr<GuiContainer>; //!< Shared gui container pointer
 
@@ -238,12 +239,6 @@ namespace mighter2d {
              * @return True if it is enabled, otherwise false
              */
             bool isTabKeyUsageEnabled() const;
-
-            /**
-             * @internal
-             * @brief Draw all the widgets that were added to the gui
-             */
-            void draw();
 
             /**
              * @brief Change the global font
@@ -553,6 +548,13 @@ namespace mighter2d {
              * should never be called outside of Mighter2d
              */
             void update(Time deltaTime) final;
+
+            /**
+             * @internal
+             * @brief Draw the gui on a render target
+             * @param renderTarget The render target to draw the gui on
+             */
+            void draw(priv::RenderTarget &renderTarget) const override;
 
             /**
              * @brief Destructor

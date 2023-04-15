@@ -320,37 +320,13 @@ namespace mighter2d::priv {
             const sf::View& view = std::any_cast<std::reference_wrapper<const sf::View>>(camera->getInternalView()).get();
             renderWindow.getThirdPartyWindow().setView(view);
 
-            /*if (scene->hasGrid2D_) {
-                scene->grid2D_->draw(renderWindow);
-                scene->gridMovers_.render(renderWindow);
-            }*/
-
             scene->renderLayers_.render(renderWindow);
-
-            // render gui
-            scene->guiContainer_->draw();
-
-            // Render camera outline
-            RectangleShape camOutline(*scene);
-
-            auto [x, y, width, height] = camera->getBounds();
-            camOutline.setSize({width, height});
-            camOutline.setPosition(x, y);
-            camOutline.setFillColour(Colour::Transparent);
-            camOutline.setOutlineThickness(-camera->getOutlineThickness());
-            camOutline.setOutlineColour(camera->getOutlineColour());
-            renderWindow.draw(camOutline);
 
             scene->onPostRender();
         };
 
         // Render the scene on each camera to update its view
         auto static renderEachCam = [](Scene* scene, priv::RenderTarget& renderTarget) {
-            // Render secondary cameras
-            scene->getCameras().forEach([scene, &renderTarget](Camera* secondaryCam) {
-                renderScene(scene, secondaryCam, renderTarget);
-            });
-
             // Render main/default camera
             renderScene(scene, &scene->getCamera(), renderTarget);
         };
@@ -403,9 +379,6 @@ namespace mighter2d::priv {
         // Update all system components of a scene
         static auto updateSystem = [](Scene* scene, Event e) {
             if (e.type == Event::Resized) {
-                scene->getCameras().forEach([&e](Camera* camera) {
-                    updateCameraScale(camera, e.size.width, e.size.height);
-                });
 
                 updateCameraScale(&scene->getCamera(), e.size.width, e.size.height);
             }
@@ -473,6 +446,7 @@ namespace mighter2d::priv {
         if (!scenes_.top()->isEntered())
             return;
 
+        //@todo Remove - Classes must be able to react to a frame end event directly
         static auto update = [](Scene* scene, Time dt) {
             scene->timerManager_.preUpdate();
             scene->audioManager_.removePlayedAudio();

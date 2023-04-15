@@ -30,12 +30,14 @@
 #include "Mighter2d/common/Rect.h"
 #include "Mighter2d/core/object/Object.h"
 #include "Mighter2d/graphics/Colour.h"
+#include "Mighter2d/graphics/Drawable.h"
 #include <memory>
 #include <any>
 #include <limits>
 
 namespace mighter2d {
     class GameObject;
+    class Scene;
 
     /// @internal
     namespace priv {
@@ -58,7 +60,7 @@ namespace mighter2d {
      * instantiate a scene and it is accessed with mighter2d::Scene::getCamera or
      * mighter2d::Scene::getCameras
      */
-    class MIGHTER2D_API Camera : public Object {
+    class MIGHTER2D_API Camera : public Drawable {
     public:
         /**
          * @brief Defines how the camera response to a window resize event
@@ -95,7 +97,7 @@ namespace mighter2d {
          * @warning This function is intended for internal use only and must
          * not be called outside of Mighter2d
          */
-        explicit Camera(priv::RenderTarget& window);
+        Camera(Scene& scene, priv::RenderTarget& window);
 
         /**
          * @brief Copy constructor
@@ -480,6 +482,8 @@ namespace mighter2d {
          * never be called outside of Mighter2d
          */
         std::any getInternalView();
+
+        void draw(priv::RenderTarget &renderTarget) const override;
 
         /**
          * @brief Destructor

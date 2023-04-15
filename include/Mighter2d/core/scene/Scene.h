@@ -38,7 +38,6 @@
 #include "Mighter2d/core/scene/RenderLayerContainer.h"
 #include "Mighter2d/core/scene/DrawableContainer.h"
 #include "Mighter2d/core/scene/GridMoverContainer.h"
-#include "Mighter2d/core/scene/CameraContainer.h"
 #include "Mighter2d/ui/GuiContainer.h"
 #include "Mighter2d/graphics/Camera.h"
 #include "Mighter2d/core/grid/Grid.h"
@@ -606,17 +605,6 @@ namespace mighter2d {
         const Camera& getCamera() const;
 
         /**
-         * @brief Get the scene level camera container
-         * @return The scene level camera container
-         * @throws AccessViolationException If this function is called before
-         *         the scene is initialized
-         *
-         * @see getCamera
-         */
-        CameraContainer& getCameras();
-        const CameraContainer& getCameras() const;
-
-        /**
          * @brief Get the scene level GridMover container
          * @return The scene level grid mover container
          */
@@ -861,7 +849,6 @@ namespace mighter2d {
 
         std::unique_ptr<std::reference_wrapper<Engine>> engine_;           //!< A reference to the game engine
         std::unique_ptr<std::reference_wrapper<Window>> window_;           //!< A reference to the game window
-        std::unique_ptr<CameraContainer> cameraContainer_;                 //!< Stores cameras that belong to the scene
         std::unique_ptr<SpriteContainer> spriteContainer_;                 //!< Stores sprites that belong to the scene
         std::unique_ptr<GameObjectContainer> entityContainer_;             //!< Stores game objects that belong to the scene
         std::unique_ptr<ShapeContainer> shapeContainer_;                   //!< Stores shapes that belong to the scene

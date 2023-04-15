@@ -39,6 +39,7 @@ namespace mighter2d {
     }
 
     Grid::Grid(unsigned int tileWidth, unsigned int tileHeight, Scene& scene) :
+        Drawable(scene),
         scene_{scene},
         tileSpacing_{1u},
         invalidTile_(scene, {0, 0}, {-1, -1}),

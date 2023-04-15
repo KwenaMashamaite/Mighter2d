@@ -269,6 +269,7 @@ namespace mighter2d::ui {
     //////////////////////////////////////////////////////////////////////////
 
     GuiContainer::GuiContainer(Scene& scene) :
+        Drawable(scene),
         scene_(&scene),
         pimpl_{std::make_unique<GuiContainerImpl>()}
     {
@@ -280,6 +281,7 @@ namespace mighter2d::ui {
     }
 
     GuiContainer::GuiContainer(Scene& scene, priv::RenderTarget &window) :
+        Drawable(scene),
         scene_(&scene),
         pimpl_{std::make_unique<GuiContainerImpl>(window)}
     {
@@ -336,10 +338,6 @@ namespace mighter2d::ui {
 
     bool GuiContainer::isTabKeyUsageEnabled() const {
         return pimpl_->isTabKeyUsageEnabled();
-    }
-
-    void GuiContainer::draw() {
-        pimpl_->draw();
     }
 
     void GuiContainer::setFont(const std::string& filename) {
@@ -464,6 +462,10 @@ namespace mighter2d::ui {
 
     std::string GuiContainer::getClassName() const {
         return "GuiContainer";
+    }
+
+    void GuiContainer::draw(priv::RenderTarget&) const {
+        pimpl_->draw();
     }
 
     GuiContainer::~GuiContainer() = default;

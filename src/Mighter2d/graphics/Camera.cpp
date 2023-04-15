@@ -26,6 +26,8 @@
 #include "Mighter2d/core/object/GameObject.h"
 #include "Mighter2d/graphics/RenderTarget.h"
 #include "Mighter2d/utility/Helpers.h"
+#include "Mighter2d/core/scene/Scene.h"
+#include "Mighter2d/graphics/shapes/RectangleShape.h"
 
 namespace mighter2d {
     class Camera::CameraImpl {
@@ -36,8 +38,10 @@ namespace mighter2d {
          * @param centre The centre of the zone to display
          * @param size Size of the zone to display
          */
-        explicit CameraImpl(priv::RenderTarget& window) :
+        explicit CameraImpl(Scene& scene, priv::RenderTarget& window) :
             window_{window.getThirdPartyWindow()},
+            scene_(&scene),
+            outline_(scene),
             view{window_.getDefaultView()},
             followTarget_{nullptr},
             posChangeId_{-1},
@@ -46,6 +50,15 @@ namespace mighter2d {
             isDrawable_{true},
             onWinResize_{OnWinResize::Stretch}
         {
+            //
+            auto [x, y, width, height] = getBounds();
+            outline_.setSize({width, height});
+            outline_.setPosition(x, y);
+            outline_.setFillColour(Colour::Transparent);
+            outline_.setOutlineThickness(-getOutlineThickness());
+            outline_.setOutlineColour(getOutlineColour());
+
+            //
             window_.setView(view);
         }
 
@@ -224,8 +237,14 @@ namespace mighter2d {
             return view;
         }
 
+        void draw(priv::RenderTarget &renderTarget) const {
+            renderTarget.draw(outline_);
+        }
+
     private:
         sf::RenderWindow& window_;
+        Scene* scene_;
+        RectangleShape outline_;
         sf::View view;
         GameObject* followTarget_;  //!< The game object to be followed by the camera
         int posChangeId_;           //!< The follow targets position change handler
@@ -238,8 +257,9 @@ namespace mighter2d {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    Camera::Camera(priv::RenderTarget &window) :
-        pimpl_{std::make_unique<CameraImpl>(window)}
+    Camera::Camera(Scene& scene, priv::RenderTarget &window) :
+        Drawable(scene),
+        pimpl_{std::make_unique<CameraImpl>(scene, window)}
     {}
 
     std::string Camera::getClassName() const {
@@ -423,6 +443,10 @@ namespace mighter2d {
 
     std::any Camera::getInternalView() {
         return std::any{std::cref(pimpl_->getSFMLView())};
+    }
+
+    void Camera::draw(priv::RenderTarget &renderTarget) const {
+        pimpl_->draw(renderTarget);
     }
 
     Camera::~Camera() {

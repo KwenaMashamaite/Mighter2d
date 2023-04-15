@@ -34,6 +34,7 @@
 #include "Mighter2d/graphics/shapes/RectangleShape.h"
 #include "Mighter2d/core/scene/GameObjectContainer.h"
 #include "Mighter2d/core/grid/GridRenderer.h"
+#include "Mighter2d/graphics/Drawable.h"
 #include <unordered_map>
 #include <vector>
 #include <unordered_set>
@@ -51,7 +52,7 @@ namespace mighter2d {
     /**
      * @brief A 2D visual grid
      */
-    class MIGHTER2D_API Grid {
+    class MIGHTER2D_API Grid : public Drawable {
     public:
         /**
          * @internal
@@ -394,6 +395,8 @@ namespace mighter2d {
         void forEachTileInRange(Index startPos, Index endPos,
             const Callback<const Tile&>& callback) const;
 
+        std::string getClassName() const override {return "Grid";}
+
         /**
          * @internal
          * @brief Render grid on a render target
@@ -406,7 +409,7 @@ namespace mighter2d {
          * @warning This function is intended for internal use only and
          * should never be called outside of Mighter2d
          */
-        void draw(priv::RenderTarget &renderTarget) const;
+        void draw(priv::RenderTarget &renderTarget) const override;
 
         /**
          * @brief Add an GridObject to the grid

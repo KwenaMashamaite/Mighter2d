@@ -98,8 +98,7 @@ namespace mighter2d {
             isInitialized_ = true;
             engine_ = std::make_unique<std::reference_wrapper<Engine>>(engine);
             window_ = std::make_unique<std::reference_wrapper<Window>>(engine.getWindow());
-            cameraContainer_ = std::make_unique<CameraContainer>(engine.getRenderTarget());
-            camera_ = std::make_unique<Camera>(engine.getRenderTarget());
+            camera_ = std::make_unique<Camera>(*this, engine.getRenderTarget());
             cache_ = std::make_unique<std::reference_wrapper<PropertyContainer>>(engine.getCache());
             sCache_ = std::make_unique<std::reference_wrapper<PrefContainer>>(engine.getSavableCache());
             guiContainer_ = std::make_unique<ui::GuiContainer>(*this);
@@ -292,17 +291,6 @@ namespace mighter2d {
             throw AccessViolationException("mighter2d::Scene::getCamera() must not be called before the scene is initialized");
         else
             return *camera_;
-    }
-
-    CameraContainer &Scene::getCameras() {
-        return const_cast<CameraContainer&>(std::as_const(*this).getCameras());
-    }
-
-    const CameraContainer &Scene::getCameras() const {
-        if (!cameraContainer_)
-            throw AccessViolationException("mighter2d::Scene::getCameras() must not be called before the scene is initialized");
-        else
-            return *cameraContainer_;
     }
 
     GridMoverContainer &Scene::getGridMovers() {
