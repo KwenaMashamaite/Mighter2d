@@ -470,5 +470,7 @@ namespace mighter2d::ui {
         pimpl_->draw();
     }
 
-    GuiContainer::~GuiContainer() = default;
+    GuiContainer::~GuiContainer() {
+        emitDestruction();
+    }
 }

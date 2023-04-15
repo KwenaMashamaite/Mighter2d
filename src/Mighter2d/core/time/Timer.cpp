@@ -296,4 +296,8 @@ namespace mighter2d {
     std::string Timer::getClassName() const {
         return "Timer";
     }
+
+    Timer::~Timer() {
+        emitDestruction();
+    }
 }

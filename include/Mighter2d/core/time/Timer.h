@@ -480,6 +480,11 @@ namespace mighter2d {
          */
         void update(Time deltaTime) final;
 
+        /**
+         * @brief Destructor
+         */
+        ~Timer();
+
     private:
         Scene* scene_;
         Status status_;              //!< The current state of the timer

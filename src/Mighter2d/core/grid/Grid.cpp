@@ -472,6 +472,7 @@ namespace mighter2d {
     }
 
     Grid::~Grid() {
+        emitDestruction();
         removeAllChildren();
     }
 }
