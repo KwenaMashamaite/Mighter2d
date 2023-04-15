@@ -269,7 +269,7 @@ namespace mighter2d {
          * The outline colour together with the outline thickness enables
          * visualization of the camera bounds
          *
-         * By default the outline colour is mighter2d::Colour::Transparent
+         * By default the outline colour is mighter2d::Colour::Green
          *
          * @see setOutlineThickness, getOutlineColour
          */

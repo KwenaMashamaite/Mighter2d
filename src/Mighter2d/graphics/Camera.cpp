@@ -45,7 +45,7 @@ namespace mighter2d {
             view{window_.getDefaultView()},
             followTarget_{nullptr},
             posChangeId_{-1},
-            outlineColour_{Colour::Transparent},
+            outlineColour_{Colour::Green},
             outlineThickness_{1},
             isDrawable_{true},
             onWinResize_{OnWinResize::Stretch}
