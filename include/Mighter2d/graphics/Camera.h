@@ -248,7 +248,7 @@ namespace mighter2d {
          * The outline thickness together with the outline colour enables
          * visualization if the camera bounds
          *
-         * By default, the outline thickness is 1
+         * By default, the outline thickness is 0
          *
          * @see setOutlineColour, getOutlineThickness
          */

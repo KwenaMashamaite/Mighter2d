@@ -39,24 +39,21 @@ namespace mighter2d {
          * @param size Size of the zone to display
          */
         explicit CameraImpl(Scene& scene, priv::RenderTarget& window) :
-            window_{window.getThirdPartyWindow()},
-            scene_(&scene),
-            outline_(scene),
-            view{window_.getDefaultView()},
-            followTarget_{nullptr},
-            posChangeId_{-1},
-            outlineColour_{Colour::Green},
-            outlineThickness_{1},
-            isDrawable_{true},
-            onWinResize_{OnWinResize::Stretch}
+                window_{window.getThirdPartyWindow()},
+                scene_(&scene),
+                outlineRect_(scene),
+                view{window_.getDefaultView()},
+                followTarget_{nullptr},
+                posChangeId_{-1},
+                isDrawable_{true},
+                onWinResize_{OnWinResize::Stretch}
         {
-            //
+            //Init cam outline
             auto [x, y, width, height] = getBounds();
-            outline_.setSize({width, height});
-            outline_.setPosition(x, y);
-            outline_.setFillColour(Colour::Transparent);
-            outline_.setOutlineThickness(-getOutlineThickness());
-            outline_.setOutlineColour(getOutlineColour());
+            outlineRect_.setSize({width, height});
+            outlineRect_.setPosition(x, y);
+            outlineRect_.setFillColour(Colour::Transparent);
+            outlineRect_.setOutlineColour(Colour::Green);
 
             //
             window_.setView(view);
@@ -130,15 +127,15 @@ namespace mighter2d {
         }
 
         void setOutlineThickness(float thickness) {
-            if (thickness >= 0.0f)
-                outlineThickness_ = thickness;
+            outlineRect_.setOutlineThickness(thickness);
         }
 
         float getOutlineThickness() const {
-            return outlineThickness_;
+            return outlineRect_.getOutlineThickness();
         }
 
         void setOutlineColour(const Colour &colour) {
+            outlineRect_.setOutlineColour(colour);
             outlineColour_ = colour;
         }
 
@@ -238,19 +235,18 @@ namespace mighter2d {
         }
 
         void draw(priv::RenderTarget &renderTarget) const {
-            renderTarget.draw(outline_);
+            renderTarget.draw(outlineRect_);
         }
 
     private:
         sf::RenderWindow& window_;
         Scene* scene_;
-        RectangleShape outline_;
+        RectangleShape outlineRect_;
         sf::View view;
         GameObject* followTarget_;  //!< The game object to be followed by the camera
         int posChangeId_;           //!< The follow targets position change handler
         Vector2f followOffset_;     //!< The camera's follow offset from the targets position
         Colour outlineColour_;      //!< The cameras outline colour
-        float outlineThickness_;
         bool isDrawable_;
         OnWinResize onWinResize_;
     };
