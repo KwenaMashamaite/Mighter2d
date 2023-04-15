@@ -28,7 +28,7 @@
 #include "Mighter2d/Config.h"
 #include "Mighter2d/core/physics/GridMover.h"
 #include "Mighter2d/core/object/ObjectContainer.h"
-#include "Mighter2d/core/event/Event.h"
+#include "Mighter2d/core/event/SystemEvent.h"
 #include "Mighter2d/core/time/Time.h"
 
 namespace mighter2d {

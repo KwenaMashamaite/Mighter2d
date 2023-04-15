@@ -41,7 +41,7 @@
 #include "Mighter2d/core/audio/SoundEffect.h"
 #include "Mighter2d/core/audio/Music.h"
 #include "Mighter2d/core/object/GameObject.h"
-#include "Mighter2d/core/event/Event.h"
+#include "Mighter2d/core/event/SystemEvent.h"
 #include "Mighter2d/core/event/EventEmitter.h"
 #include "Mighter2d/core/event/GlobalEventEmitter.h"
 #include "Mighter2d/core/exceptions/Exceptions.h"

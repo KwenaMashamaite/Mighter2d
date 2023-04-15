@@ -28,7 +28,7 @@
 #include "Mighter2d/Config.h"
 
 namespace mighter2d {
-    class Event;
+    class SystemEvent;
 
     /**
      * @brief Interface for system event handlers
@@ -39,7 +39,7 @@ namespace mighter2d {
          * @brief Handle a system event
          * @param event The event to be handled
          */
-        virtual void handleEvent(const Event& event) = 0;
+        virtual void handleEvent(const SystemEvent& event) = 0;
     };
 }
 

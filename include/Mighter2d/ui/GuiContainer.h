@@ -30,7 +30,7 @@
 #include "Mighter2d/common/Rect.h"
 #include "Mighter2d/common/IUpdatable.h"
 #include "Mighter2d/ui/widgets/Widget.h"
-#include "Mighter2d/core/event/Event.h"
+#include "Mighter2d/core/event/SystemEvent.h"
 #include "Mighter2d/core/object/Object.h"
 #include "Mighter2d/graphics/Drawable.h"
 #include "Mighter2d/common/ISystemEventHandler.h"
@@ -537,7 +537,7 @@ namespace mighter2d {
              *
              * @warning This function is intended for internal use only
              */
-            void handleEvent(const Event& event) override;
+            void handleEvent(const SystemEvent& event) override;
 
             /**
              * @internal

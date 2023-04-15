@@ -84,7 +84,7 @@ namespace mighter2d::priv {
         return window_.isOpen();
     }
 
-    bool RenderTarget::pollEvent(Event& event) {
+    bool RenderTarget::pollEvent(SystemEvent& event) {
         sf::Event sfmlEvent;
         bool eventPopped = window_.pollEvent(sfmlEvent);
 

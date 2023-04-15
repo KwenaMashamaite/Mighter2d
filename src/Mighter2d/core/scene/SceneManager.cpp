@@ -35,13 +35,13 @@ namespace mighter2d::priv {
             gui.unfocusAllWidgets();
 
             // Reset hover state
-            Event event;
-            event.type = Event::MouseMoved;
+            SystemEvent event;
+            event.type = SystemEvent::MouseMoved;
             event.mouseMove.x = -9999;
             gui.handleEvent(event);
 
             // Reset left mouse down state
-            event.type = Event::MouseButtonReleased;
+            event.type = SystemEvent::MouseButtonReleased;
             event.mouseButton.button = input::Mouse::Button::Left;
             event.mouseButton.x = -9999;
             gui.handleEvent(event);
@@ -358,7 +358,7 @@ namespace mighter2d::priv {
         update(deltaTime, false);
     }
 
-    void SceneManager::handleEvent(Event event) {
+    void SceneManager::handleEvent(SystemEvent event) {
         if (scenes_.empty())
             return;
 
@@ -377,30 +377,30 @@ namespace mighter2d::priv {
         };
 
         // Update all system components of a scene
-        static auto updateSystem = [](Scene* scene, Event e) {
-            if (e.type == Event::Resized) {
+        static auto updateSystem = [](Scene* scene, SystemEvent e) {
+            if (e.type == SystemEvent::Resized) {
                 updateCameraScale(&scene->getCamera(), e.size.width, e.size.height);
             }
 
             // Absorb key event if Keyboard is disabled
             if (!scene->inputManager_.isInputEnabled(input::InputType::Keyboard) &&
-                (e.type == Event::KeyPressed || e.type == Event::KeyReleased))
+                (e.type == SystemEvent::KeyPressed || e.type == SystemEvent::KeyReleased))
             {
                 return;
             }
 
             // Absorb mouse event if the Mouse is disabled
             if (!scene->inputManager_.isInputEnabled(input::InputType::Mouse) &&
-                (e.type == Event::MouseButtonPressed || e.type == Event::MouseButtonReleased
-                || e.type == Event::MouseMoved || e.type == Event::MouseWheelScrolled))
+                (e.type == SystemEvent::MouseButtonPressed || e.type == SystemEvent::MouseButtonReleased
+                 || e.type == SystemEvent::MouseMoved || e.type == SystemEvent::MouseWheelScrolled))
             {
                 return;
             }
 
             // Absorb joystick event if Joystick is disabled
             if (!scene->inputManager_.isInputEnabled(input::InputType::Joystick) &&
-                (e.type == Event::JoystickButtonPressed || e.type == Event::JoystickButtonReleased ||
-                e.type == Event::JoystickMoved))
+                (e.type == SystemEvent::JoystickButtonPressed || e.type == SystemEvent::JoystickButtonReleased ||
+                 e.type == SystemEvent::JoystickMoved))
             {
                 return;
             }

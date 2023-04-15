@@ -23,7 +23,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "Mighter2d/core/input/Mouse.h"
-#include "Mighter2d/core/event/Event.h"
+#include "Mighter2d/core/event/SystemEvent.h"
 #include <doctest.h>
 
 using Mouse = mighter2d::input::Mouse;

@@ -31,7 +31,7 @@
 #include <unordered_map>
 
 namespace mighter2d {
-    class Event;
+    class SystemEvent;
     class Scene;
 
     /**
@@ -294,7 +294,7 @@ namespace mighter2d {
              *
              * @warning This function is intended for internal use only
              */
-            void handleEvent(const Event& event) override;
+            void handleEvent(const SystemEvent& event) override;
 
             /**
              * @brief Destructor

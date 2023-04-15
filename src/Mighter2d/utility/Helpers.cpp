@@ -38,33 +38,33 @@ namespace mighter2d::utility {
         auto constexpr PI = 3.14159265358979323846f;
     }
 
-    Event convertToOwnEvent(const sf::Event &SFML_Event) {
-        Event MIGHTER2D_Event;
+    SystemEvent convertToOwnEvent(const sf::Event &SFML_Event) {
+        SystemEvent MIGHTER2D_Event;
         switch (SFML_Event.type) {
             case sf::Event::Closed:
-                MIGHTER2D_Event.type = Event::Type::Closed;
+                MIGHTER2D_Event.type = SystemEvent::Type::Closed;
                 return MIGHTER2D_Event;
             case sf::Event::Resized:
-                MIGHTER2D_Event.type = Event::Type::Resized;
+                MIGHTER2D_Event.type = SystemEvent::Type::Resized;
                 MIGHTER2D_Event.size.width = SFML_Event.size.width;
                 MIGHTER2D_Event.size.height = SFML_Event.size.height;
                 return MIGHTER2D_Event;
             case sf::Event::LostFocus:
-                MIGHTER2D_Event.type = Event::Type::LostFocus;
+                MIGHTER2D_Event.type = SystemEvent::Type::LostFocus;
                 return MIGHTER2D_Event;
             case sf::Event::GainedFocus:
-                MIGHTER2D_Event.type = Event::Type::GainedFocus;
+                MIGHTER2D_Event.type = SystemEvent::Type::GainedFocus;
                 return MIGHTER2D_Event;
             case sf::Event::TextEntered:
-                MIGHTER2D_Event.type = Event::Type::TextEntered;
+                MIGHTER2D_Event.type = SystemEvent::Type::TextEntered;
                 MIGHTER2D_Event.text.unicode = SFML_Event.text.unicode;
                 return MIGHTER2D_Event;
             case sf::Event::KeyReleased:
             case sf::Event::KeyPressed:
                 if (SFML_Event.type == sf::Event::KeyPressed)
-                    MIGHTER2D_Event.type = Event::Type::KeyPressed;
+                    MIGHTER2D_Event.type = SystemEvent::Type::KeyPressed;
                 else
-                    MIGHTER2D_Event.type = Event::Type::KeyReleased;
+                    MIGHTER2D_Event.type = SystemEvent::Type::KeyReleased;
 
                 MIGHTER2D_Event.key.code = static_cast<input::Keyboard::Key>(SFML_Event.key.code);
                 MIGHTER2D_Event.key.alt = SFML_Event.key.alt;
@@ -73,7 +73,7 @@ namespace mighter2d::utility {
                 MIGHTER2D_Event.key.system = SFML_Event.key.system;
                 return MIGHTER2D_Event;
             case sf::Event::MouseWheelScrolled:
-                MIGHTER2D_Event.type = Event::Type::MouseWheelScrolled;
+                MIGHTER2D_Event.type = SystemEvent::Type::MouseWheelScrolled;
                 if (SFML_Event.mouseWheelScroll.wheel == sf::Mouse::Wheel::VerticalWheel)
                     MIGHTER2D_Event.mouseWheelScroll.wheel = input::Mouse::Wheel::VerticalWheel;
                 else
@@ -86,52 +86,52 @@ namespace mighter2d::utility {
             case sf::Event::MouseButtonPressed:
             case sf::Event::MouseButtonReleased:
                 if (SFML_Event.type == sf::Event::MouseButtonPressed)
-                    MIGHTER2D_Event.type = Event::Type::MouseButtonPressed;
+                    MIGHTER2D_Event.type = SystemEvent::Type::MouseButtonPressed;
                 else
-                    MIGHTER2D_Event.type = Event::Type::MouseButtonReleased;
+                    MIGHTER2D_Event.type = SystemEvent::Type::MouseButtonReleased;
 
                 MIGHTER2D_Event.mouseButton.button = static_cast<input::Mouse::Button>(SFML_Event.mouseButton.button);
                 MIGHTER2D_Event.mouseButton.x = SFML_Event.mouseButton.x;
                 MIGHTER2D_Event.mouseButton.y = SFML_Event.mouseButton.y;
                 return MIGHTER2D_Event;
             case sf::Event::MouseMoved:
-                MIGHTER2D_Event.type = Event::Type::MouseMoved;
+                MIGHTER2D_Event.type = SystemEvent::Type::MouseMoved;
                 MIGHTER2D_Event.mouseMove.x = SFML_Event.mouseMove.x;
                 MIGHTER2D_Event.mouseMove.y = SFML_Event.mouseMove.y;
                 return MIGHTER2D_Event;
             case sf::Event::MouseEntered:
-                MIGHTER2D_Event.type = Event::MouseEntered;
+                MIGHTER2D_Event.type = SystemEvent::MouseEntered;
                 return MIGHTER2D_Event;
             case sf::Event::MouseLeft:
-                MIGHTER2D_Event.type = Event::MouseLeft;
+                MIGHTER2D_Event.type = SystemEvent::MouseLeft;
                 return MIGHTER2D_Event;
             case sf::Event::JoystickButtonPressed:
-                MIGHTER2D_Event.type = Event::JoystickButtonPressed;
+                MIGHTER2D_Event.type = SystemEvent::JoystickButtonPressed;
                 MIGHTER2D_Event.joystickButton.joystickId = SFML_Event.joystickButton.joystickId;
                 MIGHTER2D_Event.joystickButton.button = SFML_Event.joystickButton.button;
                 return MIGHTER2D_Event;
             case sf::Event::JoystickButtonReleased:
-                MIGHTER2D_Event.type = Event::JoystickButtonReleased;
+                MIGHTER2D_Event.type = SystemEvent::JoystickButtonReleased;
                 MIGHTER2D_Event.joystickButton.joystickId = SFML_Event.joystickButton.joystickId;
                 MIGHTER2D_Event.joystickButton.button = SFML_Event.joystickButton.button;
                 return MIGHTER2D_Event;
             case sf::Event::JoystickMoved:
-                MIGHTER2D_Event.type = Event::JoystickMoved;
+                MIGHTER2D_Event.type = SystemEvent::JoystickMoved;
                 MIGHTER2D_Event.joystickMove.joystickId = SFML_Event.joystickMove.joystickId;
                 MIGHTER2D_Event.joystickMove.axis = static_cast<input::Joystick::Axis>(SFML_Event.joystickMove.axis);
                 MIGHTER2D_Event.joystickMove.position = SFML_Event.joystickMove.position;
                 return MIGHTER2D_Event;
             case sf::Event::JoystickConnected:
-                MIGHTER2D_Event.type = Event::JoystickConnected;
+                MIGHTER2D_Event.type = SystemEvent::JoystickConnected;
                 MIGHTER2D_Event.joystickConnect.joystickId = SFML_Event.joystickConnect.joystickId;
                 return MIGHTER2D_Event;
             case sf::Event::JoystickDisconnected:
-                MIGHTER2D_Event.type = Event::JoystickDisconnected;
+                MIGHTER2D_Event.type = SystemEvent::JoystickDisconnected;
                 MIGHTER2D_Event.joystickConnect.joystickId = SFML_Event.joystickConnect.joystickId;
                 return MIGHTER2D_Event;
             default:
             {
-                MIGHTER2D_Event.type = Event::Unknown;
+                MIGHTER2D_Event.type = SystemEvent::Unknown;
                 switch (SFML_Event.type) {
                     case sf::Event::TouchBegan:
                     case sf::Event::TouchEnded:
@@ -140,9 +140,9 @@ namespace mighter2d::utility {
 
                         // Treat touch events as mouse events
                         if (SFML_Event.type == sf::Event::TouchBegan)
-                            MIGHTER2D_Event.type = Event::Type::MouseButtonPressed;
+                            MIGHTER2D_Event.type = SystemEvent::Type::MouseButtonPressed;
                         else
-                            MIGHTER2D_Event.type = Event::Type::MouseButtonReleased;
+                            MIGHTER2D_Event.type = SystemEvent::Type::MouseButtonReleased;
 
                         MIGHTER2D_Event.mouseButton.button = input::Mouse::Button::Left;
                         MIGHTER2D_Event.mouseButton.x = SFML_Event.touch.x;
@@ -153,7 +153,7 @@ namespace mighter2d::utility {
                             return MIGHTER2D_Event;
 
                         // Treat moving touch as moving mouse cursor
-                        MIGHTER2D_Event.type = Event::Type::MouseMoved;
+                        MIGHTER2D_Event.type = SystemEvent::Type::MouseMoved;
                         MIGHTER2D_Event.mouseMove.x = SFML_Event.touch.x;
                         MIGHTER2D_Event.mouseMove.y = SFML_Event.touch.y;
                         return MIGHTER2D_Event;
@@ -172,30 +172,30 @@ namespace mighter2d::utility {
         }
     }
 
-    sf::Event convertToSFMLEvent(const Event &MIGHTER2D_Event) {
+    sf::Event convertToSFMLEvent(const SystemEvent &MIGHTER2D_Event) {
         sf::Event SFML_Event;
         switch (MIGHTER2D_Event.type) {
-            case Event::Closed:
+            case SystemEvent::Closed:
                 SFML_Event.type = sf::Event::EventType::Closed;
                 return SFML_Event;
-            case Event::Resized:
+            case SystemEvent::Resized:
                 SFML_Event.type = sf::Event::EventType::Resized;
                 SFML_Event.size.width = MIGHTER2D_Event.size.width;
                 SFML_Event.size.height = MIGHTER2D_Event.size.height;
                 return SFML_Event;
-            case Event::LostFocus:
+            case SystemEvent::LostFocus:
                 SFML_Event.type = sf::Event::EventType::LostFocus;
                 return SFML_Event;
-            case Event::GainedFocus:
+            case SystemEvent::GainedFocus:
                 SFML_Event.type = sf::Event::EventType::GainedFocus;
                 return SFML_Event;
-            case Event::TextEntered:
+            case SystemEvent::TextEntered:
                 SFML_Event.type = sf::Event::EventType::TextEntered;
                 SFML_Event.text.unicode = MIGHTER2D_Event.text.unicode;
                 return SFML_Event;
-            case Event::KeyReleased:
-            case Event::KeyPressed:
-                if (MIGHTER2D_Event.type == Event::KeyPressed)
+            case SystemEvent::KeyReleased:
+            case SystemEvent::KeyPressed:
+                if (MIGHTER2D_Event.type == SystemEvent::KeyPressed)
                     SFML_Event.type = sf::Event::EventType::KeyPressed;
                 else
                     SFML_Event.type = sf::Event::EventType::KeyReleased;
@@ -206,7 +206,7 @@ namespace mighter2d::utility {
                 SFML_Event.key.shift = MIGHTER2D_Event.key.shift;
                 SFML_Event.key.system = MIGHTER2D_Event.key.system;
                 return SFML_Event;
-            case Event::MouseWheelScrolled:
+            case SystemEvent::MouseWheelScrolled:
                 SFML_Event.type = sf::Event::EventType::MouseWheelScrolled;
                 if (MIGHTER2D_Event.mouseWheelScroll.wheel == input::Mouse::Wheel::VerticalWheel)
                     SFML_Event.mouseWheelScroll.wheel = sf::Mouse::Wheel::VerticalWheel;
@@ -217,9 +217,9 @@ namespace mighter2d::utility {
                 SFML_Event.mouseWheelScroll.x = MIGHTER2D_Event.mouseWheelScroll.x;
                 SFML_Event.mouseWheelScroll.y = MIGHTER2D_Event.mouseWheelScroll.y;
                 return SFML_Event;
-            case Event::MouseButtonPressed:
-            case Event::MouseButtonReleased:
-                if (MIGHTER2D_Event.type == Event::MouseButtonPressed)
+            case SystemEvent::MouseButtonPressed:
+            case SystemEvent::MouseButtonReleased:
+                if (MIGHTER2D_Event.type == SystemEvent::MouseButtonPressed)
                     SFML_Event.type = sf::Event::EventType::MouseButtonPressed;
                 else
                     SFML_Event.type = sf::Event::EventType::MouseButtonReleased;
@@ -228,38 +228,38 @@ namespace mighter2d::utility {
                 SFML_Event.mouseButton.x = MIGHTER2D_Event.mouseButton.x;
                 SFML_Event.mouseButton.y = MIGHTER2D_Event.mouseButton.y;
                 return SFML_Event;
-            case Event::MouseMoved:
+            case SystemEvent::MouseMoved:
                 SFML_Event.type = sf::Event::EventType::MouseMoved;
                 SFML_Event.mouseMove.x = MIGHTER2D_Event.mouseMove.x;
                 SFML_Event.mouseMove.y = MIGHTER2D_Event.mouseMove.y;
                 return SFML_Event;
-            case Event::MouseEntered:
+            case SystemEvent::MouseEntered:
                 SFML_Event.type = sf::Event::EventType::MouseEntered;
                 return SFML_Event;
-            case Event::MouseLeft:
+            case SystemEvent::MouseLeft:
                 SFML_Event.type = sf::Event::EventType::MouseLeft;
                 return SFML_Event;
-            case Event::JoystickButtonPressed:
+            case SystemEvent::JoystickButtonPressed:
                 SFML_Event.type = sf::Event::JoystickButtonPressed;
                 SFML_Event.joystickButton.joystickId = MIGHTER2D_Event.joystickButton.joystickId;
                 SFML_Event.joystickButton.button = MIGHTER2D_Event.joystickButton.button;
                 return SFML_Event;
-            case Event::JoystickButtonReleased:
+            case SystemEvent::JoystickButtonReleased:
                 SFML_Event.type = sf::Event::JoystickButtonReleased;
                 SFML_Event.joystickButton.joystickId = MIGHTER2D_Event.joystickButton.joystickId;
                 SFML_Event.joystickButton.button = MIGHTER2D_Event.joystickButton.button;
                 return SFML_Event;
-            case Event::JoystickMoved:
+            case SystemEvent::JoystickMoved:
                 SFML_Event.type = sf::Event::JoystickMoved;
                 SFML_Event.joystickMove.joystickId = MIGHTER2D_Event.joystickMove.joystickId;
                 SFML_Event.joystickMove.axis = static_cast<sf::Joystick::Axis>(MIGHTER2D_Event.joystickMove.axis);
                 SFML_Event.joystickMove.position = MIGHTER2D_Event.joystickMove.position;
                 return SFML_Event;
-            case Event::JoystickConnected:
+            case SystemEvent::JoystickConnected:
                 SFML_Event.type = sf::Event::JoystickConnected;
                 SFML_Event.joystickConnect.joystickId = MIGHTER2D_Event.joystickConnect.joystickId;
                 return SFML_Event;
-            case Event::JoystickDisconnected:
+            case SystemEvent::JoystickDisconnected:
                 SFML_Event.type = sf::Event::JoystickDisconnected;
                 SFML_Event.joystickConnect.joystickId = MIGHTER2D_Event.joystickConnect.joystickId;
                 return SFML_Event;

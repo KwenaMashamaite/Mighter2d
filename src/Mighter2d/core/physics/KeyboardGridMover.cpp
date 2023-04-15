@@ -23,7 +23,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "Mighter2d/core/physics/KeyboardGridMover.h"
-#include "Mighter2d/core/event/Event.h"
 
 namespace mighter2d {
     KeyboardGridMover::KeyboardGridMover(Grid &grid, GridObject* target) :

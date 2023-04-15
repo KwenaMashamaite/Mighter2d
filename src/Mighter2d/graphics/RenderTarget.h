@@ -26,7 +26,7 @@
 #define MIGHTER2D_RENDERTARGET_H
 
 #include "Mighter2d/common/Vector2.h"
-#include "Mighter2d/core/event/Event.h"
+#include "Mighter2d/core/event/SystemEvent.h"
 #include "Mighter2d/graphics/Drawable.h"
 #include "Mighter2d/graphics/Colour.h"
 #include "Mighter2d/graphics/WindowStyles.h"
@@ -133,7 +133,7 @@ namespace mighter2d::priv {
          * @param event Event queue to be checked
          * @return true if event queue is not empty, false if it is empty
          */
-        bool pollEvent(Event &event);
+        bool pollEvent(SystemEvent &event);
 
         /**
          * @brief Close the window

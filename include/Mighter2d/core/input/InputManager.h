@@ -29,7 +29,7 @@
 #include "Mighter2d/core/input/Keyboard.h"
 #include "Mighter2d/core/input/Mouse.h"
 #include "Mighter2d/core/input/Joystick.h"
-#include "Mighter2d/core/event/Event.h"
+#include "Mighter2d/core/event/SystemEvent.h"
 #include "Mighter2d/common/ISystemEventHandler.h"
 
 namespace mighter2d {
@@ -408,7 +408,7 @@ namespace mighter2d {
              * @warning This function is intended for internal use only and
              * should never be called outside of Mighter2d
              */
-            void handleEvent(const Event& event) override;
+            void handleEvent(const SystemEvent& event) override;
 
             /**
              * @internal

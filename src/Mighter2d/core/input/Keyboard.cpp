@@ -23,7 +23,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "Mighter2d/core/input/Keyboard.h"
-#include "Mighter2d/core/event/Event.h"
+#include "Mighter2d/core/event/SystemEvent.h"
 #include "Mighter2d/core/scene/Scene.h"
 #include <SFML/Window/Keyboard.hpp>
 #include <iostream>
@@ -107,10 +107,10 @@ namespace mighter2d::input {
         }
     }
 
-    void Keyboard::handleEvent(const Event& event) {
+    void Keyboard::handleEvent(const SystemEvent& event) {
         if (isEnabled()) {
             switch (event.type) {
-                case Event::KeyPressed:
+                case SystemEvent::KeyPressed:
                     if (wasDown_[static_cast<int>(event.key.code)])
                         eventEmitter_.emit("keyHeld", event.key.code);
                     else {
@@ -118,7 +118,7 @@ namespace mighter2d::input {
                         eventEmitter_.emit("keyDown", event.key.code);
                     }
                     break;
-                case Event::KeyReleased:
+                case SystemEvent::KeyReleased:
                     wasDown_[static_cast<int>(event.key.code)] = false;
                     eventEmitter_.emit("keyUp", event.key.code);
                     break;

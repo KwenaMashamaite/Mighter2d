@@ -33,7 +33,7 @@
 
 #include "Mighter2d/graphics/Colour.h"
 #include "Mighter2d/common/Vector2.h"
-#include "Mighter2d/core/event/Event.h"
+#include "Mighter2d/core/event/SystemEvent.h"
 #include <unordered_map>
 #include <vector>
 #include <algorithm>
@@ -63,7 +63,7 @@ namespace mighter2d {
         * @return Own event initialized with the corresponding system event if
         *         it is supported otherwise initialized with Event::Type::Unknown
         */
-        extern Event convertToOwnEvent(const sf::Event& SFML_Event);
+        extern SystemEvent convertToOwnEvent(const sf::Event& SFML_Event);
 
         /**
         * @internal
@@ -71,7 +71,7 @@ namespace mighter2d {
         * @param MIGHTER2D_Event Event to be converted
         * @return SFML system event
         */
-        extern sf::Event convertToSFMLEvent(const Event& MIGHTER2D_Event);
+        extern sf::Event convertToSFMLEvent(const SystemEvent& MIGHTER2D_Event);
 
         /**
         * @internal

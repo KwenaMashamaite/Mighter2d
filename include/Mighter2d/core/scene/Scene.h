@@ -27,7 +27,7 @@
 
 #include "Mighter2d/Config.h"
 #include "Mighter2d/core/time/Time.h"
-#include "Mighter2d/core/event/Event.h"
+#include "Mighter2d/core/event/SystemEvent.h"
 #include "Mighter2d/core/event/GlobalEventEmitter.h"
 #include "Mighter2d/core/input/InputManager.h"
 #include "Mighter2d/core/audio/AudioManager.h"
@@ -131,7 +131,7 @@ namespace mighter2d {
          * anything inside this function, therefore you don't have to call the
          * base class method in your implementation
          */
-        virtual void onHandleEvent(Event event) {MIGHTER2D_UNUSED(event);};
+        virtual void onHandleEvent(SystemEvent event) {MIGHTER2D_UNUSED(event);};
 
         /**
          * @brief @brief Handle a scene pre-update

@@ -27,7 +27,7 @@
 
 #include "Mighter2d/Config.h"
 #include "Mighter2d/core/time/Time.h"
-#include "Mighter2d/core/event/Event.h"
+#include "Mighter2d/core/event/SystemEvent.h"
 #include "Mighter2d/core/scene/Scene.h"
 #include <stack>
 #include <memory>
@@ -263,7 +263,7 @@ namespace mighter2d {
              * @brief Handle a system event
              * @param event Event to be handled
              */
-            void handleEvent(Event event);
+            void handleEvent(SystemEvent event);
 
             /**
              * @brief Execute a callback for every scene in the scene manager

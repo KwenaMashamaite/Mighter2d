@@ -127,8 +127,8 @@ namespace mighter2d {
         // SFML does not generate a resized event. This cause some issues with
         // TGUI, so we associate a full screen toggle with a resize event
         window_->onFullScreenToggle([this] (bool) {
-            Event event;
-            event.type = Event::Resized;
+            SystemEvent event;
+            event.type = SystemEvent::Resized;
             event.size.width = window_->getSize().x;
             event.size.height = window_->getSize().y;
             sceneManager_->handleEvent(event);
@@ -145,11 +145,11 @@ namespace mighter2d {
     }
 
     void Engine::processEvents() {
-        Event event;
+        SystemEvent event;
         while (privWindow_->pollEvent(event)) {
-            if (event.type == Event::Closed)
+            if (event.type == SystemEvent::Closed)
                 window_->emitCloseEvent();
-            else if (event.type == Event::Resized) {
+            else if (event.type == SystemEvent::Resized) {
                 // A mighter2d::Window may have a min and max size bounds
                 window_->setSize(Vector2u{event.size.width, event.size.height});
                 Vector2u newWinSize = window_->getSize();
@@ -160,13 +160,13 @@ namespace mighter2d {
                 if (newWinSize != window_->getMinSize() && newWinSize != window_->getMaxSize())
                     window_->emitResize({event.size.width, event.size.height});
 
-            } else if (event.type == Event::GainedFocus)
+            } else if (event.type == SystemEvent::GainedFocus)
                 window_->emitFocusChange(true);
-            else if (event.type == Event::LostFocus)
+            else if (event.type == SystemEvent::LostFocus)
                 window_->emitFocusChange(false);
-            else if (event.type == Event::MouseEntered)
+            else if (event.type == SystemEvent::MouseEntered)
                 window_->emitMouseCursor(true);
-            else if (event.type == Event::MouseLeft)
+            else if (event.type == SystemEvent::MouseLeft)
                 window_->emitMouseCursor(false);
 
             sceneManager_->handleEvent(event);

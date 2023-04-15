@@ -240,27 +240,27 @@ namespace mighter2d::input {
         return removed;
     }
 
-    void InputManager::handleEvent(const Event& event) {
+    void InputManager::handleEvent(const SystemEvent& event) {
         switch (event.type) {
-            case Event::JoystickButtonPressed:
+            case SystemEvent::JoystickButtonPressed:
                 if (getJoystick(event.joystickButton.joystickId).isEnabled())
                     eventEmitter_.emit("anyJoystickButtonPress", event.joystickButton.joystickId, event.joystickButton.button);
 
                 break;
-            case Event::JoystickButtonReleased:
+            case SystemEvent::JoystickButtonReleased:
                 if (getJoystick(event.joystickButton.joystickId).isEnabled())
                     eventEmitter_.emit("anyJoystickButtonRelease", event.joystickButton.joystickId, event.joystickButton.button);
 
                 break;
-            case Event::JoystickMoved:
+            case SystemEvent::JoystickMoved:
                 if (getJoystick(event.joystickButton.joystickId).isEnabled())
                     eventEmitter_.emit("anyJoystickAxisMove", event.joystickButton.joystickId, event.joystickMove.axis, event.joystickMove.position);
 
                 break;
-            case Event::JoystickConnected:
+            case SystemEvent::JoystickConnected:
                 eventEmitter_.emit("anyJoystickConnect", event.joystickButton.joystickId);
                 break;
-            case Event::JoystickDisconnected:
+            case SystemEvent::JoystickDisconnected:
                 eventEmitter_.emit("anyJoystickDisconnect", event.joystickButton.joystickId);
                 break;
             default:

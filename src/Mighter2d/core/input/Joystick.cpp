@@ -23,7 +23,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "Mighter2d/core/input/Joystick.h"
-#include "Mighter2d/core/event/Event.h"
+#include "Mighter2d/core/event/SystemEvent.h"
 #include "Mighter2d/core/scene/Scene.h"
 #include <SFML/Window/Joystick.hpp>
 
@@ -129,23 +129,23 @@ namespace mighter2d::input {
         }
     }
 
-    void Joystick::handleEvent(const Event& event) {
+    void Joystick::handleEvent(const SystemEvent& event) {
         if (event.joystickButton.joystickId == index_) {
-            if (event.type == Event::JoystickConnected || event.type == Event::JoystickDisconnected) {
-                emitter_.emit(event.type == Event::JoystickConnected ? "connect" : "disconnect");
+            if (event.type == SystemEvent::JoystickConnected || event.type == SystemEvent::JoystickDisconnected) {
+                emitter_.emit(event.type == SystemEvent::JoystickConnected ? "connect" : "disconnect");
             } else if (isEnabled_) {
                 switch (event.type) {
-                    case Event::JoystickButtonPressed:
+                    case SystemEvent::JoystickButtonPressed:
                         if (!wasDown_[event.joystickButton.button]) {
                             wasDown_[event.joystickButton.button] = true;
                             emitter_.emit("buttonPress", event.joystickButton.button);
                         }
                         break;
-                    case Event::JoystickButtonReleased:
+                    case SystemEvent::JoystickButtonReleased:
                         wasDown_[event.joystickButton.button] = false;
                         emitter_.emit("buttonRelease", event.joystickButton.button);
                         break;
-                    case Event::JoystickMoved:
+                    case SystemEvent::JoystickMoved:
                         emitter_.emit("axisMove", event.joystickMove.axis, event.joystickMove.position);
                         break;
                     default:

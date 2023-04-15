@@ -22,8 +22,8 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef MIGHTER2D_EVENT_H
-#define MIGHTER2D_EVENT_H
+#ifndef MIGHTER2D_SYSTEMEVENT_H
+#define MIGHTER2D_SYSTEMEVENT_H
 
 #include "Mighter2d/core/input/Keyboard.h"
 #include "Mighter2d/core/input/Mouse.h"
@@ -35,7 +35,7 @@ namespace mighter2d {
      *
      * This class is based on sf::Event from SFML (www.sfml-dev.org)
      */
-    class Event {
+    class SystemEvent {
     public:
         /**
          * @brief Size events parameters (Resized)
@@ -148,17 +148,17 @@ namespace mighter2d {
         Type type; //!< Type of the event
 
         union {
-            SizeEvent             size;              //!< Size event parameters (Event::Resized)
-            KeyEvent              key;               //!< Key event parameters (Event::KeyPressed, Event::KeyReleased)
-            TextEvent             text;              //!< Text event parameters (Event::TextEntered)
-            MouseMoveEvent        mouseMove;         //!< Mouse move event parameters (Event::MouseMoved)
-            MouseButtonEvent      mouseButton;       //!< Mouse button event parameters (Event::MouseButtonPressed, Event::MouseButtonReleased)
-            MouseWheelScrollEvent mouseWheelScroll;  //!< Mouse wheel event parameters (Event::MouseWheelScrolled)
-            JoystickMoveEvent     joystickMove;      ///< Joystick move event parameters (Event::JoystickMoved)
-            JoystickButtonEvent   joystickButton;    ///< Joystick button event parameters (Event::JoystickButtonPressed, Event::JoystickButtonReleased)
-            JoystickConnectEvent  joystickConnect;   ///< Joystick (dis)connect event parameters (Event::JoystickConnected, Event::JoystickDisconnected)
+            SizeEvent             size;              //!< Size event parameters (SystemEvent::Resized)
+            KeyEvent              key;               //!< Key event parameters (SystemEvent::KeyPressed, SystemEvent::KeyReleased)
+            TextEvent             text;              //!< Text event parameters (SystemEvent::TextEntered)
+            MouseMoveEvent        mouseMove;         //!< Mouse move event parameters (SystemEvent::MouseMoved)
+            MouseButtonEvent      mouseButton;       //!< Mouse button event parameters (SystemEvent::MouseButtonPressed, SystemEvent::MouseButtonReleased)
+            MouseWheelScrollEvent mouseWheelScroll;  //!< Mouse wheel event parameters (SystemEvent::MouseWheelScrolled)
+            JoystickMoveEvent     joystickMove;      ///< Joystick move event parameters (SystemEvent::JoystickMoved)
+            JoystickButtonEvent   joystickButton;    ///< Joystick button event parameters (SystemEvent::JoystickButtonPressed, SystemEvent::JoystickButtonReleased)
+            JoystickConnectEvent  joystickConnect;   ///< Joystick (dis)connect event parameters (SystemEvent::JoystickConnected, SystemEvent::JoystickDisconnected)
         };
     };
 }
 
-#endif //MIGHTER2D_EVENT_H
+#endif //MIGHTER2D_SYSTEMEVENT_H

@@ -93,7 +93,7 @@ namespace mighter2d::ui {
                     sfmlGui_.getView().getSize().y};
         }
 
-        void handleEvent(Event event) {
+        void handleEvent(SystemEvent event) {
             sfmlGui_.handleEvent(utility::convertToSFMLEvent(event));
         }
 
@@ -330,7 +330,7 @@ namespace mighter2d::ui {
         return pimpl_->getView();
     }
 
-    void GuiContainer::handleEvent(const Event& event) {
+    void GuiContainer::handleEvent(const SystemEvent& event) {
         pimpl_->handleEvent(event);
     }
 
