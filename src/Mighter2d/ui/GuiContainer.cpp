@@ -43,6 +43,7 @@
 #include "Mighter2d/utility/Helpers.h"
 #include "Mighter2d/core/scene/Scene.h"
 #include "Mighter2d/ui/widgets/TabsContainer.h"
+#include "Mighter2d/core/engine/Engine.h"
 #include <TGUI/Backends/SFML/GuiSFML.hpp>
 #include <unordered_map>
 #include <iostream>
@@ -259,6 +260,9 @@ namespace mighter2d::ui {
             sfmlGui_.updateTime(tgui::Duration(deltaTime.asMilliseconds()));
         }
 
+        int winResizeHandlerId_ = -1;
+        int winDestructListenerId_ = -1;
+
     private:
         tgui::GuiSFML sfmlGui_; //!< Gui controller and renderer
         std::unordered_map<std::string, Widget::Ptr> widgets_; //!< Widgets container
@@ -279,18 +283,36 @@ namespace mighter2d::ui {
         onDestruction([this] {
             scene_->removeUpdatable(this);
             scene_->removeSystemEventHandler(this);
+
+            if (pimpl_->winResizeHandlerId_ != -1)
+                scene_->getWindow().removeEventListener(pimpl_->winResizeHandlerId_);
+
+            if (pimpl_->winDestructListenerId_ != -1)
+                scene_->getWindow().removeEventListener(pimpl_->winDestructListenerId_);
         });
-    }
 
-    GuiContainer::GuiContainer(Scene& scene, priv::RenderTarget &window) :
-        Drawable(scene),
-        scene_(&scene),
-        pimpl_{std::make_unique<GuiContainerImpl>(window)}
-    {
-        scene.addUpdatable(this);
+        scene.onReady([this] {
+            pimpl_->setTarget(scene_->getEngine().getRenderTarget());
 
-        onDestruction([&scene, this] {
-            scene.removeUpdatable(this);
+            Window& window = scene_->getWindow();
+
+            // Inactive scene gui become buggy or unresponsive to the mouse cursor
+            // when the window is resized because the resize event is only dispatched
+            // to the active scene.
+            pimpl_->winResizeHandlerId_ = window.onResize([this](Vector2u size) {
+                if (!scene_->isActive()) {
+                    SystemEvent winResizeEvent;
+                    winResizeEvent.type = SystemEvent::Resized;
+                    winResizeEvent.size.width = size.x;
+                    winResizeEvent.size.height = size.y;
+
+                    handleEvent(winResizeEvent);
+                }
+            });
+
+            pimpl_->winDestructListenerId_ = window.onDestruction([this] {
+                pimpl_->winResizeHandlerId_ = pimpl_->winDestructListenerId_ = -1;
+            });
         });
     }
 
@@ -348,10 +370,6 @@ namespace mighter2d::ui {
 
     void GuiContainer::removeAllWidgets() {
         pimpl_->removeAllWidgets();
-    }
-
-    void GuiContainer::setTarget(priv::RenderTarget &window) {
-        pimpl_->setTarget(window);
     }
 
     Widget* GuiContainer::getWidgetBelowMouseCursor(Vector2f mousePos) const {

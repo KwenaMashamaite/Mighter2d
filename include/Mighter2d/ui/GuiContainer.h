@@ -73,18 +73,6 @@ namespace mighter2d {
             explicit GuiContainer(Scene& scene);
 
             /**
-             * @brief Construct the gui and set the target on which the gui
-             *        should be drawn
-             * @param window Render target that will be used by the gui
-             *
-             * This constructor will set the target therefore there is no need
-             * to call setTarget
-             *
-             * @see setTarget
-             */
-            GuiContainer(Scene& scene, priv::RenderTarget& window);
-
-            /**
              * @brief Copy constructor
              */
             GuiContainer(const GuiContainer&) = delete;
@@ -208,16 +196,6 @@ namespace mighter2d {
              * @return The text size of all existing and future child widgets
              */
             unsigned int getTextSize() const;
-
-            /**
-             * @internal
-             * @brief Set the target on which the gui should be drawn
-             * @param window Render target that will be used by the gui
-             *
-             * @warning This function is intended for internal use and should
-             * never be called outside of Mighter2d
-             */
-            void setTarget(priv::RenderTarget& window);
 
             /**
              * @brief Check if the target on which the gui should be drawn is

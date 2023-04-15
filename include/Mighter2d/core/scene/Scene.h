@@ -823,6 +823,17 @@ namespace mighter2d {
         bool removeSystemEventHandler(ISystemEventHandler* sysEventHandler);
 
         /**
+         * @internal
+         * @brief Execute a callback when the scene is ready
+         * @param callback Function to be execute when the scene is ready
+         *
+         * Note that the callback is executed once
+         *
+         * @warning This function is intended for internal use only
+         */
+        void onReady(Callback<> callback);
+
+        /**
          * @brief Destructor
          */
         ~Scene() override;

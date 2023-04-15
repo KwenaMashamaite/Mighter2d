@@ -372,19 +372,16 @@ namespace mighter2d {
 
     void Engine::shutdown() {
         eventEmitter_.emit("shutdown");
+        sceneManager_->clear();
+        sceneManager_->clearCachedScenes();
         eventEmitter_.clear();
         audioManager_.stopAll();
         audioManager_.removePlayedAudio();
-        isInitialized_ = false;
-        isRunning_ = false;
-        popCounter_ = 0;
         isSettingsLoadedFromFile_ = false;
         elapsedTime_ = Time::Zero;
         gameTitle_.clear();
         settingFile_.clear();
         configs_.clear();
-        sceneManager_->clear();
-        sceneManager_->clearCachedScenes();
         dataSaver_.clear();
         diskDataSaver_.clear();
         resourceManager_.reset();
@@ -393,7 +390,10 @@ namespace mighter2d {
         while (!scenesPendingPush_.empty())
             scenesPendingPush_.pop();
 
+        popCounter_ = 0;
+        isInitialized_ = false;
         window_->close();
+        isRunning_ = false;
 
         if (onShutdownComplete_) {
             onShutdownComplete_();

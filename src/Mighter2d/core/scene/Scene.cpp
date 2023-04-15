@@ -22,6 +22,8 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
+#include <utility>
+
 #include "Mighter2d/core/scene/Scene.h"
 #include "Mighter2d/core/engine/Engine.h"
 #include "Mighter2d/core/exceptions/Exceptions.h"
@@ -95,7 +97,8 @@ namespace mighter2d {
             engine_ = &engine;
             camera_ = std::make_unique<Camera>(*this, engine.getRenderTarget());
             guiContainer_ = std::make_unique<ui::GuiContainer>(*this);
-            guiContainer_->setTarget(engine.getRenderTarget());
+            emit("internal_scene_ready");
+
             onInit();
         }
     }
@@ -111,13 +114,18 @@ namespace mighter2d {
     }
 
     void Scene::addSystemEventHandler(ISystemEventHandler *sysEventHandler) {
-        if (!utility::findIn(systemEventHandlerList_, sysEventHandler).first) {
+        if (!utility::findIn(
+                systemEventHandlerList_, sysEventHandler).first) {
             systemEventHandlerList_.push_back(sysEventHandler);
         }
     }
 
     bool Scene::removeSystemEventHandler(ISystemEventHandler *sysEventHandler) {
         return utility::eraseIn(systemEventHandlerList_, sysEventHandler);
+    }
+
+    void Scene::onReady(Callback<> callback) {
+        addOnceEventListener("internal_scene_ready", std::move(callback));
     }
 
     std::string Scene::getClassName() const {
