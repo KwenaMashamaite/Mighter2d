@@ -46,6 +46,8 @@ namespace mighter2d {
         backgroundTile_(scene)
     {
         invalidTile_.setIndex({-1, -1});
+        invalidTile_.setVisible(false);
+
         mapPos_ = {0, 0};
         numOfRows_ = numOfColms_ = 0u;
         if (tileWidth <= 0)
@@ -203,12 +205,12 @@ namespace mighter2d {
     }
 
     void Grid::draw(priv::RenderTarget &renderTarget) const {
-        if (renderer_.isVisible()) {
+        /*if (renderer_.isVisible()) {
             renderTarget.draw(backgroundTile_);
             forEachTile([&renderTarget](const Tile &tile) {
                 renderTarget.draw(tile);
             });
-        }
+        }*/
     }
 
     void Grid::setCollidableByIndex(const Index &index, bool isCollidable, bool attachCollider) {

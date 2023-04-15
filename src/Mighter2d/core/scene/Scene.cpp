@@ -29,6 +29,7 @@
 
 namespace mighter2d {
     Scene::Scene() :
+        engine_(nullptr),
         inputManager_(*this),
         timerManager_(*this),
         timescale_{1.0f},
@@ -40,7 +41,6 @@ namespace mighter2d {
         isBackgroundSceneDrawable_{true},
         isBackgroundSceneUpdated_{true},
         isBackgroundSceneEventsEnabled_{false},
-        hasGrid2D_{false},
         cacheState_{false, ""},
         parentScene_{nullptr},
         entityContainer_{std::make_unique<GameObjectContainer>(renderLayers_)}
@@ -59,17 +59,13 @@ namespace mighter2d {
         // We can't use a default move assignment operator because of reference members
         if (this != &other) {
             Object::operator=(std::move(other));
-            engine_ = std::move(other.engine_);
-            window_ = std::move(other.window_);
+            engine_ = other.engine_;
             camera_ = std::move(other.camera_);
-            cache_ = std::move(other.cache_);
-            sCache_ = std::move(other.sCache_);
             inputManager_ = std::move(other.inputManager_);
             audioManager_ = std::move(other.audioManager_);
             timerManager_ = std::move(other.timerManager_);
             guiContainer_ = std::move(other.guiContainer_);
             renderLayers_ = std::move(other.renderLayers_);
-            entityContainer_ = std::move(other.entityContainer_);
             gridMovers_ = std::move(other.gridMovers_);
             grid2D_ = std::move(other.grid2D_);
             timescale_ = other.timescale_;
@@ -77,7 +73,6 @@ namespace mighter2d {
             isBackgroundSceneDrawable_ = other.isBackgroundSceneDrawable_;
             isBackgroundSceneUpdated_ = other.isBackgroundSceneUpdated_;
             isBackgroundSceneEventsEnabled_ = other.isBackgroundSceneEventsEnabled_;
-            hasGrid2D_ = other.hasGrid2D_;
             cacheState_ = other.cacheState_;
             isEntered_ = other.isEntered_;
             isInitialized_ = other.isInitialized_;
@@ -97,11 +92,8 @@ namespace mighter2d {
     void Scene::init(Engine &engine) {
         if (!isInitialized_) {
             isInitialized_ = true;
-            engine_ = std::make_unique<std::reference_wrapper<Engine>>(engine);
-            window_ = std::make_unique<std::reference_wrapper<Window>>(engine.getWindow());
+            engine_ = &engine;
             camera_ = std::make_unique<Camera>(*this, engine.getRenderTarget());
-            cache_ = std::make_unique<std::reference_wrapper<PropertyContainer>>(engine.getCache());
-            sCache_ = std::make_unique<std::reference_wrapper<PrefContainer>>(engine.getSavableCache());
             guiContainer_ = std::make_unique<ui::GuiContainer>(*this);
             guiContainer_->setTarget(engine.getRenderTarget());
             onInit();
@@ -291,10 +283,10 @@ namespace mighter2d {
     }
 
     const Window &Scene::getWindow() const {
-        if (!window_)
+        if (!isInitialized_)
             throw AccessViolationException("mighter2d::Scene::getWindow() must not be called before the scene is initialized");
         else
-            return *window_;
+            return engine_->getWindow();
     }
 
     Camera &Scene::getCamera() {
@@ -345,10 +337,10 @@ namespace mighter2d {
     }
 
     const PropertyContainer &Scene::getCache() const {
-        if (!cache_)
+        if (!isInitialized_)
             throw AccessViolationException("mighter2d::Scene::getCache() must not be called before the scene is initialized");
         else
-            return *cache_;
+            return engine_->getCache();;
     }
 
     PrefContainer &Scene::getSCache() {
@@ -356,10 +348,10 @@ namespace mighter2d {
     }
 
     const PrefContainer &Scene::getSCache() const {
-        if (!sCache_)
+        if (!isInitialized_)
             throw AccessViolationException("mighter2d::Scene::getSCache() must not be called before the scene is initialized");
         else
-            return *sCache_;
+            return engine_->getSavableCache();
     }
 
     RenderLayerContainer &Scene::getRenderLayers() {
@@ -402,7 +394,6 @@ namespace mighter2d {
 
     void Scene::createGrid2D(unsigned int tileWidth, unsigned int tileHeight) {
         grid2D_ = std::make_unique<Grid>(tileWidth, tileHeight, *this);
-        hasGrid2D_ = true;
     }
 
     Scene::~Scene() {

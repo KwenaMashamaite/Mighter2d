@@ -830,6 +830,7 @@ namespace mighter2d {
     private:
         std::vector<IUpdatable*> updateList_; //!< Update list
         std::vector<ISystemEventHandler*> systemEventHandlerList_; //!< Update list
+        Engine* engine_;                      //!< Game engine
         std::unique_ptr<Camera> camera_;      //!< Scene level camera
         input::InputManager inputManager_;    //!< Scene level input manager
         audio::AudioManager audioManager_;    //!< Scene level audio manager
@@ -847,17 +848,12 @@ namespace mighter2d {
         bool isBackgroundSceneDrawable_;      //!< A flag indicating whether or not the scenes background scene is rendered
         bool isBackgroundSceneUpdated_;       //!< A flag indicating whether or not the scenes background scene receives time updates
         bool isBackgroundSceneEventsEnabled_; //!< A flag indicating whether or not the scenes background scene receives system events
-        bool hasGrid2D_;                      //!< A flag indicating whether or not the scene has a grid
         std::pair<bool, std::string> cacheState_;
         Scene* parentScene_;                  //!< The parent scene of this scene when it is in the background of another scene
         Scene::Ptr backgroundScene_;          //!< The background scene of this scene
         friend class priv::SceneManager;      //!< Pre updates the scene
 
-        std::unique_ptr<std::reference_wrapper<Engine>> engine_;           //!< A reference to the game engine
-        std::unique_ptr<std::reference_wrapper<Window>> window_;           //!< A reference to the game window
-        std::unique_ptr<GameObjectContainer> entityContainer_;             //!< Stores game objects that belong to the scene
-        std::unique_ptr<std::reference_wrapper<PropertyContainer>> cache_; //!< The engine level cache
-        std::unique_ptr<std::reference_wrapper<PrefContainer>> sCache_; //!< The engine level savable cache
+        std::unique_ptr<GameObjectContainer> entityContainer_;//!< A reference to the game engine
     };
 }
 
