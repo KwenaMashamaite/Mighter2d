@@ -267,19 +267,6 @@ namespace mighter2d::priv {
         return nullptr;
     }
 
-    Scene *SceneManager::getBackgroundScene() {
-        return const_cast<Scene*>(std::as_const(*this).getBackgroundScene());
-    }
-
-    const Scene *SceneManager::getBackgroundScene() const {
-        const Scene* activeScene = getActiveScene();
-
-        if (activeScene)
-            return activeScene->getBackgroundScene();
-        else
-            return nullptr;
-    }
-
     std::size_t SceneManager::getSceneCount() const {
         return scenes_.size();
     }

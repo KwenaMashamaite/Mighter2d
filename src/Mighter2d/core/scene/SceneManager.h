@@ -143,14 +143,6 @@ namespace mighter2d {
             const Scene* getPreviousScene() const;
 
             /**
-             * @brief Get the scene behind the top scene
-             * @return A pointer to the scene behind the top scene if any
-             *         otherwise a nullptr
-             */
-            Scene* getBackgroundScene();
-            const Scene* getBackgroundScene() const;
-
-            /**
              * @brief Cache a scene
              * @param name The unique scene identifier
              * @param scene The scene to be cached
