@@ -16,7 +16,7 @@ Mighter2d is built on top of the [SFML](https://www.sfml-dev.org/index.php) libr
 
 * **Graphics** - Render window, grid, spritesheet based sprite animations, camera, etc...
 * **GUI** - Label, button, checkbox, menu bar, panels, progress bar and much more
-* **Physics** - Built-in grid based movement, grid path finding, grid cell based collisions, overlap collisions resolution with callbacks 
+* **Physics** - Built-in grid based movement, grid path finding, grid cell based collisions, overlap collision detection/resolution with callbacks 
 * **Input** - Keyboard, Mouse and Joystick support
 * **Audio** - Built-in audio support for music and Sound effects
 * **Event system** - Thread safe event/messaging system
@@ -24,7 +24,7 @@ Mighter2d is built on top of the [SFML](https://www.sfml-dev.org/index.php) libr
 * **Scene management** - Automated scene management (LIFO)
 * **Time** - Schedule timers with one-time, repeating or indefinite execution using callbacks
 
-*Mighter2d does not support an Editor, therefore you'll have to manually setup your scenes*
+*Note that Mighter2d does not have an editor, therefore you'll have to manually setup your scenes in code.*
 
 ## Demos (games developed with Mighter2d)
 
