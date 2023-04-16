@@ -33,12 +33,9 @@ Mighter2d is built on top of the [SFML](https://www.sfml-dev.org/index.php) libr
 
 ## Downloads
 
-The latest official precompiled IME binaries can be downloaded [here](https://github.com/KwenaMashamaite/Mighter2d/releases/tag/v1.0.0).
+The latest official precompiled Mighter2d binaries can be downloaded [here](https://github.com/KwenaMashamaite/Mighter2d/releases/tag/v1.0.0).
 To use the library you must have a supported C++17 compliant compiler (GCC or VC++).
-Available binaries are compiled with `GCC MinGW 11.2.0` and `Microsoft Visual C++ 16/17`
-compilers. This means that in order to use them, you must have the exact compiler on your system.
-If you want to use different versions of the above compilers, then you'll have to [build](#Build) the
-library yourself.
+If you want to use a different version, you'll have to [build](#Build) the library yourself.
 
 ## Installation
 
