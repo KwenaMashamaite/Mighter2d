@@ -7,7 +7,8 @@
 Mighter2d is a scene-based game engine written in C++ for developing simple 2D games. It continues the development of 
 my previous project, [Infinite Motion Engine (IME)](https://github.com/KwenaMashamaite/IME) which was also designed for
 2D game development. While Mighter2d features the same scene-based approach and feature set as IME, it completely removes
-support for rigid body physics. Mighter2d also provides a range of improvements and enhancements over IME, making it a more 
+support for rigid body physics. Mighter2d also provides a range of improvements and enhancements over IME, such as automatic
+updates and render of external instances making it a more 
 simpler and user-friendly game engine.
 
 Mighter2d is built on top of the [SFML](https://www.sfml-dev.org/index.php) library for graphics rendering and the [TGUI](https://tgui.eu/) library for user interface components.
