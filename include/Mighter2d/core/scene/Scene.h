@@ -797,6 +797,12 @@ namespace mighter2d {
         void exit();
 
         /**
+         * @brief Helper function for updating a scene
+         * @param isFixedUpdate True if update is fixed, false if variable
+         */
+        void update(const Time& deltaTime, bool isFixedUpdate);
+
+        /**
          * @brief Helper function for executing scene frame begin
          */
         void frameBegin();

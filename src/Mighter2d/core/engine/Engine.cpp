@@ -202,7 +202,6 @@ namespace mighter2d {
         while (window_->isOpen() && isRunning_ && !sceneManager_->isEmpty()) {
             eventEmitter_.emit("frameStart");
             deltaTime = gameClock.restart();
-            preUpdate(deltaTime);
             processEvents();
             update(deltaTime);
             clear();
@@ -218,13 +217,6 @@ namespace mighter2d {
 
     void Engine::quit() {
         isRunning_ = false;
-    }
-
-    void Engine::preUpdate(Time deltaTime) {
-        if (isPaused_)
-            return;
-
-        sceneManager_->preUpdate(deltaTime);
     }
 
     void Engine::update(Time deltaTime) {

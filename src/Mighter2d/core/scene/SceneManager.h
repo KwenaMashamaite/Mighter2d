@@ -231,15 +231,6 @@ namespace mighter2d {
             void render(priv::RenderTarget& window);
 
             /**
-             * @brief Update the scene manager
-             * @param deltaTime Time passed since last update
-             *
-             * This function is called by the engine before event/input handling
-             * and scene update takes place
-             */
-            void preUpdate(Time deltaTime);
-
-            /**
              * @brief Update the current scene using a variable time step
              * @param deltaTime Time passed since last update
              */
@@ -269,14 +260,6 @@ namespace mighter2d {
              * @param fixedUpdate True if its a fixed update, otherwise false
              */
             void update(const Time& deltaTime, bool fixedUpdate);
-
-            /**
-             * @brief Update time based components of a scene
-             * @param scene The scene to be updated
-             * @param deltaTime Time passed since last update
-             * @param fixedUpdate True if it's a fixed update, otherwise false
-             */
-            void updateScene(const Time& deltaTime, Scene* scene, bool fixedUpdate);
 
             /**
              * @brief Update previous scene pointer

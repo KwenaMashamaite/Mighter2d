@@ -246,10 +246,6 @@ namespace mighter2d::priv {
         }
     }
 
-    void SceneManager::update(Time deltaTime) {
-        update(deltaTime, false);
-    }
-
     void SceneManager::handleEvent(SystemEvent event) {
         if (scenes_.empty())
             return;
@@ -313,61 +309,17 @@ namespace mighter2d::priv {
         updateSystem(activeScene, event);
     }
 
+    void SceneManager::update(Time deltaTime) {
+        update(deltaTime, false);
+    }
+
     void SceneManager::fixedUpdate(Time deltaTime) {
         update(deltaTime, true);
     }
 
-    void SceneManager::preUpdate(Time deltaTime) {
-        if (scenes_.empty())
-            return;
-
-        if (!scenes_.top()->isEntered())
-            return;
-
-        Scene* activeScene = scenes_.top().get();
-
-        // Update the active scenes background scene
-        Scene* bgScene = activeScene->getBackgroundScene();
-
-        if (bgScene && activeScene->isBackgroundSceneUpdateEnabled()) {
-            bgScene->onPreUpdate(deltaTime * bgScene->getTimescale());
-        }
-
-        activeScene->onPreUpdate(deltaTime * activeScene->getTimescale());
-    }
-
     void SceneManager::update(const Time &deltaTime, bool fixedUpdate) {
-        if (!scenes_.empty() && scenes_.top()->isEntered()) {
-            Scene* activeScene = scenes_.top().get();
-            Scene* bgScene = activeScene->getBackgroundScene();
-
-            if (bgScene && activeScene->isBackgroundSceneUpdateEnabled())
-                updateScene(deltaTime, bgScene, fixedUpdate);
-
-            updateScene(deltaTime, activeScene, fixedUpdate);
-        }
-    }
-
-    void SceneManager::updateScene(const Time& deltaTime, Scene* scene, bool fixedUpdate) {
-        if (fixedUpdate) {
-            for (auto& updatable : scene->updateList_) {
-                updatable->fixedUpdate(deltaTime * scene->getTimescale());
-            }
-
-            scene->onFixedUpdate(deltaTime * scene->getTimescale());
-        }
-        else {
-            // Normal update
-            for (auto& updatable : scene->updateList_) {
-                updatable->update(deltaTime * scene->getTimescale());
-            }
-
-            // Update user scene after all internal updates
-            scene->onUpdate(deltaTime * scene->getTimescale());
-
-            // Normal update is always called after fixed update: fixedUpdate -> update -> postUpdate
-            scene->onPostUpdate(deltaTime * scene->getTimescale());
-        }
+        if (!scenes_.empty())
+            scenes_.top()->update(deltaTime,  fixedUpdate);
     }
 
     void SceneManager::updatePreviousScene() {

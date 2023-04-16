@@ -614,12 +614,6 @@ namespace mighter2d {
         void processEvents();
 
         /**
-         * @brief Pre-update current frame
-         * @param deltaTime Time passed since last pre-update
-         */
-        void preUpdate(Time deltaTime);
-
-        /**
          * @brief Update current frame
          * @param deltaTime Time passed since last frame update
          */

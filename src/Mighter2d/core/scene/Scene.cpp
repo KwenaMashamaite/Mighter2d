@@ -431,6 +431,27 @@ namespace mighter2d {
         }
     }
 
+    void Scene::update(const Time &deltaTime, bool isFixedUpdate) {
+        if (isActive_) {
+            if (backgroundScene_ && isBackgroundSceneUpdated_)
+                backgroundScene_->update(deltaTime, isFixedUpdate);
+
+            Time scaledDeltaTime = deltaTime * getTimescale();
+
+            if (isFixedUpdate) {
+                for (auto &updatable: updateList_)
+                    updatable->fixedUpdate(scaledDeltaTime);
+
+                onFixedUpdate(scaledDeltaTime);
+            } else {
+                for (auto &updatable: updateList_)
+                    updatable->update(scaledDeltaTime);
+
+                onUpdate(scaledDeltaTime);
+            }
+        }
+    }
+
     void Scene::frameBegin() {
         if (isActive_) {
             if (backgroundScene_)
