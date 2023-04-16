@@ -25,6 +25,7 @@
 #include "Mighter2d/graphics/Camera.h"
 #include "Mighter2d/core/object/GameObject.h"
 #include "Mighter2d/graphics/RenderTarget.h"
+#include "Mighter2d/graphics/Window.h"
 #include "Mighter2d/utility/Helpers.h"
 #include "Mighter2d/core/scene/Scene.h"
 #include "Mighter2d/graphics/shapes/RectangleShape.h"
@@ -48,6 +49,8 @@ namespace mighter2d {
                 isDrawable_{true},
                 onWinResize_{OnWinResize::Stretch}
         {
+            window_.setView(view);
+
             //Init cam outline
             auto [x, y, width, height] = getBounds();
             outlineRect_.setSize({width, height});
@@ -55,8 +58,14 @@ namespace mighter2d {
             outlineRect_.setFillColour(Colour::Transparent);
             outlineRect_.setOutlineColour(Colour::Green);
 
-            //
-            window_.setView(view);
+            scene.getStateObserver().onReady([this] {
+                scene_->getWindow().onResize([this](const Vector2u& size) {
+                    if (onWinResize_ == OnWinResize::Letterbox)
+                        setSFMLView(utility::letterbox(view, size.x, size.y));
+                    else if (onWinResize_ == OnWinResize::MaintainSize)
+                        setSFMLView(sf::View(sf::FloatRect(0, 0, static_cast<float>(size.x), static_cast<float>(size.y))));
+                });
+            });
         }
 
         void setCenter(float x, float y) {
