@@ -32,6 +32,8 @@
 #include <string>
 
 namespace mighter2d {
+    class Scene;
+
     namespace audio {
         /**
          * @brief Types of audio files played by the audio manager
@@ -48,8 +50,9 @@ namespace mighter2d {
         public:
             /**
              * @brief Default constructor
+             * @param scene The scene the audio manager belongs to
              */
-            AudioManager();
+            explicit AudioManager(Scene& scene);
 
             /**
              * @brief Copy constructor
@@ -178,15 +181,6 @@ namespace mighter2d {
              * @param callback Function to be executed when the master volume changes
              */
             void onVolumeChanged(Callback<float> callback);
-
-            /**
-             * @internal
-             * @brief Remove audio that has finished playing
-             *
-             * @warning This function is intended for internal use only and
-             * should never be called outside of Mighter2d
-             */
-            void removePlayedAudio();
 
         private:
             float masterVolume_;                  //!< Maximum volume for all audio instances

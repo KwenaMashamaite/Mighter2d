@@ -32,7 +32,9 @@
 namespace mighter2d {
     Scene::Scene() :
         engine_(nullptr),
+        sceneStateObserver_(*this),
         inputManager_(*this),
+        audioManager_(*this),
         timerManager_(*this),
         timescale_{1.0f},
         isEntered_{false},
@@ -44,16 +46,16 @@ namespace mighter2d {
         isBackgroundSceneUpdated_{true},
         isBackgroundSceneEventsEnabled_{false},
         cacheState_{false, ""},
-        parentScene_{nullptr},
-        sceneStateObserver_(*this)
+        parentScene_{nullptr}
     {
         renderLayers_.create("default");
     }
 
     Scene::Scene(Scene&& other) noexcept :
+        sceneStateObserver_(std::move(other.sceneStateObserver_)),
+        audioManager_(std::move(other.audioManager_)),
         inputManager_(std::move(other.inputManager_)),
-        timerManager_(std::move(other.timerManager_)),
-        sceneStateObserver_(std::move(other.sceneStateObserver_))
+        timerManager_(std::move(other.timerManager_))
     {
         *this = std::move(other);
     }

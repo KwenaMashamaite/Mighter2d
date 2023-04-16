@@ -342,8 +342,6 @@ namespace mighter2d {
     }
 
     void Engine::postFrameUpdate() {
-        audioManager_.removePlayedAudio();
-
         // Note: Always check pending pop first before pending pushes
         while (popCounter_ > 0) {
             if (sceneManager_->isEmpty()) { // Engine::PopScene called more than the number of scenes
@@ -375,8 +373,6 @@ namespace mighter2d {
         sceneManager_->clear();
         sceneManager_->clearCachedScenes();
         eventEmitter_.clear();
-        audioManager_.stopAll();
-        audioManager_.removePlayedAudio();
         isSettingsLoadedFromFile_ = false;
         elapsedTime_ = Time::Zero;
         gameTitle_.clear();
@@ -457,14 +453,6 @@ namespace mighter2d {
 
     const PrefContainer &Engine::getSavableCache() const {
         return diskDataSaver_;
-    }
-
-    audio::AudioManager &Engine::getAudioManager() {
-        return audioManager_;
-    }
-
-    const audio::AudioManager &Engine::getAudioManager() const {
-        return audioManager_;
     }
 
     priv::RenderTarget &Engine::getRenderTarget() {

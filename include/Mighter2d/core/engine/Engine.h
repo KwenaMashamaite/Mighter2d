@@ -442,17 +442,6 @@ namespace mighter2d {
         const Window& getWindow() const;
 
         /**
-         * @brief Get the engine level audio manager
-         * @return The engine level audio manager
-         *
-         * Unlike mighter2d::Scene::getAudio, this audio manager is not destroyed
-         * when the scene is destroyed, but rather when the engine is
-         * shutdown
-         */
-        audio::AudioManager& getAudioManager();
-        const audio::AudioManager& getAudioManager() const;
-
-        /**
          * @brief Pause or resume execution of an event listener
          * @param id The event listeners unique identification number
          * @param suspend True to suspend/pause or false to unsuspend/resume
@@ -675,7 +664,6 @@ namespace mighter2d {
         Time elapsedTime_;                                 //!< The time passed since the engine started running
         EventEmitter eventEmitter_;                        //!< Emits engine events
         std::unique_ptr<priv::SceneManager> sceneManager_; //!< The scene manager
-        audio::AudioManager audioManager_;                 //!< The engine level audio manager
         std::shared_ptr<ResourceManager> resourceManager_; //!< The engine level resource manager
         GlobalEventEmitter::Ptr eventDispatcher_;             //!< System wide event emitter (Engine only keeps an instance alive for the application)
         PropertyContainer dataSaver_;                      //!< Holds Data that persists across scenes

@@ -25,15 +25,25 @@
 #include "Mighter2d/core/audio/AudioManager.h"
 #include "Mighter2d/core/audio/Music.h"
 #include "Mighter2d/core/audio/SoundEffect.h"
+#include "Mighter2d/core/scene/Scene.h"
 #include "Mighter2d/utility/Helpers.h"
 
 namespace mighter2d::audio {
-    AudioManager::AudioManager() :
+    AudioManager::AudioManager(Scene& scene) :
         masterVolume_{100.0f},
         sfxVolume_{100.0f},
         musicVolume_{100.0f},
         isMuted_(false)
-    {}
+    {
+        // SFML 2.5.1 generates an error if the number of audio files
+        // in our container gets to 255, so we'll continuously remove
+        // played audio.
+        scene.getStateObserver().onFrameEnd([this] {
+            playingAudio_.removeIf([](const Audio* audio) {
+                return audio->getStatus() == Status::Stopped;
+            });
+        });
+    }
 
     Audio* AudioManager::play(Type audioType, const std::string &filename) {
         std::unique_ptr<Audio> audio;
@@ -143,16 +153,5 @@ namespace mighter2d::audio {
 
     void AudioManager::onVolumeChanged(Callback<float> callback) {
         eventEmitter_.addEventListener("volumeChanged", std::move(callback));
-    }
-
-    void AudioManager::removePlayedAudio() {
-        // OpenAL generates an error if the number of audio files
-        // in our container gets to 255, so we'll continuously remove
-        // played audio. The engine will also crash if 255 audio files
-        // are played simultaneously (I don't know which version of OpenAL fixed
-        // this, I also don't know which version of OpenAL, SFML 2.5.1 uses)
-        playingAudio_.removeIf([](const Audio* audio) {
-            return audio->getStatus() == Status::Stopped;
-        });
     }
 }
