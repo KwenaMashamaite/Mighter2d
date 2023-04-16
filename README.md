@@ -2,36 +2,32 @@
     <img src="logo.png" alt="IME Logo">
 </p>
 
-# IME — Infinite Motion Engine
+# Mighter2d
 
-IME is a state-based game engine for developing 2D games on the Windows platform. It is written in C++17.
-
-_**Note** - This project has been retired (life cycle: 23 January 2020 - 24 April 2022). This means that IME will no longer receive new
-features and bug fixes. The last stable IME version is `v3.2.0`_
+Mighter2d is a scene-based game engine written in C++ for developing simple 2D games. It continues the development of 
+my previous project, [Infinite Motion Engine (IME)](https://github.com/KwenaMashamaite/IME) which was also designed for
+2D game development. While Mighter2d features the same scene-based approach and feature set as IME, it completely removes
+support for rigid body physics. Mighter2d also provides a range of improvements and enhancements over IME, making it a more 
+simpler and user-friendly game engine.
 
 ## Features
 
 * **Graphics** - Render Window, 2D grid, Animatable Sprites, 2D camera, Spritesheet, etc...
 * **GUI** - Label, Button, Checkbox, MenuBar, and much more
 * **Animations** - 2D animations which support both spritesheet and texture atlas
-* **Physics** - Path finding, Grid based movement, Grid cell based collisions, Rigid body physics engine,
-  Collision detection using contact callbacks
+* **Physics** - Path finding, Grid based movement, Grid cell based collisions
 * **Input** - Keyboard, Mouse and Joystick support
-* **Sound** - Music and Sound effects support
+* **Audio** - Built-in audio support for music and Sound effects
 * **Event system** - Thread safe event system
 * **Asset management** - Automated resource management system
 * **Scene management** - Last In First Out (LIFO) scene management
 * **Time** - Schedule one time, repeating or indefinite callbacks
 
-*IME does not support an Editor*
+*Mighter2d does not support an Editor*
 
-## Demos
+## Demos (games developed with Mighter2d)
 
-Here is a list of games developed with IME:
-
-1. [Pac-Man arcade game clone](https://github.com/KwenaMashamaite/PacMan)
-2. [Super Pac-Man arcade game clone](https://github.com/KwenaMashamaite/SuperPacMan)
-2. [Galaxian arcade game clone](https://github.com/KwenaMashamaite/Galaxian)
+* [Super Pac-Man arcade game clone](https://github.com/KwenaMashamaite/SuperPacMan)
 
 ## Downloads
 
