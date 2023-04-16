@@ -10,6 +10,8 @@ my previous project, [Infinite Motion Engine (IME)](https://github.com/KwenaMash
 support for rigid body physics. Mighter2d also provides a range of improvements and enhancements over IME, making it a more 
 simpler and user-friendly game engine.
 
+Mighter2d is built on top of the [SFML](https://www.sfml-dev.org/index.php) library for graphics rendering and the [TGUI](https://tgui.eu/) library for user interface components.
+
 ## Features
 
 * **Graphics** - Render Window, 2D grid, Animatable Sprites, 2D camera, Spritesheet, etc...
