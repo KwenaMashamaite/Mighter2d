@@ -33,8 +33,8 @@ Mighter2d is built on top of the [SFML](https://www.sfml-dev.org/index.php) libr
 
 ## Downloads
 
-The latest official precompiled IME binaries can be downloaded [here](https://github.com/KwenaMashamaite/IME/releases/tag/v3.2.0).
-To use the library you must have a supported (GCC or VC++) C++17 compliant compiler.
+The latest official precompiled IME binaries can be downloaded [here](https://github.com/KwenaMashamaite/Mighter2d/releases/tag/v1.0.0).
+To use the library you must have a supported C++17 compliant compiler (GCC or VC++).
 Available binaries are compiled with `GCC MinGW 11.2.0` and `Microsoft Visual C++ 16/17`
 compilers. This means that in order to use them, you must have the exact compiler on your system.
 If you want to use different versions of the above compilers, then you'll have to [build](#Build) the
@@ -44,35 +44,43 @@ library yourself.
 
 1. Using CMake
 
-If you extracted IME to a location known to *CMAKE*, you don't have to
-set `IME_DIR`, *CMake* will automatically find the library
+If you extracted Mighter2d to a location known to *CMAKE*, you don't have to
+set `MIGHTER2D_DIR`, *CMake* will automatically find the library
 
 ```cmake
 # Find Mighter2d
-set(IME_DIR "your_path_to_IME_directory_here/lib/cmake/Mighter2d") # Skip if Mighter2d installed in known location
-find_package(ime 3.2.0 REQUIRED)
+set(MIGHTER2D_DIR "path_to_Mighter2d_root_directory_here/lib/cmake/Mighter2d") # Skip if Mighter2d installed in known location
+find_package(mighter2d 1.0.0 REQUIRED)
 
 # Link Mighter2d
-target_link_libraries(myGame PRIVATE ime)
+target_link_libraries(your_executable_name PRIVATE mighter2d)
+
+# Example
+
+set(MIGHTER2D_DIR "C:/users/kwena/desktop/Mighter2d-1.0.0/lib/cmake/Mighter2d") # Skip if Mighter2d installed in known location
+find_package(mighter2d 1.0.0 REQUIRED)
+
+target_link_libraries(Pacman PRIVATE mighter2d)
+
 ```
 <br>
 
 <em>Note:</em>
 
-After successfully building your game executable, copy the contents of `IME/bin` folder to the
+After successfully building your game executable, copy the contents of `Mighter2d/bin` folder to the
 folder in which your game executable resides. If your current `BUILD_TYPE` is **Debug**, then copy
-the contents of `IME/bin/Debug` and if it is **Release**, then copy the contents of `IME/bin/Release`.
-You must also copy the contents of `IME/bin/Runtime` regardless of the current build type.
+the contents of `Mighter2d/bin/Debug` and if it's **Release**, then copy the contents of `Mighter2d/bin/Release`.
+You must also copy the contents of `Mighter2d/bin/Runtime` regardless of the build type.
 
 ##  Build
 
-If you want to use *IME* with a different compiler, then you must build it yourself:
+If you want to use *Mighter2d* with a different compiler, then you must build it yourself:
 
 1. Clone the repository
 2. Download and Install [CMake 3.17+](https://cmake.org/)
-3. Download and install *IME*'s dependencies: [SFML 2.5.1](https://www.sfml-dev.org/index.php), [TGUI 0.9.3](https://tgui.eu/), and [Box2d 2.4.1](https://box2d.org/) <br>
+3. Download and install *IME*'s dependencies: [SFML 2.5.1](https://www.sfml-dev.org/index.php), [TGUI 0.9.3](https://tgui.eu/) <br>
    The dependencies must have a matching compiler and architecture (e.g, If you intend to build *IME* with <br>
-   `GCC MinGW 11.2.0 (32-bit)`, then *SFML*, *TGUI* and *Box2d* binaries must all be compiled with `GCC MinGW 11.2.0 (32-bit)`
+   `GCC MinGW 11.2.0 (32-bit)`, then *SFML* and *TGUI* binaries must all be compiled with `GCC MinGW 11.2.0 (32-bit)`
    <br>
 
 4. Run the following commands from the project root directory:
@@ -82,29 +90,17 @@ mkdir build
 cd build
 cmake ..
 cmake --build .
-cmake --install . --prefix "directory_where_you_want_the_library_to_be_installed_after_build"
 ```
-
-You can leave out `--prefix "installation_directory"` and *CMake* will install the library to a known
-location, usually `Program Files`. However, this may require admin privileges
 
 ## Learn
 
-* [Tutorials](#Learn) (Coming soon)
-* [API Documentation](https://kwenamashamaite.github.io/IME/docs/v3.2.0/html/index.html)
+* [Tutorials](#) (Coming soon)
+* [Doxygen documentation](#) (Coming soon)
 
 ## Platform
 
-Currently, IME only supports Windows OS
-
-## Developers
-
-Name:  Kwena Mashamaite (Author)
-
-Email: kwena.mashamaite1@gmail.com
-
-For any feature suggestions, feedback or questions, you can get in touch with me [here](https://github.com/KwenaMashamaite/IME/discussions/).
+Mighter2d only supports the Windows operating system 
 
 ## License
 
-IME is released under the [MIT](https://opensource.org/licenses/MIT) license. See [LICENSE](LICENSE) file.
+Mighter2d is released under the [MIT](https://opensource.org/licenses/MIT) license. See [LICENSE](LICENSE) file.
