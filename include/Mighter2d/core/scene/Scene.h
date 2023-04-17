@@ -199,6 +199,8 @@ namespace mighter2d {
 
         /**
          * @brief Handle a scene resume event
+         * @param fromCache True if the scene was resumed from the cache or false
+         *                  if it was a normal resumed
          *
          * This function is called by Mighter2d when this scene is resumed from a
          * paused state. This occurs when a scene that was pushed over this
@@ -210,7 +212,7 @@ namespace mighter2d {
          *
          * @see onPause
          */
-        virtual void onResume() {};
+        virtual void onResume(bool fromCache) {MIGHTER2D_UNUSED(fromCache); };
 
         /**
          * @brief Handle a scene cache event
@@ -225,20 +227,6 @@ namespace mighter2d {
          * @see onResumeFromCache
          */
         virtual void onCache() {}
-
-        /**
-         * @brief Handle a scene 'resume from cache' event
-         *
-         * This function is called by Mighter2d when this scene is pushed to the
-         * Engine from the engines scene cache list (see mighter2d::Engine::PushCachedScene)
-         *
-         * Note that implementing this function is optional. Mighter2d will never put
-         * anything inside this function, therefore you don't have to call the
-         * base class method in your implementation
-         *
-         * @see onCache, mighter2d::Engine::PushCachedScene, onPause, onResume
-         */
-        virtual void onResumeFromCache() {};
 
         /**
          * @brief Handle a scene exit event

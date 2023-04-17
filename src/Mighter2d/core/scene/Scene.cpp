@@ -366,10 +366,7 @@ namespace mighter2d {
 
             emit("mighter2d_Scene_resume");
 
-            if (fromCache)
-                onResumeFromCache();
-            else
-                onResume();
+            onResume(fromCache);
         }
     }
 
