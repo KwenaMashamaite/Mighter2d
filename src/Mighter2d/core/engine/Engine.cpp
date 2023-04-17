@@ -245,7 +245,7 @@ namespace mighter2d {
     }
 
     void Engine::render() {
-        sceneManager_->render(*privWindow_);
+        sceneManager_->render();
     }
 
     void Engine::display() {

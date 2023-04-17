@@ -219,9 +219,8 @@ namespace mighter2d {
 
             /**
              * @brief Render the current scene
-             * @param window The window to render the scene on
              */
-            void render(priv::RenderTarget& window);
+            void render();
 
             /**
              * @brief Update the active scene

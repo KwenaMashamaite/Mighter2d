@@ -22,12 +22,12 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <utility>
-
 #include "Mighter2d/core/scene/Scene.h"
 #include "Mighter2d/core/engine/Engine.h"
 #include "Mighter2d/core/exceptions/Exceptions.h"
 #include "Mighter2d/utility/Helpers.h"
+#include "Mighter2d/graphics/RenderTarget.h"
+#include <utility>
 
 namespace mighter2d {
     Scene::Scene() :
@@ -416,6 +416,25 @@ namespace mighter2d {
             }
 
             onHandleEvent(event);
+        }
+    }
+
+    void Scene::render() {
+        if (isActive_ && camera_->isDrawable()) {
+            if (backgroundScene_ && isBackgroundSceneDrawable_)
+                backgroundScene_->render();
+
+            onPreRender();
+
+            priv::RenderTarget& renderTarget = getEngine().getRenderTarget();
+
+            // Reset view so that the scene can be rendered on the current camera
+            const sf::View& view = std::any_cast<std::reference_wrapper<const sf::View>>(camera_->getInternalView()).get();
+            renderTarget.getThirdPartyWindow().setView(view);
+
+            renderLayers_.render(renderTarget);
+
+            onPostRender();
         }
     }
 

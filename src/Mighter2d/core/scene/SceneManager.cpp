@@ -24,7 +24,6 @@
 
 #include "Mighter2d/core/scene/SceneManager.h"
 #include "Mighter2d/core/engine/Engine.h"
-#include "Mighter2d/graphics/RenderTarget.h"
 #include "Mighter2d/graphics/shapes/RectangleShape.h"
 #include "Mighter2d/utility/Helpers.h"
 
@@ -195,48 +194,12 @@ namespace mighter2d::priv {
         return scenes_.empty();
     }
 
-    void SceneManager::render(priv::RenderTarget &window) {
-        auto static renderScene = [](Scene* scene, Camera* camera, priv::RenderTarget& renderWindow) {
-            scene->onPreRender();
+    void SceneManager::render() {
+        if (!scenes_.empty()) {
+            if (prevScene_ && prevScene_->isVisibleOnPause())
+                prevScene_->render();
 
-            if (!camera->isDrawable())
-                return;
-
-            // Reset view so that the scene can be rendered on the current camera
-            const sf::View& view = std::any_cast<std::reference_wrapper<const sf::View>>(camera->getInternalView()).get();
-            renderWindow.getThirdPartyWindow().setView(view);
-
-            scene->renderLayers_.render(renderWindow);
-
-            scene->onPostRender();
-        };
-
-        // Render the scene on each camera to update its view
-        auto static renderEachCam = [](Scene* scene, priv::RenderTarget& renderTarget) {
-            // Render main/default camera
-            renderScene(scene, &scene->getCamera(), renderTarget);
-        };
-
-        if (!scenes_.empty() && scenes_.top()->isEntered()) {
-            // Render previous scene
-            if (prevScene_ && prevScene_->isEntered() && prevScene_->isVisibleOnPause()) {
-                Scene* bgScene = prevScene_->getBackgroundScene();
-
-                if (bgScene && prevScene_->isBackgroundSceneDrawable())
-                    renderEachCam(bgScene, window);
-
-                renderEachCam(prevScene_, window);
-            }
-
-            // Render the active scenes background scene
-            Scene* activeScene = scenes_.top().get();
-            Scene* bgScene = activeScene->getBackgroundScene();
-
-            if(bgScene && activeScene->isBackgroundSceneDrawable())
-                renderEachCam(bgScene, window);
-
-            // Render the active scene
-            renderEachCam(activeScene, window);
+            scenes_.top()->render();
         }
     }
 

@@ -727,6 +727,11 @@ namespace mighter2d {
         void handleEvent(SystemEvent event);
 
         /**
+         * @brief Helper function for drawing the scene
+         */
+        void render();
+
+        /**
          * @brief Helper function for executing scene frame begin
          */
         void frameBegin();
