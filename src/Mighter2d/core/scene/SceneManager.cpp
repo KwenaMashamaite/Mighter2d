@@ -97,8 +97,6 @@ namespace mighter2d::priv {
 
         if (inserted) {
             iter->second->setCacheOnExit(true, name);
-
-            iter->second->onCache();
         }
     }
 

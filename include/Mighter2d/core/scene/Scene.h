@@ -215,20 +215,6 @@ namespace mighter2d {
         virtual void onResume(bool fromCache) {MIGHTER2D_UNUSED(fromCache); };
 
         /**
-         * @brief Handle a scene cache event
-         *
-         * This function is called by Mighter2d when this scene is cached.
-         * (see setCacheOnExit() and mighter2d::Engine::cacheScene)
-         *
-         * Note that implementing this function is optional. Mighter2d will never put
-         * anything inside this function, therefore you don't have to call the
-         * base class method in your implementation
-         *
-         * @see onResumeFromCache
-         */
-        virtual void onCache() {}
-
-        /**
          * @brief Handle a scene exit event
          *
          * This function is called by Mighter2d when the scene is removed from the
