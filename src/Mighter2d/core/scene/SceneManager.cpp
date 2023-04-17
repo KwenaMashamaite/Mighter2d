@@ -58,13 +58,13 @@ namespace mighter2d::priv {
         scenes_.push(std::move(scene));
         Scene* newScene = scenes_.top().get();
 
-        newScene->init(*engine_);
-
         if (enterScene) {
             if (newScene->isEntered())
                 newScene->resume(newScene->isCached());
-            else
+            else {
+                newScene->init(*engine_);
                 newScene->enter();
+            }
         }
     }
 
@@ -184,8 +184,10 @@ namespace mighter2d::priv {
     }
 
     void SceneManager::enterTopScene() const {
-        if (!scenes_.empty())
+        if (!scenes_.empty()) {
+            scenes_.top()->init(*engine_);
             scenes_.top()->enter();
+        }
     }
 
     bool SceneManager::isEmpty() const {
