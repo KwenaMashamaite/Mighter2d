@@ -751,6 +751,12 @@ namespace mighter2d {
         void update(const Time& deltaTime, bool isFixedUpdate);
 
         /**
+         * @brief Helper function for handling a scene event
+         * @param event The event to be handled
+         */
+        void handleEvent(SystemEvent event);
+
+        /**
          * @brief Helper function for executing scene frame begin
          */
         void frameBegin();

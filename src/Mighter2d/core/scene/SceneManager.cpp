@@ -241,28 +241,8 @@ namespace mighter2d::priv {
     }
 
     void SceneManager::handleEvent(SystemEvent event) {
-        if (scenes_.empty())
-            return;
-
-        if (!scenes_.top()->isEntered())
-            return;
-
-        // Update all system components of a scene
-        static auto updateSystem = [](Scene* scene, SystemEvent e) {
-            for (auto& sysEventHandler : scene->systemEventHandlerList_) {
-                sysEventHandler->handleEvent(e);
-            }
-
-            scene->onHandleEvent(e);
-        };
-
-        Scene* activeScene = scenes_.top().get();
-        Scene* bgScene = activeScene->getBackgroundScene();
-
-        if (bgScene && activeScene->isBackgroundSceneEventsEnabled())
-            updateSystem(bgScene, event);
-
-        updateSystem(activeScene, event);
+        if (!scenes_.empty())
+            scenes_.top()->handleEvent(event);
     }
 
     void SceneManager::update(Time deltaTime) {

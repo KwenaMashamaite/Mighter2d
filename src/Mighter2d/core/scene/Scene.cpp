@@ -406,6 +406,19 @@ namespace mighter2d {
         }
     }
 
+    void Scene::handleEvent(SystemEvent event) {
+        if (isActive_) {
+            if (backgroundScene_ && isBackgroundSceneEventsEnabled_)
+                backgroundScene_->handleEvent(event);
+
+            for (auto& sysEventHandler : systemEventHandlerList_) {
+                sysEventHandler->handleEvent(event);
+            }
+
+            onHandleEvent(event);
+        }
+    }
+
     void Scene::frameBegin() {
         if (isActive_) {
             if (backgroundScene_)
