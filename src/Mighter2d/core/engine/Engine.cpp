@@ -285,8 +285,8 @@ namespace mighter2d {
         sceneManager_->cache(name, std::move(scene));
     }
 
-    bool Engine::uncacheScene(const std::string &name) {
-        return sceneManager_->removeCached(name);
+    Scene::Ptr Engine::uncacheScene(const std::string &name) {
+        return sceneManager_->popCached(name);
     }
 
     bool Engine::isSceneCached(const std::string &name) const {

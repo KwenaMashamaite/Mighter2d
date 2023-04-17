@@ -157,13 +157,6 @@ namespace mighter2d {
             bool isCached(const std::string& name) const;
 
             /**
-             * @brief Remove a cached scene
-             * @param name The name of the scene to be removed
-             * @return True if the scene was removed or false if it does not exist
-             */
-            bool removeCached(const std::string& name);
-
-            /**
              * @brief Move a scene out of the cache
              * @param name The name of the scene to push
              * @return The requested scene if it exists, otherwise a nullptr

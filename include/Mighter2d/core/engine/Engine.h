@@ -331,7 +331,7 @@ namespace mighter2d {
         /**
          * @brief Remove a scene from the cache list
          * @param name The name of the scene to be removed
-         * @return True if the scene was removed or false if it does not exist
+         * @return The uncached scene or nullptr is the scene does not exist
          *
          * Unlike calling mighter2d::Scene::setCacheOnExit with a @a false argument, which
          * destroys the scene after it gets popped, this function will destroy
@@ -339,7 +339,7 @@ namespace mighter2d {
          *
          * @see cacheScene
          */
-        bool uncacheScene(const std::string& name);
+        Scene::Ptr uncacheScene(const std::string& name);
 
         /**
          * @brief Check if a scene with a given name is cached or not

@@ -107,12 +107,6 @@ namespace mighter2d::priv {
         return cachedScenes_.find(name) != cachedScenes_.end();
     }
 
-    bool SceneManager::removeCached(const std::string &name) {
-        std::size_t sizeBefore = cachedScenes_.size();
-        cachedScenes_.erase(name);
-        return cachedScenes_.size() < sizeBefore;
-    }
-
     void SceneManager::popScene(bool resumePrev) {
         if (scenes_.empty())
             return;
