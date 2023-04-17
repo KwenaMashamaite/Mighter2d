@@ -24,6 +24,7 @@
 
 #include "Mighter2d/core/scene/RenderLayerContainer.h"
 #include "Mighter2d/core/scene/RenderLayer.h"
+#include "Mighter2d/core/exceptions/Exceptions.h"
 #include <algorithm>
 
 namespace mighter2d {
@@ -81,7 +82,12 @@ namespace mighter2d {
 
     bool RenderLayerContainer::removeByIndex(unsigned int index) {
         if (isIndexValid(index)) {
-            inverseLayers_.erase(layers_[index]->getName());
+            std::string name = layers_[index]->getName();
+
+            if (name == "default")
+                throw InvalidActionException("The 'default' render layer cannot be removed.");
+
+            inverseLayers_.erase(name);
             layers_.erase(index);
             return true;
         }
@@ -90,6 +96,9 @@ namespace mighter2d {
     }
 
     bool RenderLayerContainer::removeByName(const std::string &name) {
+        if (name == "default")
+            throw InvalidActionException("The 'default' render layer cannot be removed.");
+
         if (hasLayer(name)) {
             layers_.erase(inverseLayers_[name]);
             inverseLayers_.erase(name);
@@ -100,8 +109,16 @@ namespace mighter2d {
     }
 
     void RenderLayerContainer::removeAll() {
-        layers_.clear();
-        inverseLayers_.clear();
+        for (auto iter = inverseLayers_.cbegin(); iter != inverseLayers_.cend(); ) {
+            auto& [name, index] = *iter;
+
+            if (name == "default") {
+                layers_.erase(index);
+                iter = inverseLayers_.erase(iter);
+            } else {
+                ++iter;
+            }
+        }
     }
 
     void RenderLayerContainer::moveUp(unsigned int index) {

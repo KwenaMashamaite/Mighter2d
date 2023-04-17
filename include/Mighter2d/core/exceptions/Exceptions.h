@@ -88,6 +88,18 @@ namespace mighter2d {
          */
         explicit MultipleEngineInstanceException(const std::string& message) : std::runtime_error(message) {}
     };
+
+    /**
+     * @brief Exception thrown when an action is not allowed
+     */
+    class InvalidActionException : public std::runtime_error {
+    public:
+        /**
+         * @brief Constructor
+         * @param message Exception message
+         */
+        explicit InvalidActionException(const std::string& message) : std::runtime_error(message) {}
+    };
 }
 
 #endif // MIGHTER2D_EXCEPTIONS_H

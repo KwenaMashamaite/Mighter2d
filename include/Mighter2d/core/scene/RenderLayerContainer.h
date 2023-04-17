@@ -136,6 +136,11 @@ namespace mighter2d {
          * @param index The index of the layer to be removed
          * @return True if the layer was removed or false if the index is
          *         out of bounds
+         * @throws InvalidActionException if the layer with the given index is
+         *         the @em default layer
+         *
+         * @note A scene will always contain at least one render layer which is
+         * the @em default layer
          *
          * @see removeByTag
          */
@@ -146,6 +151,10 @@ namespace mighter2d {
          * @param name The name of the container to be removed
          * @return True if the layer was removed or false if the layer does
          *         not exist
+         * @throws InvalidActionException if name = "default"
+         *
+         * @note A scene will always contain at least one render layer which is
+         * the @em default layer
          *
          * @see removeByIndex
          */
@@ -153,6 +162,10 @@ namespace mighter2d {
 
         /**
          * @brief Remove all layers from the container
+         *
+         * @note A scene will always contain at least one render layer which is
+         * the @em default layer. Therefore, this function will remove all layers
+         * except the @em default layer
          *
          * @see removeByIndex and removeByTag
          */
