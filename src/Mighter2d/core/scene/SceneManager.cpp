@@ -249,29 +249,6 @@ namespace mighter2d::priv {
 
         // Update all system components of a scene
         static auto updateSystem = [](Scene* scene, SystemEvent e) {
-            // Absorb key event if Keyboard is disabled
-            if (!scene->inputManager_.isInputEnabled(input::InputType::Keyboard) &&
-                (e.type == SystemEvent::KeyPressed || e.type == SystemEvent::KeyReleased))
-            {
-                return;
-            }
-
-            // Absorb mouse event if the Mouse is disabled
-            if (!scene->inputManager_.isInputEnabled(input::InputType::Mouse) &&
-                (e.type == SystemEvent::MouseButtonPressed || e.type == SystemEvent::MouseButtonReleased
-                 || e.type == SystemEvent::MouseMoved || e.type == SystemEvent::MouseWheelScrolled))
-            {
-                return;
-            }
-
-            // Absorb joystick event if Joystick is disabled
-            if (!scene->inputManager_.isInputEnabled(input::InputType::Joystick) &&
-                (e.type == SystemEvent::JoystickButtonPressed || e.type == SystemEvent::JoystickButtonReleased ||
-                 e.type == SystemEvent::JoystickMoved))
-            {
-                return;
-            }
-
             for (auto& sysEventHandler : scene->systemEventHandlerList_) {
                 sysEventHandler->handleEvent(e);
             }

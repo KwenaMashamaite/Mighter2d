@@ -33,9 +33,6 @@ namespace mighter2d {
     Scene::Scene() :
         engine_(nullptr),
         sceneStateObserver_(*this),
-        inputManager_(*this),
-        audioManager_(*this),
-        timerManager_(*this),
         timescale_{1.0f},
         isEntered_{false},
         isInitialized_{false},
@@ -52,10 +49,7 @@ namespace mighter2d {
     }
 
     Scene::Scene(Scene&& other) noexcept :
-        sceneStateObserver_(std::move(other.sceneStateObserver_)),
-        audioManager_(std::move(other.audioManager_)),
-        inputManager_(std::move(other.inputManager_)),
-        timerManager_(std::move(other.timerManager_))
+        sceneStateObserver_(std::move(other.sceneStateObserver_))
     {
         *this = std::move(other);
     }
@@ -66,10 +60,6 @@ namespace mighter2d {
             Object::operator=(std::move(other));
             engine_ = other.engine_;
             camera_ = std::move(other.camera_);
-            inputManager_ = std::move(other.inputManager_);
-            audioManager_ = std::move(other.audioManager_);
-            timerManager_ = std::move(other.timerManager_);
-            guiContainer_ = std::move(other.guiContainer_);
             renderLayers_ = std::move(other.renderLayers_);
             timescale_ = other.timescale_;
             isVisibleWhenPaused_ = other.isVisibleWhenPaused_;
@@ -98,7 +88,6 @@ namespace mighter2d {
             isInitialized_ = true;
             engine_ = &engine;
             camera_ = std::make_unique<Camera>(*this, engine.getRenderTarget());
-            guiContainer_ = std::make_unique<ui::GuiContainer>(*this);
             emit("mighter2d_Scene_ready");
         }
     }
@@ -312,30 +301,6 @@ namespace mighter2d {
             return *camera_;
     }
 
-    input::InputManager &Scene::getInput() {
-        return inputManager_;
-    }
-
-    const input::InputManager &Scene::getInput() const {
-        return inputManager_;
-    }
-
-    audio::AudioManager &Scene::getAudio() {
-        return audioManager_;
-    }
-
-    const audio::AudioManager &Scene::getAudio() const {
-        return audioManager_;
-    }
-
-    TimerManager &Scene::getTimer() {
-        return timerManager_;
-    }
-
-    const TimerManager &Scene::getTimer() const {
-        return timerManager_;
-    }
-
     PropertyContainer &Scene::getCache() {
         return const_cast<PropertyContainer&>(std::as_const(*this).getCache());
     }
@@ -364,17 +329,6 @@ namespace mighter2d {
 
     const RenderLayerContainer &Scene::getRenderLayers() const {
         return renderLayers_;
-    }
-
-    ui::GuiContainer &Scene::getGui() {
-        return const_cast<ui::GuiContainer&>(std::as_const(*this).getGui());
-    }
-
-    const ui::GuiContainer &Scene::getGui() const {
-        if (!isInitialized_)
-            throw AccessViolationException("mighter2d::Scene::getGui() must not be called before the scene is initialized");
-        else
-            return *guiContainer_;
     }
 
     void Scene::enter() {

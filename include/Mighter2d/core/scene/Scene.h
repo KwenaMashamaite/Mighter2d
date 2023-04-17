@@ -613,44 +613,6 @@ namespace mighter2d {
         const Camera& getCamera() const;
 
         /**
-         * @brief Get the scene level input manager
-         * @return The scene level input manager
-         *
-         * The input manager is local to the scene instance. This means
-         * that input listeners registered on it are only invoked when
-         * the scene is active and de-registered when the scene is destroyed
-         *
-         * @see mighter2d::Engine::getInputManager
-         */
-        input::InputManager& getInput();
-        const input::InputManager& getInput() const;
-
-        /**
-         * @brief Get the scene level audio manager
-         * @return The scene level audio manager
-         *
-         * The audio manager is local to the scene instance. All audio played
-         * by it is destroyed when the scene is destroyed
-         *
-         * @see mighter2d::Engine::getAudioManager
-         */
-        audio::AudioManager& getAudio();
-        const audio::AudioManager& getAudio() const;
-
-        /**
-         * @brief Get the scene level timer manager
-         * @return The scene level timer manager
-         *
-         * The timer manager is local to the scene instance. This means that
-         * callbacks scheduled on it will only be dispatched when the scene
-         * is active
-         *
-         * @see mighter2d::Engine::getTimer
-         */
-        TimerManager& getTimer();
-        const TimerManager& getTimer() const;
-
-        /**
          * @brief Get the engine level cache
          * @return The engine level cache
          * @throws AccessViolationException If this function is called before
@@ -703,20 +665,6 @@ namespace mighter2d {
          */
         RenderLayerContainer& getRenderLayers();
         const RenderLayerContainer& getRenderLayers() const;
-
-        /**
-         * @brief Get the scene level gui container
-         * @return The scene level gui container
-         * @throws AccessViolationException If this function is called before
-         *         the scene is initialized
-         *
-         * The gui container is local to the scene. This means that all widgets
-         * in it are destroyed when the scene is destroyed
-         *
-         * @see mighter2d::Engine::getGui
-         */
-        ui::GuiContainer& getGui();
-        const ui::GuiContainer& getGui() const;
 
         /**
          * @internal
@@ -817,11 +765,7 @@ namespace mighter2d {
         std::vector<ISystemEventHandler*> systemEventHandlerList_; //!< Update list
         Engine* engine_;                      //!< Game engine
         std::unique_ptr<Camera> camera_;      //!< Scene level camera
-        SceneStateObserver sceneStateObserver_;
-        input::InputManager inputManager_;    //!< Scene level input manager
-        audio::AudioManager audioManager_;    //!< Scene level audio manager
-        TimerManager timerManager_;           //!< Scene level timer manager
-        std::unique_ptr<ui::GuiContainer> guiContainer_;       //!< Scene level gui container
+        SceneStateObserver sceneStateObserver_;//!< Scene level gui container
         RenderLayerContainer renderLayers_;   //!< Render layers for this scene
         float timescale_;                     //!< Controls the speed of the scene without affecting the render fps
         bool isEntered_;                      //!< A flag indicating whether or not the scene has been entered
