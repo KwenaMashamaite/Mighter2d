@@ -245,14 +245,6 @@ namespace mighter2d::priv {
             scenes_.top()->handleEvent(event);
     }
 
-    void SceneManager::update(Time deltaTime) {
-        update(deltaTime, false);
-    }
-
-    void SceneManager::fixedUpdate(Time deltaTime) {
-        update(deltaTime, true);
-    }
-
     void SceneManager::update(const Time &deltaTime, bool fixedUpdate) {
         if (!scenes_.empty())
             scenes_.top()->update(deltaTime,  fixedUpdate);

@@ -117,20 +117,6 @@ namespace mighter2d {
         virtual void onHandleEvent(SystemEvent event) {MIGHTER2D_UNUSED(event);};
 
         /**
-         * @brief @brief Handle a scene pre-update
-         * @param deltaTime The time passed since the last update
-         *
-         * This function is called by Mighter2d before the scene is updated. This
-         * include physics, animations, timer updates etc. It is called before
-         * onUpdate() and onFixedUpdate()
-         *
-         * Note that implementing this function is optional. Mighter2d will never put
-         * anything inside this function, therefore you don't have to call the
-         * base class method in your implementation
-         */
-        virtual void onPreUpdate(Time deltaTime) {MIGHTER2D_UNUSED(deltaTime);}
-
-        /**
          * @brief Handle a scene frame-rate dependent update
          * @param deltaTime The time passed since the last update
          *
@@ -168,22 +154,6 @@ namespace mighter2d {
          * @see onUpdate
          */
         virtual void onFixedUpdate(Time deltaTime) {MIGHTER2D_UNUSED(deltaTime);}
-
-        /**
-         * @brief Handle a scene post-update update
-         * @param deltaTime The time passed since the last update
-         *
-         * This function is called by Mighter2d once per frame. It is called after
-         * onUpdate() and onFixedUpdate(). It may be useful if you want to do
-         * something after all normal updates have completed such as tracking
-         * the position of an object whose position may have changed in
-         * onFixedUpdate() or onUpdate().
-         *
-         * Note that implementing this function is optional. Mighter2d will never put
-         * anything inside this function, therefore you don't have to call the
-         * base class method in your implementation
-         */
-        virtual void onPostUpdate(Time deltaTime) {MIGHTER2D_UNUSED(deltaTime);}
 
         /**
          * @brief Handle a scene pre-render event

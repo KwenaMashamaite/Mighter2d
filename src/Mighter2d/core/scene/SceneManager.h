@@ -224,16 +224,11 @@ namespace mighter2d {
             void render(priv::RenderTarget& window);
 
             /**
-             * @brief Update the current scene using a variable time step
-             * @param deltaTime Time passed since last update
+             * @brief Update the active scene
+             * @param deltaTime Time passed since the last update
+             * @param fixedUpdate True if its a fixed update, otherwise false
              */
-            void update(Time deltaTime);
-
-            /**
-             * @brief Update the current scene using a fixed time step
-             * @param deltaTime Time passed since last update
-             */
-            void fixedUpdate(Time deltaTime);
+            void update(const Time& deltaTime, bool fixedUpdate);
 
             /**
              * @brief Handle a system event
@@ -247,13 +242,6 @@ namespace mighter2d {
             ~SceneManager();
 
         private:
-            /**
-             * @brief Update the active scene
-             * @param deltaTime Time passed since the last update
-             * @param fixedUpdate True if its a fixed update, otherwise false
-             */
-            void update(const Time& deltaTime, bool fixedUpdate);
-
             /**
              * @brief Update previous scene pointer
              */

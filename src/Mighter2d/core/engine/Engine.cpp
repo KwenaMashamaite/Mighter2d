@@ -233,11 +233,11 @@ namespace mighter2d {
         accumulator += deltaTime;
 
         while (accumulator >= frameTime) {
-            sceneManager_->fixedUpdate(frameTime);
+            sceneManager_->update(frameTime, true);
             accumulator -= frameTime;
         }
 
-        sceneManager_->update(deltaTime);
+        sceneManager_->update(deltaTime, false);
     }
 
     void Engine::clear() {
