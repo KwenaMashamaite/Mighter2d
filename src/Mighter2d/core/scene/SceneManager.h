@@ -25,7 +25,6 @@
 #ifndef MIGHTER2D_SCENEMANAGER_H
 #define MIGHTER2D_SCENEMANAGER_H
 
-#include "Mighter2d/Config.h"
 #include "Mighter2d/core/time/Time.h"
 #include "Mighter2d/core/event/SystemEvent.h"
 #include "Mighter2d/core/scene/Scene.h"
@@ -58,7 +57,7 @@ namespace mighter2d {
          * scene, the process repeats; the "pause" scene gets paused and the the new
          * scene becomes active)
          */
-        class MIGHTER2D_API SceneManager final {
+        class SceneManager final {
         public:
             /**
              * @brief Constructor

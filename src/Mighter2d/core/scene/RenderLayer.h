@@ -25,7 +25,6 @@
 #ifndef MIGHTER2D_RENDERLAYER_H
 #define MIGHTER2D_RENDERLAYER_H
 
-#include "Mighter2d/Config.h"
 #include "Mighter2d/core/object/Object.h"
 #include <memory>
 #include <map>
@@ -60,7 +59,7 @@ namespace mighter2d {
          * A layer is not instantiated directly but rather using a
          * mighter2d::RenderLayerContainer::create
          */
-        class MIGHTER2D_API RenderLayer : public Object {
+        class RenderLayer : public Object {
         public:
             using Ptr = std::shared_ptr<RenderLayer>; //!< Shared render layer pointer
 
