@@ -39,7 +39,7 @@ namespace mighter2d::utility {
     }
 
     SystemEvent convertToOwnEvent(const sf::Event &SFML_Event) {
-        SystemEvent MIGHTER2D_Event;
+        SystemEvent MIGHTER2D_Event{};
         switch (SFML_Event.type) {
             case sf::Event::Closed:
                 MIGHTER2D_Event.type = SystemEvent::Type::Closed;
@@ -173,7 +173,7 @@ namespace mighter2d::utility {
     }
 
     sf::Event convertToSFMLEvent(const SystemEvent &MIGHTER2D_Event) {
-        sf::Event SFML_Event;
+        sf::Event SFML_Event{};
         switch (MIGHTER2D_Event.type) {
             case SystemEvent::Closed:
                 SFML_Event.type = sf::Event::EventType::Closed;

@@ -134,7 +134,7 @@ namespace mighter2d {
         // SFML does not generate a resized event. This cause some issues with
         // TGUI, so we associate a full screen toggle with a resize event
         window_->onFullScreenToggle([this] (bool) {
-            SystemEvent event;
+            SystemEvent event{};
             event.type = SystemEvent::Resized;
             event.size.width = window_->getSize().x;
             event.size.height = window_->getSize().y;
@@ -152,7 +152,7 @@ namespace mighter2d {
     }
 
     void Engine::processEvents() {
-        SystemEvent event;
+        SystemEvent event{};
         while (privWindow_->pollEvent(event)) {
             if (event.type == SystemEvent::Closed)
                 window_->emitCloseEvent();

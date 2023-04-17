@@ -301,7 +301,7 @@ namespace mighter2d::ui {
             // to the active scene.
             pimpl_->winResizeHandlerId_ = window.onResize([this](Vector2u size) {
                 if (!scene_->isActive()) {
-                    SystemEvent winResizeEvent;
+                    SystemEvent winResizeEvent{};
                     winResizeEvent.type = SystemEvent::Resized;
                     winResizeEvent.size.width = size.x;
                     winResizeEvent.size.height = size.y;
@@ -321,7 +321,7 @@ namespace mighter2d::ui {
             gui.unfocusAllWidgets();
 
             // Reset hover state
-            SystemEvent event;
+            SystemEvent event{};
             event.type = SystemEvent::MouseMoved;
             event.mouseMove.x = -9999;
             gui.handleEvent(event);
