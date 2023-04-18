@@ -26,7 +26,7 @@
 /// // This scene displays a welcome message at the centre of the screen
 /// class StartUpScene : public ime::Scene {
 ///   public:
-///       void onEnter() override {
+///       void onStart() override {
 ///         // Greet the user
 ///          auto greeting = ime::ui::Label::create("Welcome to Infinite Motion Engine");
 ///          greeting->setOrigin(0.5f, 0.5f);

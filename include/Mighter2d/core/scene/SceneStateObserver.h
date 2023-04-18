@@ -51,15 +51,15 @@ namespace mighter2d {
         int onReady(const Callback<>& callback);
 
         /**
-         * @brief Add an event listener to a scene enter event
-         * @param callback The function to be executed when the scene entered
+         * @brief Add an event listener to a scene start event
+         * @param callback The function to be executed when the scene is started
          * @param oneTime True to execute the callback one-time or false to
          *                execute it every time the event is triggered
          * @return The event listener unique identification number
          *
          * You can add any number of event handlers to this event
          */
-        int onEnter(const Callback<>& callback);
+        int onStart(const Callback<>& callback);
 
         /**
          * @brief Add an event listener to a scene frame begin event

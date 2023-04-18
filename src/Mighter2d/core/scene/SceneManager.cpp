@@ -51,7 +51,7 @@ namespace mighter2d::priv {
         if (!scenes_.empty()) {
             prevScene_ = scenes_.top().get();
 
-            if (prevScene_->isEntered())
+            if (prevScene_->isStarted())
                 prevScene_->pause();
         }
 
@@ -59,11 +59,11 @@ namespace mighter2d::priv {
         Scene* newScene = scenes_.top().get();
 
         if (enterScene) {
-            if (newScene->isEntered())
+            if (newScene->isStarted())
                 newScene->resume(newScene->isCached());
             else {
                 newScene->init(*engine_);
-                newScene->enter();
+                newScene->start();
             }
         }
     }
@@ -130,10 +130,10 @@ namespace mighter2d::priv {
             Scene* newTopScene = scenes_.top().get();
 
             if (resumePrev) {
-                if (newTopScene->isEntered())
+                if (newTopScene->isStarted())
                     newTopScene->resume();
                 else
-                    newTopScene->enter();
+                    newTopScene->start();
             }
         }
     }
@@ -143,7 +143,7 @@ namespace mighter2d::priv {
     }
 
     const Scene *SceneManager::getActiveScene() const {
-        if (scenes_.empty() || !scenes_.top()->isEntered())
+        if (scenes_.empty() || !scenes_.top()->isStarted())
             return nullptr;
         else
             return scenes_.top().get();
@@ -154,7 +154,7 @@ namespace mighter2d::priv {
     }
 
     const Scene *SceneManager::getPreviousScene() const {
-        if (prevScene_ && prevScene_->isEntered())
+        if (prevScene_ && prevScene_->isStarted())
             return prevScene_;
 
         return nullptr;
@@ -176,7 +176,7 @@ namespace mighter2d::priv {
 
     void SceneManager::clearAllExceptActive() {
         if (!scenes_.empty()) {
-            if (scenes_.top()->isEntered()) {
+            if (scenes_.top()->isStarted()) {
                 Scene::Ptr activeScene = std::move(scenes_.top());
                 clear();
                 scenes_.push(std::move(activeScene));
@@ -188,7 +188,7 @@ namespace mighter2d::priv {
     void SceneManager::enterTopScene() const {
         if (!scenes_.empty()) {
             scenes_.top()->init(*engine_);
-            scenes_.top()->enter();
+            scenes_.top()->start();
         }
     }
 

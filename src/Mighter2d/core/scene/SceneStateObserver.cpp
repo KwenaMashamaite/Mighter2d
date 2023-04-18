@@ -32,8 +32,8 @@ namespace mighter2d {
         return scene_->addEventListener("mighter2d_Scene_ready", callback);
     }
 
-    int SceneStateObserver::onEnter(const Callback<> &callback) {
-        return scene_->addEventListener("mighter2d_Scene_enter", callback);
+    int SceneStateObserver::onStart(const Callback<> &callback) {
+        return scene_->addEventListener("mighter2d_Scene_start", callback);
     }
 
     int SceneStateObserver::onFrameBegin(const Callback<> &callback, bool oneTime) {

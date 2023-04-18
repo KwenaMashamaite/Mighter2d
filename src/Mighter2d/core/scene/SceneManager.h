@@ -48,7 +48,7 @@ namespace mighter2d {
          *
          * For example, if while in the "gameplay" scene, you push a "pause" scene
          * to the game engine, the "gameplay" scene will be paused (onPause called)
-         * and the "pause" scene will be entered (onEnter called on the pause scene
+         * and the "pause" scene will be entered (onStart called on the pause scene
          * instance) and the "pause" scene will become the active scene (gets system
          * events, updates and rendered). If you pop the "pause" scene, the engine
          * will destroy it (onStop called on the pause scene instance) and return

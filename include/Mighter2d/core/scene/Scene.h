@@ -97,7 +97,7 @@ namespace mighter2d {
          *
          * This function is called once by Mighter2d when the base scene is ready
          * to be used. It is called after the constructor but before
-         * onEnter().
+         * onStart().
          *
          * @note Some functions of mighter2d::Scene cannot be called in the
          * constructor because the scene is not yet initialized. Invoking
@@ -109,14 +109,14 @@ namespace mighter2d {
          * pu anything inside this function, therefore you don't have to call the
          * base class method in your implementation
          *
-         * @see onEnter
+         * @see onStart
          */
          virtual void onReady() {}
 
         /**
          * @brief Handle a scene enter
          *
-         * This function is called once by Mighter2d when the scene is entered for
+         * This function is called once by Mighter2d when the scene is started for
          * the first time
          *
          * Note that implementing this function is optional. Mighter2d will never put
@@ -125,7 +125,7 @@ namespace mighter2d {
          *
          * @see onReady
          */
-        virtual void onEnter() {};
+        virtual void onStart() {};
 
         /**
          * @brief Handle a scene system event
@@ -302,12 +302,12 @@ namespace mighter2d {
         std::string getClassName() const override;
 
         /**
-         * @brief Check if the scene has been entered or not
-         * @return True if the scene has been entered, otherwise false
+         * @brief Check if the scene has been started or not
+         * @return True if the scene is started, otherwise false
          *
-         * @see onEnter
+         * @see onStart
          */
-        bool isEntered() const;
+        bool isStarted() const;
 
         /**
          * @brief Check if the scene is active or not
@@ -596,9 +596,9 @@ namespace mighter2d {
 
     private:
         /**
-         * @brief Helper function for entering a scene
+         * @brief Helper function for starting a scene
          */
-        void enter();
+        void start();
 
         /**
          * @brief Helper function for setting scene as ready
@@ -660,7 +660,7 @@ namespace mighter2d {
         SceneStateObserver sceneStateObserver_;//!< Scene level gui container
         RenderLayerContainer renderLayers_;   //!< Render layers for this scene
         float timescale_;                     //!< Controls the speed of the scene without affecting the render fps
-        bool isEntered_;                      //!< A flag indicating whether or not the scene has been entered
+        bool isStarted_;                      //!< A flag indicating whether or not the scene has been started
         bool isInitialized_;                  //!< A flag indicating whether or not the scene has been initialized
         bool isActive_;                       //!< A flag indicating whether or not the scene is active
         bool isPaused_;                       //!< A flag indicating whether or not the scene is paused
@@ -691,7 +691,7 @@ namespace mighter2d {
  *
  * For example, if while in the "gameplay" scene, you push a "pause" scene
  * to the game engine, the "gameplay" scene will be paused (onPause called)
- * and the "pause" scene will be entered (onEnter called on the pause scene
+ * and the "pause" scene will be entered (onStart called on the pause scene
  * instance) and the "pause" scene will become the active scene (gets system
  * events, updates and rendered). If you pop the "pause" scene, the engine
  * will destroy it (onStop called on the pause scene instance) and return
@@ -703,7 +703,7 @@ namespace mighter2d {
  * Usage example:
  * @code
  * class StartUpScene : public mighter2d::Scene {
- *      void onEnter() override {
+ *      void onStart() override {
  *          mighter2d::ui::Label::Ptr greeting = mighter2d::ui::Label::create("Thank you for using Infinite Motion Engine");
  *          greeting->setOrigin(0.5f, 0.5f);
  *          greeting->setPosition("50%", "50%");

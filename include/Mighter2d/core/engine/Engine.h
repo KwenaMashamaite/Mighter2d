@@ -682,7 +682,7 @@ namespace mighter2d {
  * // The engine needs at least one scene in order to run
  * class TestScene : public mighter2d::Scene {
  *      public:
- *          void onEnter() override {}
+ *          void onStart() override {}
  * };
  *
  * mighter2d::Engine engine{"My awesome game"};

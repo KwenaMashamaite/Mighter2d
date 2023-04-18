@@ -35,7 +35,7 @@ namespace mighter2d {
         engine_(nullptr),
         sceneStateObserver_(*this),
         timescale_{1.0f},
-        isEntered_{false},
+        isStarted_{false},
         isInitialized_{false},
         isActive_{false},
         isPaused_{false},
@@ -61,7 +61,7 @@ namespace mighter2d {
             timescale_ = other.timescale_;
             isVisibleWhenPaused_ = other.isVisibleWhenPaused_;
             cacheState_ = other.cacheState_;
-            isEntered_ = other.isEntered_;
+            isStarted_ = other.isStarted_;
             isInitialized_ = other.isInitialized_;
             isActive_ = other.isActive_;
             isPaused_ = other.isPaused_;
@@ -138,7 +138,7 @@ namespace mighter2d {
     void Scene::setBackgroundScene(std::unique_ptr<BackgroundScene> scene) {
         if (isInitialized_) {
             if (backgroundScene_) {
-                if (backgroundScene_->isEntered_)
+                if (backgroundScene_->isStarted_)
                     backgroundScene_->stop();
 
                 backgroundScene_->destroy();
@@ -149,8 +149,8 @@ namespace mighter2d {
             if (backgroundScene_) {
                 backgroundScene_->init(*engine_);
 
-                if (isEntered_)
-                    backgroundScene_->enter();
+                if (isStarted_)
+                    backgroundScene_->start();
             }
         }
         else
@@ -169,8 +169,8 @@ namespace mighter2d {
         return backgroundScene_ != nullptr;
     }
 
-    bool Scene::isEntered() const {
-        return isEntered_;
+    bool Scene::isStarted() const {
+        return isStarted_;
     }
 
     bool Scene::isActive() const {
@@ -268,15 +268,15 @@ namespace mighter2d {
         return renderLayers_;
     }
 
-    void Scene::enter() {
-        if (!isEntered_ && isInitialized_) {
+    void Scene::start() {
+        if (!isStarted_ && isInitialized_) {
             if (backgroundScene_)
-                backgroundScene_->enter();
+                backgroundScene_->start();
 
-            isEntered_ = isActive_ = true;
+            isStarted_ = isActive_ = true;
 
-            emit("mighter2d_Scene_enter");
-            onEnter();
+            emit("mighter2d_Scene_start");
+            onStart();
         }
     }
 
@@ -292,7 +292,7 @@ namespace mighter2d {
     }
 
     void Scene::pause() {
-        if (!isPaused_ && isEntered_) {
+        if (!isPaused_ && isStarted_) {
             if (backgroundScene_)
                 backgroundScene_->pause();
 
@@ -305,7 +305,7 @@ namespace mighter2d {
     }
 
     void Scene::resume(bool fromCache) {
-        if (isEntered_) {
+        if (isStarted_) {
             if (backgroundScene_)
                 backgroundScene_->resume(fromCache);
 
@@ -319,7 +319,7 @@ namespace mighter2d {
     }
 
     void Scene::stop() {
-        if (isEntered_) {
+        if (isStarted_) {
             if (backgroundScene_)
                 backgroundScene_->stop();
 
