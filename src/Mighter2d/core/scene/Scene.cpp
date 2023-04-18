@@ -165,9 +165,7 @@ namespace mighter2d {
             if (backgroundScene_) {
                 backgroundScene_->parentScene_ = this;
                 backgroundScene_->init(*engine_);
-
-                backgroundScene_->isEntered_ = true;
-                backgroundScene_->onEnter();
+                backgroundScene_->enter();
             }
         }
     }
