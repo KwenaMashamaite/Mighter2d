@@ -230,6 +230,19 @@ namespace mighter2d {
         virtual void onExit() {};
 
         /**
+         * @brief Handle a scene destroy event
+         *
+         * This function is called by Mighter2d when the scene is about to be
+         * completely removed from the engine. After this function executes, the
+         * scenes destructor will be invoked.
+         *
+         * Note that implementing this function is optional. Mighter2d will never put
+         * anything inside this function, therefore you don't have to call the
+         * base class method in your implementation
+         */
+        virtual void onDestroy() {}
+
+        /**
          * @brief Handle a scene frame begin event
          *
          * This function is called by Mighter2d when the current frame begins while
@@ -580,6 +593,11 @@ namespace mighter2d {
          * @brief Helper function for exiting a scene
          */
         void exit();
+
+        /**
+         * @brief Helper function for destroying a scene
+         */
+        void destroy();
 
         /**
          * @brief Helper function for updating a scene

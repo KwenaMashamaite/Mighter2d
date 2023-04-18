@@ -120,6 +120,8 @@ namespace mighter2d::priv {
         if (const auto& [isCached, cacheAlias] = poppedScene->cacheState_; isCached) {
             cache(cacheAlias, std::move(poppedScene));
         }
+        else
+            poppedScene->destroy();
 
         // Activate a new scene
         if (!scenes_.empty()) {

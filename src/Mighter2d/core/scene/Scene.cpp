@@ -310,6 +310,16 @@ namespace mighter2d {
         }
     }
 
+    void Scene::destroy() {
+        if (backgroundScene_)
+            backgroundScene_->destroy();
+
+        isActive_ = false;
+
+        emit("mighter2d_Scene_destroy");
+        onDestroy();
+    }
+
     void Scene::update(const Time &deltaTime, bool isFixedUpdate) {
         if (isActive_) {
             if (backgroundScene_ && backgroundScene_->isUpdateEnabled())

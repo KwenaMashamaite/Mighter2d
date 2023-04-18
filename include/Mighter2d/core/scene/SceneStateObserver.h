@@ -117,6 +117,16 @@ namespace mighter2d {
         int onExit(const Callback<>& callback, bool oneTime = false);
 
         /**
+         * @brief Add an event listener to a scene destroy event
+         * @param callback The function to be executed when the scene is about
+         *                 to be destroyed
+         * @return The event listener unique identification number
+         *
+         * You can add any number of event handlers to this event
+         */
+        int onDestroy(const Callback<>& callback);
+
+        /**
           * @brief Remove an event listener
           * @param id The event listener unique identification number
           * @return True if the event listener was removed or false if no such

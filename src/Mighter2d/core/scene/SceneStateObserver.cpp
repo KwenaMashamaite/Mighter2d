@@ -56,6 +56,10 @@ namespace mighter2d {
         return utility::addEventListener(*scene_, "mighter2d_Scene_exit", callback, oneTime);
     }
 
+    int SceneStateObserver::onDestroy(const Callback<> &callback) {
+        return scene_->addEventListener("mighter2d_Scene_destroy", callback);
+    }
+
     bool SceneStateObserver::removeEventListener(int id) {
         return scene_->removeEventListener(id);
     }
