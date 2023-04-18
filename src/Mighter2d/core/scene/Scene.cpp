@@ -142,31 +142,17 @@ namespace mighter2d {
         if (!isInitialized_)
             throw AccessViolationException("mighter2d::Scene::setBackgroundScene() must not be called before the parent scene is initialized");
 
-        if (!isEntered_)
-            throw AccessViolationException("mighter2d::Scene::setBackgroundScene() must not be called before the parent scene is entered");
+        if (backgroundScene_ && backgroundScene_->isEntered_)
+            backgroundScene_->exit();
 
-        if (isBackgroundScene())
-            throw AccessViolationException("mighter2d::Scene::setBackgroundScene() must not be called on a background scene, nested background scenes are not supported");
+        backgroundScene_ = std::move(scene);
 
-        if (scene) {
-            if (scene->isBackgroundScene())
-                throw AccessViolationException("mighter2d::Scene::setBackgroundScene() must not be called with a scene that is already a background of another scene");
+        if (backgroundScene_) {
+            backgroundScene_->parentScene_ = this;
+            backgroundScene_->init(*engine_);
 
-            if (scene->hasBackgroundScene())
-                throw AccessViolationException("mighter2d::Scene::setBackgroundScene() must not be called with a scene that has a background scene, nested background scenes are not supported");
-        }
-
-        if (backgroundScene_ != scene) {
-            if (backgroundScene_)
-                backgroundScene_->onExit();
-
-            backgroundScene_ = std::move(scene);
-
-            if (backgroundScene_) {
-                backgroundScene_->parentScene_ = this;
-                backgroundScene_->init(*engine_);
+            if (isEntered_)
                 backgroundScene_->enter();
-            }
         }
     }
 
@@ -331,10 +317,10 @@ namespace mighter2d {
 
     void Scene::enter() {
         if (!isEntered_ && isInitialized_) {
-            isEntered_ = isActive_ = true;
-
             if (backgroundScene_)
                 backgroundScene_->enter();
+
+            isEntered_ = isActive_ = true;
 
             emit("mighter2d_Scene_enter");
             onEnter();
