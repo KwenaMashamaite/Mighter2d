@@ -78,6 +78,9 @@ namespace mighter2d {
 
     void Scene::init(Engine &engine) {
         if (!isInitialized_) {
+            if (backgroundScene_)
+                backgroundScene_->init(engine);
+
             isInitialized_ = true;
             engine_ = &engine;
             camera_ = std::make_unique<Camera>(*this, engine.getRenderTarget());
@@ -133,20 +136,21 @@ namespace mighter2d {
     }
 
     void Scene::setBackgroundScene(std::unique_ptr<BackgroundScene> scene) {
-        if (!isInitialized_)
-            throw AccessViolationException("mighter2d::Scene::setBackgroundScene() must not be called before the parent scene is initialized");
+        if (isInitialized_) {
+            if (backgroundScene_ && backgroundScene_->isEntered_)
+                backgroundScene_->exit();
 
-        if (backgroundScene_ && backgroundScene_->isEntered_)
-            backgroundScene_->exit();
+            backgroundScene_ = std::move(scene);
 
-        backgroundScene_ = std::move(scene);
+            if (backgroundScene_) {
+                backgroundScene_->init(*engine_);
 
-        if (backgroundScene_) {
-            backgroundScene_->init(*engine_);
-
-            if (isEntered_)
-                backgroundScene_->enter();
+                if (isEntered_)
+                    backgroundScene_->enter();
+            }
         }
+        else
+            backgroundScene_ = std::move(scene); // Will be added when the scene is initialized
     }
 
     BackgroundScene *Scene::getBackgroundScene() {
@@ -274,6 +278,9 @@ namespace mighter2d {
 
     void Scene::ready() {
         if (isInitialized_) {
+            if (backgroundScene_)
+                setBackgroundScene(std::move(backgroundScene_));
+
             emit("mighter2d_Scene_ready");
 
             onReady();

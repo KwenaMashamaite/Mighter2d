@@ -347,8 +347,6 @@ namespace mighter2d {
         /**
          * @brief Add a background scene to this scene
          * @param scene The scene to be the background of this scene
-         * @throws AccessViolationException If this function is called before
-         *         this scene is initialized.
          *
          * Note that setting a new background scene destroys the previous
          * one. In addition, pass @a nullptr to remove the background scene
@@ -356,7 +354,7 @@ namespace mighter2d {
          *
          * By default, the scene does not have a background scene
          *
-         * @see onReady, getBackgroundScene
+         * @see getBackgroundScene
          */
         void setBackgroundScene(std::unique_ptr<BackgroundScene> scene);
 
