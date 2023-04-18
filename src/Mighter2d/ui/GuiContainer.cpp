@@ -337,7 +337,7 @@ namespace mighter2d::ui {
             resetGui(*this);
         });
 
-        scene.getStateObserver().onExit([this] {
+        scene.getStateObserver().onStop([this] {
             resetGui(*this);
         });
     }

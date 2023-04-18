@@ -51,7 +51,7 @@ namespace mighter2d {
          * and the "pause" scene will be entered (onEnter called on the pause scene
          * instance) and the "pause" scene will become the active scene (gets system
          * events, updates and rendered). If you pop the "pause" scene, the engine
-         * will destroy it (onExit called on the pause scene instance) and return
+         * will destroy it (onStop called on the pause scene instance) and return
          * to the "gameplay" scene (onResume called on the gameplay scene instance).
          * However, if you push (transition to) another scene while in the "pause"
          * scene, the process repeats; the "pause" scene gets paused and the the new

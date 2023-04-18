@@ -239,10 +239,10 @@ namespace mighter2d {
         virtual void onResume(bool fromCache) {MIGHTER2D_UNUSED(fromCache); };
 
         /**
-         * @brief Handle a scene exit event
+         * @brief Handle a scene stop event
          *
          * This function is called by Mighter2d when the scene is removed from the
-         * engine (either by destruction or by caching). See mighter2d::Engine::popScene
+         * engine (either by popping or by caching). See mighter2d::Engine::popScene
          *
          * Note that implementing this function is optional. Mighter2d will never put
          * anything inside this function, therefore you don't have to call the
@@ -250,7 +250,7 @@ namespace mighter2d {
          *
          * @see setCacheOnExit, mighter2d::Engine::cacheScene
          */
-        virtual void onExit() {};
+        virtual void onStop() {};
 
         /**
          * @brief Handle a scene destroy event
@@ -618,7 +618,7 @@ namespace mighter2d {
         /**
          * @brief Helper function for exiting a scene
          */
-        void exit();
+        void stop();
 
         /**
          * @brief Helper function for destroying a scene
@@ -694,7 +694,7 @@ namespace mighter2d {
  * and the "pause" scene will be entered (onEnter called on the pause scene
  * instance) and the "pause" scene will become the active scene (gets system
  * events, updates and rendered). If you pop the "pause" scene, the engine
- * will destroy it (onExit called on the pause scene instance) and return
+ * will destroy it (onStop called on the pause scene instance) and return
  * to the "gameplay" scene (onResume called on the gameplay scene instance).
  * However, if you push (transition to) another scene while in the "pause"
  * scene, the process repeats; the "pause" scene gets paused and the the new

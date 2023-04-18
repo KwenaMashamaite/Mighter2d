@@ -106,7 +106,7 @@ namespace mighter2d {
         int onResume(const Callback<>& callback, bool oneTime = false);
 
         /**
-         * @brief Add an event listener to a scene exit event
+         * @brief Add an event listener to a scene stop event
          * @param callback The function to be executed when the scene is exited
          * @param oneTime True to execute the callback one-time or false to
          *                execute it every time the event is triggered
@@ -114,7 +114,7 @@ namespace mighter2d {
          *
          * You can add any number of event handlers to this event
          */
-        int onExit(const Callback<>& callback, bool oneTime = false);
+        int onStop(const Callback<>& callback, bool oneTime = false);
 
         /**
          * @brief Add an event listener to a scene destroy event

@@ -110,11 +110,11 @@ namespace mighter2d::priv {
 
         prevScene_ = nullptr;
 
-        // Call onExit() after removing scene from container because onExit may
+        // Call onStop() after removing scene from container because onStop may
         // push a scene and the new scene will be removed instead of this one
         Scene::Ptr poppedScene = std::move(scenes_.top());
         scenes_.pop();
-        poppedScene->exit();
+        poppedScene->stop();
 
         // Attempt to cache the removed scene
         if (const auto& [isCached, cacheAlias] = poppedScene->cacheState_; isCached) {

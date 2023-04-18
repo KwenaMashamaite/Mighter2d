@@ -357,7 +357,7 @@ namespace mighter2d {
          * Note that if this function is called whilst the engine is @e not
          * running, then all the scenes will be removed from the engine.
          *
-         * @note mighter2d::Scene::onExit is not invoked on scenes that are removed
+         * @note mighter2d::Scene::onStop is not invoked on scenes that are removed
          * using this function
          *
          * @see removeAllScenes

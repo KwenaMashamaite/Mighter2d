@@ -138,7 +138,7 @@ namespace mighter2d {
     void Scene::setBackgroundScene(std::unique_ptr<BackgroundScene> scene) {
         if (isInitialized_) {
             if (backgroundScene_ && backgroundScene_->isEntered_)
-                backgroundScene_->exit();
+                backgroundScene_->stop();
 
             backgroundScene_ = std::move(scene);
 
@@ -314,15 +314,15 @@ namespace mighter2d {
         }
     }
 
-    void Scene::exit() {
+    void Scene::stop() {
         if (isEntered_) {
             if (backgroundScene_)
-                backgroundScene_->exit();
+                backgroundScene_->stop();
 
             isActive_ = false;
 
-            emit("mighter2d_Scene_exit");
-            onExit();
+            emit("mighter2d_Scene_stop");
+            onStop();
         }
     }
 
