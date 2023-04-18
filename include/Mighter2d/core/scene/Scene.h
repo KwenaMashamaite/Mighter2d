@@ -93,6 +93,27 @@ namespace mighter2d {
         static Scene::Ptr create();
 
         /**
+         * @brief Handle a scene initialization
+         *
+         * This function is called once by Mighter2d when the base scene is ready
+         * to be used. It is called after the constructor but before
+         * onEnter().
+         *
+         * @note Some functions of mighter2d::Scene cannot be called in the
+         * constructor because the scene is not yet initialized. Invoking
+         * such functions will result in a mighter2d::AccessViolationException
+         * being thrown. Therefore, this function is intended for situation where
+         * you'd want to access such a function before the scene is entered
+         *
+         * Note that implementing this function is optional. Mighter2d will never
+         * pu anything inside this function, therefore you don't have to call the
+         * base class method in your implementation
+         *
+         * @see onEnter
+         */
+         virtual void onReady() {}
+
+        /**
          * @brief Handle a scene enter
          *
          * This function is called once by Mighter2d when the scene is entered for
@@ -101,6 +122,8 @@ namespace mighter2d {
          * Note that implementing this function is optional. Mighter2d will never put
          * anything inside this function, therefore you don't have to call the
          * base class method in your implementation
+         *
+         * @see onReady
          */
         virtual void onEnter() {};
 
@@ -333,7 +356,7 @@ namespace mighter2d {
          *
          * By default, the scene does not have a background scene
          *
-         * @see onInit, getBackgroundScene
+         * @see onReady, getBackgroundScene
          */
         void setBackgroundScene(std::unique_ptr<BackgroundScene> scene);
 
@@ -578,6 +601,11 @@ namespace mighter2d {
          * @brief Helper function for entering a scene
          */
         void enter();
+
+        /**
+         * @brief Helper function for setting scene as ready
+         */
+        void ready();
 
         /**
          * @brief Helper function for pausing a scene

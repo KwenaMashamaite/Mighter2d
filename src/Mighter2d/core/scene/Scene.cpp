@@ -81,7 +81,8 @@ namespace mighter2d {
             isInitialized_ = true;
             engine_ = &engine;
             camera_ = std::make_unique<Camera>(*this, engine.getRenderTarget());
-            emit("mighter2d_Scene_ready");
+
+            ready();
         }
     }
 
@@ -268,6 +269,14 @@ namespace mighter2d {
 
             emit("mighter2d_Scene_enter");
             onEnter();
+        }
+    }
+
+    void Scene::ready() {
+        if (isInitialized_) {
+            emit("mighter2d_Scene_ready");
+
+            onReady();
         }
     }
 
