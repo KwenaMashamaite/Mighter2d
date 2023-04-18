@@ -47,6 +47,7 @@
 namespace mighter2d {
     class Engine;
     class Window;
+    class BackgroundScene;
 
     /// @internal
     namespace priv {
@@ -319,25 +320,9 @@ namespace mighter2d {
          *
          * By default, the scene does not have a background scene
          *
-         * @see onInit
+         * @see onInit, getBackgroundScene
          */
-        void setBackgroundScene(Scene::Ptr scene);
-
-        /**
-         * @brief Get the scene this scene is a background of
-         * @return Pointer to the parent scene if this scene is a background
-         *         scene, otherwise a nullptr
-         *
-         * The scene has a parent scene when it is set as the background of
-         * another scene. The scene it is set as the background of becomes
-         * its parent scene
-         *
-         * By default, the scene does not have a parent scene
-         *
-         * @see setBackgroundScene
-         */
-        Scene* getParentScene();
-        const Scene* getParentScene() const;
+        void setBackgroundScene(std::unique_ptr<BackgroundScene> scene);
 
         /**
          * @brief Get the background scene of this scene
@@ -346,21 +331,8 @@ namespace mighter2d {
          *
          * @see setBackgroundScene
          */
-        Scene* getBackgroundScene();
-        const Scene* getBackgroundScene() const;
-
-        /**
-         * @brief Check if the scene is in a background scene
-         * @return True if it is a background scene, otherwise false
-         *
-         * The scene becomes a background scene when it is set as the
-         * background of another scene
-         *
-         * By default, the scene is not a background scene
-         *
-         * @see setBackgroundScene
-         */
-        bool isBackgroundScene() const;
+        BackgroundScene* getBackgroundScene();
+        const BackgroundScene* getBackgroundScene() const;
 
         /**
          * @brief Check if the scene has a background scene or not
@@ -369,74 +341,6 @@ namespace mighter2d {
          * @see setBackgroundScene
          */
         bool hasBackgroundScene() const;
-
-        /**
-         * @brief Set whether or not the scenes background scene is rendered
-         * @param drawable True to render the background scene, otherwise false
-         *
-         * When the @a drawable argument is set to @a false, the background
-         * scene is not rendered when this scene is rendered and when it is
-         * set to @a true, the background scene is rendered behind this scene
-         *
-         * By default, the background scene is rendered when the parent scene
-         * is rendered
-         *
-         * @see isBackgroundSceneDrawable
-         */
-        void setBackgroundSceneDrawable(bool drawable);
-
-        /**
-         * @brief Check if the scenes background scene is rendered
-         * @return True if the background scene is rendered, otherwise false
-         *
-         * @see setBackgroundSceneDrawable
-         */
-        bool isBackgroundSceneDrawable() const;
-
-        /**
-         * @brief Set whether or not the scenes background scene receives time updates
-         * @param enable True to enable background scene time updates, otherwise false
-         *
-         * When updates for a background scene is disabled, its onUpdate(),
-         * onFixedUpdate(), onPreUpdate() and onPostUpdate() functions
-         * are not invoked
-         *
-         * By default, the background scene is updated
-         *
-         * @see setBackgroundScene, isBackgroundSceneUpdateEnabled
-         */
-        void setBackgroundSceneUpdateEnable(bool enable);
-
-        /**
-         * @brief Check if the scenes background scene receives time updates or not
-         * @return True if it receives time updates, otherwise false
-         *
-         * @see setBackgroundSceneUpdateEnable
-         */
-        bool isBackgroundSceneUpdateEnabled() const;
-
-        /**
-         * @brief Enable or disable events for the scenes background scene
-         * @param enable True to enable background scene events, otherwise false
-         *
-         * When events for a background scene are disabled, the background
-         * scene does not receive system updates such as input (keyboard,
-         * mouse, joystick etc), window events etc. Furthermore its
-         * onHandleEvent() function is not invoked
-         *
-         * By default, background scene events are disabled
-         *
-         * @see isBackgroundSceneEventsEnabled
-         */
-        void setBackgroundSceneEventsEnable(bool enable);
-
-        /**
-         * @brief Check if events are enabled for the background scene or not
-         * @return True if events are enabled, otherwise false
-         *
-         * @see setBackgroundSceneEventsEnable
-         */
-        bool isBackgroundSceneEventsEnabled() const;
 
         /**
          * @brief Set whether or not the scene is cached when popped from the engine
@@ -717,12 +621,8 @@ namespace mighter2d {
         bool isActive_;                       //!< A flag indicating whether or not the scene is active
         bool isPaused_;                       //!< A flag indicating whether or not the scene is paused
         bool isVisibleWhenPaused_;            //!< A flag indicating whether or not the scene is rendered behind the active scene when it is paused
-        bool isBackgroundSceneDrawable_;      //!< A flag indicating whether or not the scenes background scene is rendered
-        bool isBackgroundSceneUpdated_;       //!< A flag indicating whether or not the scenes background scene receives time updates
-        bool isBackgroundSceneEventsEnabled_; //!< A flag indicating whether or not the scenes background scene receives system events
         std::pair<bool, std::string> cacheState_;
-        Scene* parentScene_;                  //!< The parent scene of this scene when it is in the background of another scene
-        Scene::Ptr backgroundScene_;          //!< The background scene of this scene
+        std::unique_ptr<BackgroundScene> backgroundScene_; //!< The background scene of this scene
 
         friend class priv::SceneManager;      //!< Pre updates the scene
     };

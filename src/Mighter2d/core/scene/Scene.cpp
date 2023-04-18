@@ -27,6 +27,7 @@
 #include "Mighter2d/core/exceptions/Exceptions.h"
 #include "Mighter2d/utility/Helpers.h"
 #include "Mighter2d/graphics/RenderTarget.h"
+#include "Mighter2d/core/scene/BackgroundScene.h"
 #include <utility>
 
 namespace mighter2d {
@@ -39,11 +40,7 @@ namespace mighter2d {
         isActive_{false},
         isPaused_{false},
         isVisibleWhenPaused_{false},
-        isBackgroundSceneDrawable_{true},
-        isBackgroundSceneUpdated_{true},
-        isBackgroundSceneEventsEnabled_{false},
-        cacheState_{false, ""},
-        parentScene_{nullptr}
+        cacheState_{false, ""}
     {
         renderLayers_.create("default");
     }
@@ -63,15 +60,11 @@ namespace mighter2d {
             renderLayers_ = std::move(other.renderLayers_);
             timescale_ = other.timescale_;
             isVisibleWhenPaused_ = other.isVisibleWhenPaused_;
-            isBackgroundSceneDrawable_ = other.isBackgroundSceneDrawable_;
-            isBackgroundSceneUpdated_ = other.isBackgroundSceneUpdated_;
-            isBackgroundSceneEventsEnabled_ = other.isBackgroundSceneEventsEnabled_;
             cacheState_ = other.cacheState_;
             isEntered_ = other.isEntered_;
             isInitialized_ = other.isInitialized_;
             isActive_ = other.isActive_;
             isPaused_ = other.isPaused_;
-            parentScene_ = other.parentScene_;
             backgroundScene_ = std::move(other.backgroundScene_);
             sceneStateObserver_ = std::move(sceneStateObserver_);
         }
@@ -138,7 +131,7 @@ namespace mighter2d {
         return isVisibleWhenPaused_;
     }
 
-    void Scene::setBackgroundScene(Scene::Ptr scene) {
+    void Scene::setBackgroundScene(std::unique_ptr<BackgroundScene> scene) {
         if (!isInitialized_)
             throw AccessViolationException("mighter2d::Scene::setBackgroundScene() must not be called before the parent scene is initialized");
 
@@ -148,7 +141,6 @@ namespace mighter2d {
         backgroundScene_ = std::move(scene);
 
         if (backgroundScene_) {
-            backgroundScene_->parentScene_ = this;
             backgroundScene_->init(*engine_);
 
             if (isEntered_)
@@ -156,64 +148,16 @@ namespace mighter2d {
         }
     }
 
-    Scene *Scene::getBackgroundScene() {
+    BackgroundScene *Scene::getBackgroundScene() {
         return backgroundScene_.get();
     }
 
-    const Scene *Scene::getBackgroundScene() const {
+    const BackgroundScene *Scene::getBackgroundScene() const {
         return backgroundScene_.get();
-    }
-
-    Scene *Scene::getParentScene() {
-        return parentScene_;
-    }
-
-    const Scene *Scene::getParentScene() const {
-        return parentScene_;
-    }
-
-    bool Scene::isBackgroundScene() const {
-        return parentScene_ != nullptr;
     }
 
     bool Scene::hasBackgroundScene() const {
         return backgroundScene_ != nullptr;
-    }
-
-    void Scene::setBackgroundSceneDrawable(bool drawable) {
-        if (isBackgroundSceneDrawable_ != drawable) {
-            isBackgroundSceneDrawable_ = drawable;
-
-            emitChange(Property("backgroundSceneDrawable", drawable));
-        }
-    }
-
-    bool Scene::isBackgroundSceneDrawable() const {
-        return isBackgroundSceneDrawable_;
-    }
-
-    void Scene::setBackgroundSceneUpdateEnable(bool enable) {
-        if (isBackgroundSceneUpdated_ != enable) {
-            isBackgroundSceneUpdated_ = enable;
-
-            emitChange(Property("backgroundSceneUpdateEnable", isBackgroundSceneUpdated_));
-        }
-    }
-
-    bool Scene::isBackgroundSceneUpdateEnabled() const {
-        return isBackgroundSceneUpdated_;
-    }
-
-    void Scene::setBackgroundSceneEventsEnable(bool enable) {
-        if (isBackgroundSceneEventsEnabled_ != enable) {
-            isBackgroundSceneEventsEnabled_ = enable;
-
-            emitChange(Property("backgroundSceneEventsEnable", enable));
-        }
-    }
-
-    bool Scene::isBackgroundSceneEventsEnabled() const {
-        return isBackgroundSceneEventsEnabled_;
     }
 
     bool Scene::isEntered() const {
@@ -368,7 +312,7 @@ namespace mighter2d {
 
     void Scene::update(const Time &deltaTime, bool isFixedUpdate) {
         if (isActive_) {
-            if (backgroundScene_ && isBackgroundSceneUpdated_)
+            if (backgroundScene_ && backgroundScene_->isUpdateEnabled())
                 backgroundScene_->update(deltaTime, isFixedUpdate);
 
             Time scaledDeltaTime = deltaTime * getTimescale();
@@ -389,7 +333,7 @@ namespace mighter2d {
 
     void Scene::handleEvent(SystemEvent event) {
         if (isActive_) {
-            if (backgroundScene_ && isBackgroundSceneEventsEnabled_)
+            if (backgroundScene_ && backgroundScene_->isSystemEventHandleEnabled())
                 backgroundScene_->handleEvent(event);
 
             for (auto& sysEventHandler : systemEventHandlerList_) {
@@ -402,7 +346,7 @@ namespace mighter2d {
 
     void Scene::render() {
         if (isActive_ && camera_->isDrawable()) {
-            if (backgroundScene_ && isBackgroundSceneDrawable_)
+            if (backgroundScene_ && backgroundScene_->isDrawable())
                 backgroundScene_->render();
 
             onPreRender();
