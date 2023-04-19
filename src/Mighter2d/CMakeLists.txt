@@ -44,6 +44,7 @@ set(MIGHTER2D_SRC
     core/scene/RenderLayerContainer.cpp
     core/scene/SceneStateObserver.cpp
     core/scene/BackgroundScene.cpp
+    core/scene/EngineScene.cpp
     core/grid/Index.cpp
     core/grid/Grid.cpp
     core/grid/GridParser.cpp

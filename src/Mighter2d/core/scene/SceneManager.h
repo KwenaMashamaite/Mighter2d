@@ -37,6 +37,7 @@ namespace mighter2d {
     /// @internal
     namespace priv {
         class RenderTarget;
+        class EngineScene;
 
         /**
          * @brief Manages game scenes
@@ -140,6 +141,14 @@ namespace mighter2d {
              */
             Scene* getPreviousScene();
             const Scene* getPreviousScene() const;
+
+            /**
+             * @brief Get the engine scene
+             * @return A pointer to a engine scene it it exists,
+             *         otherwise a nullptr
+             */
+            EngineScene* getEngineScene();
+            const EngineScene* getEngineScene() const;
 
             /**
              * @brief Cache a scene
@@ -250,6 +259,7 @@ namespace mighter2d {
             std::stack<Scene::Ptr> scenes_; //!< Scenes container
             Scene* prevScene_;              //!< Pointer to the active scene before a push operation
             std::unordered_map<std::string, Scene::Ptr> cachedScenes_;
+            std::unique_ptr<priv::EngineScene> engineScene_;
         };
     }
 }

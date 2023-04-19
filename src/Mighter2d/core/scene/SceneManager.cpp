@@ -26,6 +26,7 @@
 #include "Mighter2d/core/engine/Engine.h"
 #include "Mighter2d/graphics/shapes/RectangleShape.h"
 #include "Mighter2d/utility/Helpers.h"
+#include "Mighter2d/core/scene/EngineScene.h"
 
 namespace mighter2d::priv {
     SceneManager::SceneManager(Engine* engine) :
@@ -34,14 +35,22 @@ namespace mighter2d::priv {
     {
         MIGHTER2D_ASSERT(engine, "Engine pointer cannot be a nullptr")
 
+        engine->onInit([this] {
+            engineScene_ = std::make_unique<priv::EngineScene>();
+            engineScene_->init(*engine_);
+            engineScene_->start();
+        });
+
         engine->onFrameStart([this] {
             if (!scenes_.empty())
                 scenes_.top()->frameBegin();
         });
 
         engine->onFrameEnd([this] {
-            if (!scenes_.empty())
+            if (!scenes_.empty()) {
+                engineScene_->frameEnd();
                 scenes_.top()->frameEnd();
+            }
         });
     }
 
@@ -160,12 +169,22 @@ namespace mighter2d::priv {
         return nullptr;
     }
 
+    EngineScene* SceneManager::getEngineScene() {
+        return engineScene_.get();
+    }
+
+    const EngineScene* SceneManager::getEngineScene() const {
+        return engineScene_.get();
+    }
+
     std::size_t SceneManager::getSceneCount() const {
         return scenes_.size();
     }
 
     void SceneManager::clear() {
         prevScene_ = nullptr;
+        engineScene_.reset();
+
         while (!scenes_.empty())
             scenes_.pop();
     }
@@ -202,17 +221,22 @@ namespace mighter2d::priv {
                 prevScene_->render();
 
             scenes_.top()->render();
+            engineScene_->render();
         }
     }
 
     void SceneManager::handleEvent(SystemEvent event) {
-        if (!scenes_.empty())
+        if (!scenes_.empty()) {
+            engineScene_->handleEvent(event);
             scenes_.top()->handleEvent(event);
+        }
     }
 
     void SceneManager::update(const Time &deltaTime, bool fixedUpdate) {
-        if (!scenes_.empty())
-            scenes_.top()->update(deltaTime,  fixedUpdate);
+        if (!scenes_.empty()) {
+            engineScene_->update(deltaTime, fixedUpdate);
+            scenes_.top()->update(deltaTime, fixedUpdate);
+        }
     }
 
     void SceneManager::updatePreviousScene() {

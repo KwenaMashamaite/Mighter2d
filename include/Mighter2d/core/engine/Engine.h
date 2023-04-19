@@ -442,6 +442,69 @@ namespace mighter2d {
         const Window& getWindow() const;
 
         /**
+         * @brief Get the engine level gui
+         * @return The engine level gui
+         * @throws AccessViolationException If the function is called before
+         *         the engine is initialized
+         *
+         * Unlike the scene level gui, the engine level gui is not destroyed
+         * when a the active scene is destroyed, it gets destroyed when the
+         * engine stops running. Therefore, it is useful when the same UI is
+         * required across multiple scenes.
+         *
+         * Note that the engine level gui is always drawn in front of other scenes
+         *
+         * @see initialize
+         */
+        ui::GuiContainer& getGui();
+        const ui::GuiContainer& getGui() const;
+
+        /**
+         * @brief Get the engine level input manager
+         * @return The engine level input manager
+         * @throws AccessViolationException If the function is called before
+         *         the engine is initialized
+         *
+         * Unlike the scene level input manager, input listeners registered on
+         * this input manager are not destroyed or disabled when the active scene
+         * is destroyed or becomes inactive
+         *
+         * @see initialize
+         */
+        input::InputManager& getInputManager();
+        const input::InputManager& getInputManager() const;
+
+        /**
+         * @brief Get the engine level timer manager
+         * @return The engine level timer manager
+         * @throw AccessViolationException If the function is called before
+         *         the engine is initialized
+         *
+         * Unlike a scene level timer manager, timers scheduled on this timer
+         * manager are not destroyed or disabled when the active scene is destroyed
+         * or becomes inactive
+         *
+         * @see initialize
+         */
+        TimerManager& getTimerManager();
+        const TimerManager& getTimerManager() const;
+
+        /**
+         * @brief Get the engine level audio manager
+         * @return The engine level audio manager
+         * @throws AccessViolationException If this function is called before
+         *         the engine is initialized
+         *
+         * Unlike a scene level audio manager, audio played by this audio manager
+         * is not destroyed or stopped when the active scene is destroyed or becomes
+         * inactive
+         *
+         * @see initialize
+         */
+        audio::AudioManager& getAudioManager();
+        const audio::AudioManager& getAudioManager() const;
+
+        /**
          * @brief Pause or resume execution of an event listener
          * @param id The event listeners unique identification number
          * @param suspend True to suspend/pause or false to unsuspend/resume

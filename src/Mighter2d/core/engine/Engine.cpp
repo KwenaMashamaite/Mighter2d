@@ -29,6 +29,7 @@
 #include "Mighter2d/graphics/RenderTarget.h"
 #include "Mighter2d/utility/Helpers.h"
 #include "Mighter2d/core/exceptions/Exceptions.h"
+#include "Mighter2d/core/scene/EngineScene.h"
 
 namespace mighter2d {
     namespace {
@@ -472,6 +473,50 @@ namespace mighter2d {
             throw AccessViolationException("mighter2d::Engine::getWindow() must not be called before the engine is initialized, see mighter2d::Engine::initialize()");
         else
             return *window_;
+    }
+
+    ui::GuiContainer &Engine::getGui() {
+        return const_cast<ui::GuiContainer&>(std::as_const(*this).getGui());;
+    }
+
+    const ui::GuiContainer &Engine::getGui() const {
+        if (!isInitialized_)
+            throw AccessViolationException("mighter2d::Engine::getGui() must not be called before the engine is initialized, see mighter2d::Engine::initialize()");
+        else
+            return sceneManager_->getEngineScene()->guiContainer_;
+    }
+
+    input::InputManager &Engine::getInputManager() {
+        return const_cast<input::InputManager&>(std::as_const(*this).getInputManager());;
+    }
+
+    const input::InputManager &Engine::getInputManager() const {
+        if (!isInitialized_)
+            throw AccessViolationException("mighter2d::Engine::getInputManager() must not be called before the engine is initialized, see mighter2d::Engine::initialize()");
+        else
+            return sceneManager_->getEngineScene()->inputManager_;
+    }
+
+    TimerManager &Engine::getTimerManager() {
+        return const_cast<TimerManager&>(std::as_const(*this).getTimerManager());;
+    }
+
+    const TimerManager &Engine::getTimerManager() const {
+        if (!isInitialized_)
+            throw AccessViolationException("mighter2d::Engine::getTimerManager() must not be called before the engine is initialized, see mighter2d::Engine::initialize()");
+        else
+            return sceneManager_->getEngineScene()->timerManager_;
+    }
+
+    audio::AudioManager &Engine::getAudioManager() {
+        return const_cast<audio::AudioManager&>(std::as_const(*this).getAudioManager());
+    }
+
+    const audio::AudioManager &Engine::getAudioManager() const {
+        if (!isInitialized_)
+            throw AccessViolationException("mighter2d::Engine::getAudioManager() must not be called before the engine is initialized, see mighter2d::Engine::initialize()");
+        else
+            return sceneManager_->getEngineScene()->audioManager_;
     }
 
     int Engine::onInit(const Callback<>& callback) {
