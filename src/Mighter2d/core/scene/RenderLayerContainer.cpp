@@ -112,7 +112,7 @@ namespace mighter2d {
         for (auto iter = inverseLayers_.cbegin(); iter != inverseLayers_.cend(); ) {
             auto& [name, index] = *iter;
 
-            if (name == "default") {
+            if (name != "default") {
                 layers_.erase(index);
                 iter = inverseLayers_.erase(iter);
             } else {
