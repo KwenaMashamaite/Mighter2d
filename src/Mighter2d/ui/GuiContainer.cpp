@@ -260,9 +260,6 @@ namespace mighter2d::ui {
             sfmlGui_.updateTime(tgui::Duration(deltaTime.asMilliseconds()));
         }
 
-        int winResizeHandlerId_ = -1;
-        int winDestructListenerId_ = -1;
-
     private:
         tgui::GuiSFML sfmlGui_; //!< Gui controller and renderer
         std::unordered_map<std::string, Widget::Ptr> widgets_; //!< Widgets container
@@ -275,6 +272,8 @@ namespace mighter2d::ui {
     GuiContainer::GuiContainer(Scene& scene) :
         Drawable(scene),
         scene_(&scene),
+        winResizeHandlerId_(-1),
+        winDestructListenerId_(-1),
         pimpl_{std::make_unique<GuiContainerImpl>()}
     {
         scene.addUpdatable(this);
@@ -284,11 +283,11 @@ namespace mighter2d::ui {
             scene_->removeUpdatable(this);
             scene_->removeSystemEventHandler(this);
 
-            if (pimpl_->winResizeHandlerId_ != -1)
-                scene_->getWindow().removeEventListener(pimpl_->winResizeHandlerId_);
+            if (winResizeHandlerId_ != -1)
+                scene_->getWindow().removeEventListener(winResizeHandlerId_);
 
-            if (pimpl_->winDestructListenerId_ != -1)
-                scene_->getWindow().removeEventListener(pimpl_->winDestructListenerId_);
+            if (winDestructListenerId_ != -1)
+                scene_->getWindow().removeEventListener(winDestructListenerId_);
         });
 
         scene.getStateObserver().onReady([this] {
@@ -299,7 +298,7 @@ namespace mighter2d::ui {
             // Inactive scene gui become buggy or unresponsive to the mouse cursor
             // when the window is resized because the resize event is only dispatched
             // to the active scene.
-            pimpl_->winResizeHandlerId_ = window.onResize([this](Vector2u size) {
+            winResizeHandlerId_ = window.onResize([this](Vector2u size) {
                 if (!scene_->isActive()) {
                     SystemEvent winResizeEvent{};
                     winResizeEvent.type = SystemEvent::Resized;
@@ -310,8 +309,8 @@ namespace mighter2d::ui {
                 }
             });
 
-            pimpl_->winDestructListenerId_ = window.onDestruction([this] {
-                pimpl_->winResizeHandlerId_ = pimpl_->winDestructListenerId_ = -1;
+            winDestructListenerId_ = window.onDestruction([this] {
+                winResizeHandlerId_ = winDestructListenerId_ = -1;
             });
         });
 

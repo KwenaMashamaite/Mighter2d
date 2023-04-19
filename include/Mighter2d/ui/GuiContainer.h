@@ -541,6 +541,8 @@ namespace mighter2d {
 
         private:
             Scene* scene_;
+            int winResizeHandlerId_;
+            int winDestructListenerId_;
             class GuiContainerImpl;
             std::unique_ptr<GuiContainerImpl> pimpl_;
         };
