@@ -38,6 +38,7 @@ set(MIGHTER2D_SRC
     core/physics/KeyboardGridMover.cpp
     core/physics/RandomGridMover.cpp
     core/physics/CyclicGridMover.cpp
+    core/physics/BoundingBox.cpp
     core/scene/Scene.cpp
     core/scene/SceneManager.cpp
     core/scene/RenderLayer.cpp
