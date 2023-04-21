@@ -22,8 +22,8 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef MIGHTER2D_EXCLUDELIST_H
-#define MIGHTER2D_EXCLUDELIST_H
+#ifndef MIGHTER2D_COLLISIONEXCLUDELIST_H
+#define MIGHTER2D_COLLISIONEXCLUDELIST_H
 
 #include "Mighter2d/Config.h"
 #include <string>
@@ -36,7 +36,7 @@ namespace mighter2d {
      * This class allows a GameObject to select which other game objects
      * it should not collide with
      */
-    class MIGHTER2D_API ExcludeList {
+    class MIGHTER2D_API CollisionExcludeList {
     public:
         /**
          * @brief Add a group to the list
@@ -75,4 +75,4 @@ namespace mighter2d {
     };
 }
 
-#endif //MIGHTER2D_EXCLUDELIST_H
+#endif //MIGHTER2D_COLLISIONEXCLUDELIST_H

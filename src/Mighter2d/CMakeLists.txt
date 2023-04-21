@@ -20,7 +20,7 @@ set(MIGHTER2D_SRC
     core/audio/SoundEffect.cpp
     core/object/GameObject.cpp
     core/object/GridObject.cpp
-    core/object/ExcludeList.cpp
+    core/object/CollisionExcludeList.cpp
     core/event/EventEmitter.cpp
     core/event/GlobalEventEmitter.cpp
     core/input/Joystick.cpp

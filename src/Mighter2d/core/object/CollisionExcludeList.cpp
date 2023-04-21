@@ -22,26 +22,26 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "Mighter2d/core/object/ExcludeList.h"
+#include "Mighter2d/core/object/CollisionExcludeList.h"
 
 namespace mighter2d {
-    void ExcludeList::add(const std::string &group) {
+    void CollisionExcludeList::add(const std::string &group) {
         list_.insert(group);
     }
 
-    bool ExcludeList::remove(const std::string &group) {
+    bool CollisionExcludeList::remove(const std::string &group) {
         return list_.erase(group);
     }
 
-    bool ExcludeList::contains(const std::string &group) {
+    bool CollisionExcludeList::contains(const std::string &group) {
         return list_.find(group) != list_.end();
     }
 
-    std::size_t ExcludeList::getCount() const {
+    std::size_t CollisionExcludeList::getCount() const {
         return list_.size();
     }
 
-    void ExcludeList::clear() {
+    void CollisionExcludeList::clear() {
         list_.clear();
     }
 }

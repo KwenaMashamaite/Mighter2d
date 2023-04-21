@@ -158,19 +158,19 @@ namespace mighter2d {
         return grid_;
     }
 
-    ExcludeList &GridObject::getCollisionExcludeList() {
+    CollisionExcludeList &GridObject::getCollisionExcludeList() {
         return excludeList_;
     }
 
-    const ExcludeList &GridObject::getCollisionExcludeList() const {
+    const CollisionExcludeList &GridObject::getCollisionExcludeList() const {
         return excludeList_;
     }
 
-    ExcludeList &GridObject::getObstacleCollisionFilter() {
+    CollisionExcludeList &GridObject::getObstacleCollisionFilter() {
         return obstacleColFilter_;
     }
 
-    const ExcludeList &GridObject::getObstacleCollisionFilter() const {
+    const CollisionExcludeList &GridObject::getObstacleCollisionFilter() const {
         return  obstacleColFilter_;
     }
 

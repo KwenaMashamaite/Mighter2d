@@ -27,7 +27,7 @@
 
 #include "Mighter2d/Config.h"
 #include "Mighter2d/core/object/GameObject.h"
-#include "Mighter2d/core/object/ExcludeList.h"
+#include "Mighter2d/core/object/CollisionExcludeList.h"
 #include "Mighter2d/core/grid/Grid.h"
 #include <memory>
 
@@ -274,8 +274,8 @@ namespace mighter2d {
          *
          * @see getObstacleCollisionFilter
          */
-        ExcludeList& getCollisionExcludeList();
-        const ExcludeList& getCollisionExcludeList() const;
+        CollisionExcludeList& getCollisionExcludeList();
+        const CollisionExcludeList& getCollisionExcludeList() const;
 
         /**
          * @brief Get the game objects obstacle collision filter
@@ -295,8 +295,8 @@ namespace mighter2d {
          *
          * @see getCollisionExcludeList
          */
-        ExcludeList& getObstacleCollisionFilter();
-        const ExcludeList& getObstacleCollisionFilter() const;
+        CollisionExcludeList& getObstacleCollisionFilter();
+        const CollisionExcludeList& getObstacleCollisionFilter() const;
 
         /**
          * @brief Get the objects grid mover
@@ -528,8 +528,8 @@ namespace mighter2d {
         bool isObstacle_;                   //!< A flag indicating whether or not the object is an obstacle
         Vector2i direction_;                //!< The current direction of the object
         Vector2f speed_;                    //!< The speed of the game object
-        ExcludeList excludeList_;           //!< Stores the collision groups of game objects this game object should not collide with
-        ExcludeList obstacleColFilter_;     //!< Stores the collision groups of game objects that can collide with an obstacle without being blocked
+        CollisionExcludeList excludeList_;           //!< Stores the collision groups of game objects this game object should not collide with
+        CollisionExcludeList obstacleColFilter_;     //!< Stores the collision groups of game objects that can collide with an obstacle without being blocked
         std::string collisionGroup_;        //!< The objects collision group (collision filtering)
         int collisionId_;                   //!< The objects collision id (collision filtering)
         GridMover* gridMover_;              //!< The objects grid mover
