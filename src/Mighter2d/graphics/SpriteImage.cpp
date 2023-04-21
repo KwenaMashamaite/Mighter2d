@@ -49,7 +49,7 @@ namespace mighter2d {
         return texture_->getSize().y;
     }
 
-    std::string SpriteImage::getClassType() const {
+    std::string SpriteImage::getBaseClassName() const {
         return "SpriteImage";
     }
 

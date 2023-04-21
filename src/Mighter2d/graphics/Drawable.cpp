@@ -80,7 +80,7 @@ namespace mighter2d {
         setVisible(!isVisible());
     }
 
-    std::string Drawable::getClassType() const {
+    std::string Drawable::getBaseClassName() const {
         return "Drawable";
     }
 

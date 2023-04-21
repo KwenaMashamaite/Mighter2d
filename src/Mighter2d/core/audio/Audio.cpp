@@ -30,7 +30,7 @@ namespace mighter2d::audio {
         volumeBeforeMute_(100.0f)
     {}
 
-    std::string Audio::getClassType() const {
+    std::string Audio::getBaseClassName() const {
         return "Audio";
     }
 

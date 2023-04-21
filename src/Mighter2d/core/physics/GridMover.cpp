@@ -78,7 +78,7 @@ namespace mighter2d {
         return *scene_;
     }
 
-    std::string GridMover::getClassType() const {
+    std::string GridMover::getBaseClassName() const {
         return "GridMover";
     }
 
@@ -108,7 +108,7 @@ namespace mighter2d {
             MIGHTER2D_ASSERT(grid_.hasChild(target), "The game object must already be in the grid/grid before adding it to a grid mover")
 
             if (target_) {
-                target_->removeEventListener(targetDestructionId_);
+                target_->removeDestructionListener(targetDestructionId_);
                 target_->removeEventListener(targetPropertyChangeId_);
                 targetDestructionId_ = targetPropertyChangeId_ = -1;
                 teleportTargetToDestination();

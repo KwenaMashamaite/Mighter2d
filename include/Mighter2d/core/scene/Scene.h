@@ -297,7 +297,7 @@ namespace mighter2d {
          * @brief Get the name of this class
          * @return The name of this class
          *
-         * @see getClassType
+         * @see getBaseClassName
          */
         std::string getClassName() const override;
 

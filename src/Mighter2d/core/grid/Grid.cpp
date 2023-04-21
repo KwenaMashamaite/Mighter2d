@@ -469,7 +469,7 @@ namespace mighter2d {
     }
 
     void Grid::unsubscribeDestructionListener(GridObject *child) {
-        child->removeEventListener(destructionIds_[child->getObjectId()]);
+        child->removeDestructionListener(destructionIds_[child->getObjectId()]);
         destructionIds_.erase(child->getObjectId());
     }
 

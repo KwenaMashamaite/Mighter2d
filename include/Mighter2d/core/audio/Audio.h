@@ -61,7 +61,7 @@ namespace mighter2d {
              *
              * @see getClassName
              */
-            std::string getClassType() const override;
+            std::string getBaseClassName() const override;
 
             /**
              * @brief Set audio source to be manipulated

@@ -64,7 +64,7 @@ namespace mighter2d {
         return *scene_;
     }
 
-    std::string Shape::getClassType() const {
+    std::string Shape::getBaseClassName() const {
         return "Shape";
     }
 

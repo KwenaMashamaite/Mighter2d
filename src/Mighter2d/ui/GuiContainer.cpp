@@ -287,7 +287,7 @@ namespace mighter2d::ui {
                 scene_->getWindow().removeEventListener(winResizeHandlerId_);
 
             if (winDestructListenerId_ != -1)
-                scene_->getWindow().removeEventListener(winDestructListenerId_);
+                scene_->getWindow().removeDestructionListener(winDestructListenerId_);
         });
 
         scene.getStateObserver().onReady([this] {

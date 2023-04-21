@@ -155,7 +155,7 @@ namespace mighter2d {
          * is extended, otherwise it will return the name of this class
          * instead of your class name
          *
-         * @see getClassType
+         * @see getBaseClassName
          */
         std::string getClassName() const override;
 
@@ -168,7 +168,7 @@ namespace mighter2d {
          *
          * @see getClassName
          */
-        std::string getClassType() const override;
+        std::string getBaseClassName() const override;
 
         /**
          * @brief Get the game objects transform
