@@ -28,7 +28,6 @@
 
 namespace mighter2d {
     GameObject::GameObject(Scene& scene) :
-        IUpdatable(scene),
         scene_{scene},
         state_{-1},
         isActive_{true},
@@ -38,7 +37,6 @@ namespace mighter2d {
     }
 
     GameObject::GameObject(const GameObject &other) :
-        IUpdatable(other),
         Object(other),
         scene_{other.scene_},
         state_{other.state_},
@@ -61,7 +59,6 @@ namespace mighter2d {
     }
 
     GameObject::GameObject(GameObject&& other) noexcept :
-        IUpdatable(std::move(other)),
         scene_(other.scene_)
     {
         *this = std::move(other);
@@ -161,10 +158,6 @@ namespace mighter2d {
 
     const Sprite &GameObject::getSprite() const {
         return *sprite_;
-    }
-
-    void GameObject::update(Time deltaTime) {
-
     }
 
     void GameObject::initEvents() {

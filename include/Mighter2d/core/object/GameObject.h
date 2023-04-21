@@ -40,7 +40,7 @@ namespace mighter2d {
     /**
      * @brief Class for modelling game objects (players, enemies etc...)
      */
-    class MIGHTER2D_API GameObject : public Object, public IUpdatable {
+    class MIGHTER2D_API GameObject : public Object {
     public:
         using Ptr = std::unique_ptr<GameObject>;                      //!< Unique game object pointer
         using CollisionCallback = Callback<GameObject*, GameObject*>; //!< Collision callback
@@ -195,19 +195,6 @@ namespace mighter2d {
          */
         Sprite& getSprite();
         const Sprite& getSprite() const;
-
-        /**
-         * @brief Update the game object
-         * @param deltaTime Time past since last update
-         *
-         * @note This function will be called automatically by Mighter2d.
-         * @a deltaTime is synced with the render FPS. In other words, it
-         * is frame-rate dependent.
-         *
-         * The base class version must be called if this function
-         * is overridden
-         */
-        void update(Time deltaTime) override;
 
         /**
          * @brief Destructor
