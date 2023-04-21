@@ -76,8 +76,8 @@ namespace mighter2d {
         const Vector2f& getSize() const;
 
     private:
-        mighter2d::Vector2f pos_;    //!< The position of the bounding box
-        mighter2d::Vector2f size_;   //!< The size of the bounding box
+        Vector2f pos_;    //!< The position of the bounding box
+        Vector2f size_;   //!< The size of the bounding box
     };
 }
 
