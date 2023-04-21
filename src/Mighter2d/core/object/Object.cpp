@@ -38,16 +38,13 @@ namespace mighter2d {
         EventEmitter(other),
         id_{objectIdCounter++},
         tag_{other.tag_}
-    {
-        removeAllEventListeners("Object_destruction");
-    }
+    {}
 
     Object &Object::operator=(const Object & other) {
         // We don't want to assign the object id, each must have a unique one
         if (this != &other) {
             tag_ = other.tag_;
             EventEmitter::operator=(other);
-            removeAllEventListeners("Object_destruction");
         }
 
         return *this;
@@ -84,10 +81,6 @@ namespace mighter2d {
         return utility::addEventListener(*this, "Object_propertyChange", callback, oneTime);
     }
 
-    int Object::onDestruction(const Callback<>& callback) {
-        return addOnceEventListener("Object_destruction", callback);
-    }
-
     bool Object::isSameObjectAs(const Object &other) const {
         return id_ == other.id_;
     }
@@ -95,10 +88,6 @@ namespace mighter2d {
     void Object::emitChange(const Property &property) {
         emit("Object_" + property.getName() + "Change", property);
         emit("Object_propertyChange", property);
-    }
-
-    void Object::emitDestruction() {
-        emit("Object_destruction");
     }
 
     Object::~Object() {

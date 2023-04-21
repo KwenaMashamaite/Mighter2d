@@ -29,6 +29,7 @@
 #include "Mighter2d/core/event/EventEmitter.h"
 #include "Mighter2d/common/Property.h"
 #include "Mighter2d/common/IClassifiable.h"
+#include "Mighter2d/common/Destructible.h"
 #include <unordered_map>
 #include <functional>
 #include <string>
@@ -38,7 +39,7 @@ namespace mighter2d {
     /**
      * @brief An abstract top-level base class for Mighter2d objects
      */
-    class MIGHTER2D_API Object : public EventEmitter, public IClassifiable {
+    class MIGHTER2D_API Object : public EventEmitter, public Destructible, public IClassifiable {
     public:
         using Ptr = std::unique_ptr<Object>; //!< Unique object pointer
 
@@ -172,22 +173,6 @@ namespace mighter2d {
         int onPropertyChange(const Callback<Property>& callback, bool oneTime = false);
 
         /**
-         * @brief Add a destruction listener
-         * @param callback Function to be executed when the object is destroyed
-         * @return The unique id of the destruction listener
-         *
-         * The destruction listener is called when the object reaches the end
-         * of its lifetime. Note that an object may have multiple destruction
-         * listeners registered to it and they are executed once.
-         *
-         * @note Destruction listeners are not copied when copy constructing
-         * or assigning the object
-         *
-         * @see removeEventListener
-         */
-        int onDestruction(const Callback<>& callback);
-
-        /**
          * @brief Check if another object is the same instance as this object
          * @param other The object to compare against this object
          * @return True if @a other is the same instance as this object,
@@ -214,17 +199,6 @@ namespace mighter2d {
          * @see emit
          */
         void emitChange(const Property& property);
-
-        /**
-         * @brief Emit a destruction event
-         *
-         * @note This function must be the first statement in the definition
-         * of a destructor to avoid undefined behavior. In addition, note that
-         * destruction listeners are invoked once. Therefore, multiple classes
-         * in a hierarchy may call this function but the class that makes the
-         * call first will be the one that invokes the destruction listeners
-         */
-        void emitDestruction();
 
     private:
         unsigned int id_;   //!< The id of the object

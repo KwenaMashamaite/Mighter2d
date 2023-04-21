@@ -78,18 +78,18 @@ namespace mighter2d::priv {
 
     bool RenderLayer::has(const Drawable &drawable) const {
         return std::any_of(drawables_.begin(), drawables_.end(), [&drawable](auto& pair) {
-            return pair.second.first.get().isSameObjectAs(drawable);
+            return &pair.second.first.get() == &drawable;
         });
     }
 
     bool RenderLayer::remove(Drawable &drawable) {
         for (auto& [renderOrder, interDrawable] : drawables_) {
-            if (drawable.isSameObjectAs(interDrawable.first)) {
+            if (&drawable == &interDrawable.first.get()) {
                 auto range = drawables_.equal_range(renderOrder);
                 for (auto iter = range.first; iter != range.second; ++iter) {
                     auto& [drawableRef, destructionId] = iter->second;
-                    if (drawableRef.get().isSameObjectAs(drawable)) {
-                        drawableRef.get().removeEventListener(destructionId);
+                    if (&drawableRef.get() == &drawable) {
+                        drawableRef.get().removeDestructionListener(destructionId);
                         drawables_.erase(iter);
                         return true;
                     }
@@ -119,7 +119,7 @@ namespace mighter2d::priv {
 
     void RenderLayer::removeDestructionHandlers() {
         std::for_each(drawables_.begin(), drawables_.end(), [](auto& pair) {
-            pair.second.first.get().removeEventListener(pair.second.second);
+            pair.second.first.get().removeDestructionListener(pair.second.second);
         });
     }
 
