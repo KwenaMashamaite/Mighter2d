@@ -28,6 +28,7 @@
 #include "Mighter2d/Config.h"
 #include "Mighter2d/core/event/EventEmitter.h"
 #include "Mighter2d/common/Property.h"
+#include "Mighter2d/common/IClassifiable.h"
 #include <unordered_map>
 #include <functional>
 #include <string>
@@ -37,7 +38,7 @@ namespace mighter2d {
     /**
      * @brief An abstract top-level base class for Mighter2d objects
      */
-    class MIGHTER2D_API Object : public EventEmitter {
+    class MIGHTER2D_API Object : public EventEmitter, public IClassifiable {
     public:
         using Ptr = std::unique_ptr<Object>; //!< Unique object pointer
 
@@ -107,41 +108,20 @@ namespace mighter2d {
         unsigned int getObjectId() const;
 
         /**
-         * @brief Get the name of the objects concrete class
-         * @return The name of the objects concrete class
-         *
-         * This function is implemented by all internal classes that inherit
-         * from this class (either directly or indirectly). Example:
-         *
-         * @code
-         * class mighter2d::GameObject : public mighter2d::Object {...}
-         * GameObject gObject;
-         * std::cout << gObject.getClassName(); // Prints "GameObject"
-         * @endcode
-         *
-         * @see getBaseClassName
-         */
-        virtual std::string getClassName() const = 0;
-
-        /**
-         * @brief Get the name of the direct parent of an object instance
-         * @return The name of the direct parent of an object instance
-         *
-         * In contrast to getClassName() which returns the name of the concrete
-         * class, this function returns the name of the concrete class's base
-         * class. This function is implemented by all derived classes of mighter2d::Object
-         * which also serve as base classes. For classes whose direct parent is
-         * this class, this function will return the name of this class
-         *
-         * @code
-         * auto rectangle = mighter2d::RectangleShape(); // RectangleShape is derived from Shape
-         * std::cout << rectangle->getClassName(); // Prints "RectangleShape"
-         * std::cout << rectangle->getBaseClassName(); // Prints "Shape"
-         * @endcode
+         * @brief Get the base class name
+         * @return The base class name
          *
          * @see getClassName
          */
-        virtual std::string getBaseClassName() const;
+        std::string getBaseClassName() const override;
+
+        /**
+         * @brief Get the name of this class
+         * @return The name of this class
+         *
+         * @see getBaseClassName
+         */
+        std::string getClassName() const override;
 
         /**
          * @brief Add an event listener to a specific property change event

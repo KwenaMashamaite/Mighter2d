@@ -72,6 +72,10 @@ namespace mighter2d {
         return "Object";
     }
 
+    std::string Object::getClassName() const {
+        return "Object";
+    }
+
     int Object::onPropertyChange(const std::string &property, const Callback<Property>& callback, bool oneTime) {
         return utility::addEventListener(*this, "Object_" + property + "Change", callback, oneTime);
     }
