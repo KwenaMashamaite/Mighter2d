@@ -22,7 +22,7 @@
 //  SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////
 
-#include "Mighter2d/common/Collidable.h"
+#include "Mighter2d/core/physics/Collidable.h"
 #include "Mighter2d/core/physics/CollisionDetector.h"
 #include "Mighter2d/core/scene/Scene.h"
 

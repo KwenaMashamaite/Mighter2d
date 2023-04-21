@@ -9,7 +9,6 @@ set(MIGHTER2D_SRC
     common/PrefContainer.cpp
     common/Transform.cpp
     common/Destructible.cpp
-    common/Collidable.cpp
     core/object/Object.cpp
     core/animation/Animation.cpp
     core/animation/AnimationFrame.cpp
@@ -42,6 +41,7 @@ set(MIGHTER2D_SRC
     core/physics/CyclicGridMover.cpp
     core/physics/BoundingBox.cpp
     core/physics/CollisionDetector.cpp
+    core/physics/Collidable.cpp
     core/scene/Scene.cpp
     core/scene/SceneManager.cpp
     core/scene/RenderLayer.cpp

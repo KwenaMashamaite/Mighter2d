@@ -39,7 +39,7 @@
 #include "Mighter2d/graphics/Camera.h"
 #include "Mighter2d/core/grid/Grid.h"
 #include "Mighter2d/common/ISystemEventHandler.h"
-#include "Mighter2d/common/Collidable.h"
+#include "Mighter2d/core/physics/Collidable.h"
 #include "Mighter2d/core/scene/SceneStateObserver.h"
 #include <string>
 #include <memory>
