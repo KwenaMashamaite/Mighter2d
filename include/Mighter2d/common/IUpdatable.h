@@ -29,11 +29,19 @@
 #include "Mighter2d/core/time/Time.h"
 
 namespace mighter2d {
+    class Scene;
+
     /**
      * @brief Interface for updatable entities
      */
     class MIGHTER2D_API IUpdatable {
     public:
+        /**
+         * @brief Constructor
+         * @param scene The scene the updatable belongs to
+         */
+        explicit IUpdatable(Scene& scene);
+
         /**
          * @brief Perform update
          * @param deltaTime The time past since last update
@@ -54,6 +62,15 @@ namespace mighter2d {
          * passed to it is always the same and is independent of the render fps
          */
         virtual void fixedUpdate(Time deltaTime) {MIGHTER2D_UNUSED(deltaTime);};
+
+        /**
+         * @brief Destructible
+         */
+        virtual ~IUpdatable();
+
+    private:
+        Scene* scene_;               //!< The scene the collidable belongs to
+        int sceneDestrucListenerId_; //!< The id of the scenes destruction listener
     };
 }
 

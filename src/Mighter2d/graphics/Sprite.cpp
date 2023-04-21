@@ -192,15 +192,10 @@ namespace mighter2d {
 
     Sprite::Sprite(Scene& scene) :
         Drawable(scene),
+        IUpdatable(scene),
         scene_(&scene),
         pImpl_{std::make_unique<SpriteImpl>(*this)}
-    {
-        scene.addUpdatable(this);
-
-        onDestruction([this] {
-            scene_->removeUpdatable(this);
-        });
-    }
+    {}
 
     Sprite::Sprite(Scene& scene, const std::string &texture, const UIntRect& rectangle) :
         Sprite(scene)
@@ -218,6 +213,7 @@ namespace mighter2d {
 
     Sprite::Sprite(const Sprite& other) :
         Drawable(other),
+        IUpdatable(other),
         scene_(other.scene_),
         pImpl_{std::make_unique<SpriteImpl>(*other.pImpl_)}
     {
@@ -236,6 +232,7 @@ namespace mighter2d {
 
     Sprite::Sprite(Sprite&& other) noexcept :
         Drawable(std::move(other)),
+        IUpdatable(std::move(other)),
         scene_(other.scene_),
         pImpl_{std::move(other.pImpl_)}
     {
@@ -245,6 +242,7 @@ namespace mighter2d {
     Sprite &Sprite::operator=(Sprite&& other) noexcept {
         if (this != &other) {
             Drawable::operator=(std::move(other));
+            IUpdatable::operator=(std::move(other));
             scene_ = other.scene_;
             *pImpl_ = std::move(*other.pImpl_);
             pImpl_->setAnimationTarget(*this);

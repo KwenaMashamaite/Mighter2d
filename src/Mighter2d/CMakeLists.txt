@@ -9,6 +9,7 @@ set(MIGHTER2D_SRC
     common/PrefContainer.cpp
     common/Transform.cpp
     common/Destructible.cpp
+    common/IUpdatable.cpp
     core/object/Object.cpp
     core/animation/Animation.cpp
     core/animation/AnimationFrame.cpp

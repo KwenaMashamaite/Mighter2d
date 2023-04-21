@@ -28,21 +28,17 @@
 
 namespace mighter2d {
     GameObject::GameObject(Scene& scene) :
+        IUpdatable(scene),
         scene_{scene},
         state_{-1},
         isActive_{true},
         sprite_(std::make_unique<Sprite>(scene))
     {
-        scene.addUpdatable(this);
-
-        onDestruction([this] {
-            scene_.get().removeUpdatable(this);
-        });
-
         initEvents();
     }
 
     GameObject::GameObject(const GameObject &other) :
+        IUpdatable(other),
         Object(other),
         scene_{other.scene_},
         state_{other.state_},
@@ -65,6 +61,7 @@ namespace mighter2d {
     }
 
     GameObject::GameObject(GameObject&& other) noexcept :
+        IUpdatable(std::move(other)),
         scene_(other.scene_)
     {
         *this = std::move(other);

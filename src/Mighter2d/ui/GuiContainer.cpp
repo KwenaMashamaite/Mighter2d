@@ -271,16 +271,15 @@ namespace mighter2d::ui {
 
     GuiContainer::GuiContainer(Scene& scene) :
         Drawable(scene),
+        IUpdatable(scene),
         scene_(&scene),
         winResizeHandlerId_(-1),
         winDestructListenerId_(-1),
         pimpl_{std::make_unique<GuiContainerImpl>()}
     {
-        scene.addUpdatable(this);
         scene.addSystemEventHandler(this);
 
         onDestruction([this] {
-            scene_->removeUpdatable(this);
             scene_->removeSystemEventHandler(this);
 
             if (winResizeHandlerId_ != -1)

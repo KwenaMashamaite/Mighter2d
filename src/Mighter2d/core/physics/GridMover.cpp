@@ -38,6 +38,7 @@ namespace mighter2d {
     }
 
     GridMover::GridMover(Type type, Grid &grid, GridObject* target) :
+        IUpdatable(grid.getScene()),
         type_{type},
         grid_(grid),
         scene_(&grid.getScene()),
@@ -54,12 +55,6 @@ namespace mighter2d {
         targetPropertyChangeId_{-1}
     {
         setTarget(target);
-
-        scene_->addUpdatable(this);
-
-        onDestruction([this] {
-            scene_->removeUpdatable(this);
-        });
     }
 
     GridMover::GridMover(Grid& grid, GridObject* gameObject) :

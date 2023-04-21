@@ -28,6 +28,7 @@
 
 namespace mighter2d {
     Timer::Timer(Scene& scene) :
+        IUpdatable(scene),
         scene_(&scene),
         status_{Status::Stopped},
         timescale_{1.0f},
@@ -36,13 +37,7 @@ namespace mighter2d {
         isDispatched_{false},
         repeatCount_{0},
         dispatchCount_{0}
-    {
-        scene.addUpdatable(this);
-
-        onDestruction([&scene, this] {
-            scene.removeUpdatable(this);
-        });
-    }
+    {}
 
     Timer::Ptr Timer::create(Scene& scene, Time interval, const Callback<>& callback, int repeatCount) {
         auto timer = std::make_unique<Timer>(scene);
