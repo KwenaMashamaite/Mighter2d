@@ -39,6 +39,7 @@
 #include "Mighter2d/graphics/Camera.h"
 #include "Mighter2d/core/grid/Grid.h"
 #include "Mighter2d/common/ISystemEventHandler.h"
+#include "Mighter2d/core/physics/Collidable.h"
 #include "Mighter2d/core/scene/SceneStateObserver.h"
 #include <string>
 #include <memory>
@@ -572,6 +573,25 @@ namespace mighter2d {
 
         /**
          * @internal
+         * @brief Add an collidable to the update list
+         * @param collidable The collidable to be added
+         *
+         * @warning This function is intended for internal use only
+         */
+        void addCollidable(Collidable* collidable);
+
+        /**
+         * @internal
+         * @brief Remove a collidable from the update list
+         * @param collidable The collidable to be removed
+         * @return True if the collidable was removed or false if it does not exist
+         *
+         * @warning This function is intended for internal use only
+         */
+        bool removeCollidable(Collidable* collidable);
+
+        /**
+         * @internal
          * @brief Add a system event handler to the event list
          * @param sysEventHandler The event handler to be added
          *
@@ -626,6 +646,11 @@ namespace mighter2d {
         void destroy();
 
         /**
+         * @brief Helper function for post updating a scene
+         */
+        void postUpdate();
+
+        /**
          * @brief Helper function for updating a scene
          * @param isFixedUpdate True if update is fixed, false if variable
          */
@@ -654,6 +679,7 @@ namespace mighter2d {
 
     private:
         std::vector<IUpdatable*> updateList_; //!< Update list
+        std::vector<Collidable*> collidableList_; //!< Update list
         std::vector<ISystemEventHandler*> systemEventHandlerList_; //!< Update list
         Engine* engine_;                      //!< Game engine
         std::unique_ptr<Camera> camera_;      //!< Scene level camera

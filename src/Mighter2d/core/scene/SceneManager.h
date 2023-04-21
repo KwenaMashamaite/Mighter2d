@@ -238,6 +238,11 @@ namespace mighter2d {
             void update(const Time& deltaTime, bool fixedUpdate);
 
             /**
+             * @brief Post update active scene
+             */
+            void postUpdate();
+
+            /**
              * @brief Handle a system event
              * @param event Event to be handled
              */
