@@ -239,6 +239,7 @@ namespace mighter2d {
         }
 
         sceneManager_->update(deltaTime, false);
+        sceneManager_->postUpdate();
     }
 
     void Engine::clear() {

@@ -239,6 +239,11 @@ namespace mighter2d::priv {
         }
     }
 
+    void SceneManager::postUpdate() {
+        if (!scenes_.empty())
+            scenes_.top()->postUpdate();
+    }
+
     void SceneManager::updatePreviousScene() {
         if (scenes_.size() >= 2) {
             Scene::Ptr currentScene = std::move(scenes_.top());

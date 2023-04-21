@@ -99,6 +99,16 @@ namespace mighter2d {
         return utility::eraseIn(updateList_, updatable);
     }
 
+    void Scene::addCollidable(Collidable *collidable) {
+        if (!utility::findIn(collidableList_, collidable).first) {
+            collidableList_.push_back(collidable);
+        }
+    }
+
+    bool Scene::removeCollidable(Collidable *collidable) {
+        return utility::eraseIn(collidableList_, collidable);
+    }
+
     void Scene::addSystemEventHandler(ISystemEventHandler *sysEventHandler) {
         if (!utility::findIn(
                 systemEventHandlerList_, sysEventHandler).first) {
@@ -338,6 +348,20 @@ namespace mighter2d {
 
         emit("mighter2d_Scene_destroy");
         onDestroy();
+    }
+
+    void Scene::postUpdate() {
+        if (isActive_) {
+            if (backgroundScene_)
+                backgroundScene_->postUpdate();
+
+            for (auto* collidable : collidableList_) {
+                for (auto* otherCollidable : collidableList_) {
+                    if (collidable != otherCollidable)
+                        collidable->handleCollidable(*otherCollidable);
+                }
+            }
+        }
     }
 
     void Scene::update(const Time &deltaTime, bool isFixedUpdate) {
