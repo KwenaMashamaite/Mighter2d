@@ -39,6 +39,7 @@ set(MIGHTER2D_SRC
     core/physics/RandomGridMover.cpp
     core/physics/CyclicGridMover.cpp
     core/physics/BoundingBox.cpp
+    core/physics/CollisionDetector.cpp
     core/scene/Scene.cpp
     core/scene/SceneManager.cpp
     core/scene/RenderLayer.cpp
