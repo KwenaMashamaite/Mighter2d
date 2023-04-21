@@ -42,7 +42,10 @@ namespace mighter2d {
     void Collidable::handleCollidable(Collidable& other) {
         if (this != &other) {
             bool wasColliding = hasCollidable(&other);
-            bool isColliding = priv::CollisionDetector::isColliding(this->getBoundingBox(), other.getBoundingBox());
+
+            auto bb1 = getBoundingBox();
+            auto bb2 = other.getBoundingBox();
+            bool isColliding = priv::CollisionDetector::isColliding(bb1, bb2);
 
             if (wasColliding) {
                 if (isColliding) {
