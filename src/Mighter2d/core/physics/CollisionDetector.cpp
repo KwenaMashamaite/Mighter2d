@@ -26,19 +26,13 @@
 
 namespace mighter2d::priv {
     bool CollisionDetector::isColliding(const mighter2d::BoundingBox &boundingBoxA, const mighter2d::BoundingBox &boundingBoxB) {
-        // Calculate the half-width and half-height of each BoundingBox
-        float aHalfWidth = boundingBoxA.getSize().x / 2.0f;
-        float aHalfHeight = boundingBoxA.getSize().y / 2.0f;
-        float bHalfWidth = boundingBoxB.getSize().x / 2.0f;
-        float bHalfHeight = boundingBoxB.getSize().y / 2.0f;
-
-        // Calculate the distance between the centers of the two BoundingBoxes along both axes
-        float deltaX = fabs(boundingBoxA.getPosition().x - boundingBoxB.getPosition().x);
-        float deltaY = fabs(boundingBoxA.getPosition().y - boundingBoxB.getPosition().y);
-
-        // Check if the two AABBs are overlapping along both axes
-        if (deltaX < aHalfWidth + bHalfWidth && deltaY < aHalfHeight + bHalfHeight)
+        if(boundingBoxA.getPosition().x < boundingBoxB.getPosition().x + boundingBoxB.getSize().x &&
+            boundingBoxA.getPosition().x + boundingBoxA.getSize().x > boundingBoxB.getPosition().x &&
+            boundingBoxA.getPosition().y < boundingBoxB.getPosition().y + boundingBoxB.getSize().y &&
+            boundingBoxA.getPosition().y + boundingBoxA.getSize().y > boundingBoxB.getPosition().y)
+        {
             return true;
+        }
 
         return false;
     }
