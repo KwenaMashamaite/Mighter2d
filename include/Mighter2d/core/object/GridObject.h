@@ -95,7 +95,7 @@ namespace mighter2d {
          * is extended, otherwise it will return the name of this class
          * instead of your class name
          *
-         * @see getClassType
+         * @see getBaseClassName
          */
         std::string getClassName() const override;
 

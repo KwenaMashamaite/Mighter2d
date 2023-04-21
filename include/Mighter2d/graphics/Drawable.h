@@ -112,9 +112,9 @@ namespace mighter2d {
          * Note that this function is only overridden by child classes
          * of Object which also serve as a base class for other classes
          *
-         * @see Object::getClassType and Object::getClassName
+         * @see Object::getBaseClassName and Object::getClassName
          */
-        std::string getClassType() const override;
+        std::string getBaseClassName() const override;
 
         /**
          * @brief Destructor

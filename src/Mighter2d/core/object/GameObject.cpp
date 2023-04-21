@@ -134,7 +134,7 @@ namespace mighter2d {
         return "GameObject";
     }
 
-    std::string GameObject::getClassType() const {
+    std::string GameObject::getBaseClassName() const {
         return "GameObject";
     }
 

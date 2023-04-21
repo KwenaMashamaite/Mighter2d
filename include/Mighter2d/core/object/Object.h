@@ -119,7 +119,7 @@ namespace mighter2d {
          * std::cout << gObject.getClassName(); // Prints "GameObject"
          * @endcode
          *
-         * @see getClassType
+         * @see getBaseClassName
          */
         virtual std::string getClassName() const = 0;
 
@@ -136,12 +136,12 @@ namespace mighter2d {
          * @code
          * auto rectangle = mighter2d::RectangleShape(); // RectangleShape is derived from Shape
          * std::cout << rectangle->getClassName(); // Prints "RectangleShape"
-         * std::cout << rectangle->getClassType(); // Prints "Shape"
+         * std::cout << rectangle->getBaseClassName(); // Prints "Shape"
          * @endcode
          *
          * @see getClassName
          */
-        virtual std::string getClassType() const;
+        virtual std::string getBaseClassName() const;
 
         /**
          * @brief Add an event listener to a specific property change event

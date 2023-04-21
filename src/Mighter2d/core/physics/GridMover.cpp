@@ -78,7 +78,7 @@ namespace mighter2d {
         return *scene_;
     }
 
-    std::string GridMover::getClassType() const {
+    std::string GridMover::getBaseClassName() const {
         return "GridMover";
     }
 

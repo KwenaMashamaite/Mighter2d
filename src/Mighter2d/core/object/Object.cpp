@@ -68,7 +68,7 @@ namespace mighter2d {
         return id_;
     }
 
-    std::string Object::getClassType() const {
+    std::string Object::getBaseClassName() const {
         return "Object";
     }
 
