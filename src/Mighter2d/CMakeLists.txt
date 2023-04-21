@@ -10,6 +10,7 @@ set(MIGHTER2D_SRC
     common/Transform.cpp
     common/Destructible.cpp
     common/IUpdatable.cpp
+    common/ISystemEventHandler.cpp
     core/object/Object.cpp
     core/animation/Animation.cpp
     core/animation/AnimationFrame.cpp

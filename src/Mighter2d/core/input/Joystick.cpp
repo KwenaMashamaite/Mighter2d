@@ -29,12 +29,10 @@
 
 namespace mighter2d::input {
     Joystick::Joystick(Scene& scene, unsigned int index) :
-        scene_(&scene),
+        ISystemEventHandler(scene),
         isEnabled_{true},
         index_{index}
     {
-        scene_->addSystemEventHandler(this);
-
         for (auto i = 0u; i < Joystick::ButtonCount - 1; ++i)
             wasDown_[i] = false;
     }
@@ -162,9 +160,5 @@ namespace mighter2d::input {
                     emitter_.emit("buttonHeld", button);
             }
         }
-    }
-
-    Joystick::~Joystick() {
-        scene_->removeSystemEventHandler(this);
     }
 }

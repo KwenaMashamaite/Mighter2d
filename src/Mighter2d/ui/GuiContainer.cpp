@@ -272,6 +272,7 @@ namespace mighter2d::ui {
     GuiContainer::GuiContainer(Scene& scene) :
         Drawable(scene),
         IUpdatable(scene),
+        ISystemEventHandler(scene),
         scene_(&scene),
         winResizeHandlerId_(-1),
         winDestructListenerId_(-1),

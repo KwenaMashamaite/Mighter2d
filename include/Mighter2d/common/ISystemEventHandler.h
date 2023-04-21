@@ -29,6 +29,7 @@
 
 namespace mighter2d {
     class SystemEvent;
+    class Scene;
 
     /**
      * @brief Interface for system event handlers
@@ -36,10 +37,25 @@ namespace mighter2d {
     class MIGHTER2D_API ISystemEventHandler {
     public:
         /**
+         * @brief Constructor
+         * @param scene The scene the system event handler belongs to
+         */
+        explicit ISystemEventHandler(Scene& scene);
+
+        /**
          * @brief Handle a system event
          * @param event The event to be handled
          */
         virtual void handleEvent(const SystemEvent& event) = 0;
+
+        /**
+         * @brief Destructor
+         */
+        virtual ~ISystemEventHandler();
+
+    private:
+        Scene* scene_;               //!< The scene the system event handler belongs to
+        int sceneDestrucListenerId_; //!< The id of the scenes destruction listener
     };
 }
 

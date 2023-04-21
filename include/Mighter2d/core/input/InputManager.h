@@ -419,13 +419,7 @@ namespace mighter2d {
              */
             void update();
 
-            /**
-             * @brief Destructor
-             */
-            ~InputManager();
-
         private:
-            Scene* scene_;                    //!< The scene the input manager belongs to
             Keyboard keyboard_;               //!< Managed keyboard
             Mouse mouse_;                     //!< Managed Mouse
             std::vector<Joystick> joysticks_; //!< Managed Joysticks

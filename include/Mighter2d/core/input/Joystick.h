@@ -288,13 +288,7 @@ namespace mighter2d {
              */
             void update();
 
-            /**
-             * @brief Destructor
-             */
-            ~Joystick();
-
         private:
-            Scene* scene_;
             bool isEnabled_;                                 //!< A flag indicating whether or not the joystick is enabled
             unsigned int index_;                             //!< Joystick identifier
             EventEmitter emitter_;                           //!< Emits events

@@ -257,13 +257,7 @@ namespace mighter2d {
              */
             void handleEvent(const SystemEvent& event) override;
 
-            /**
-             * @brief Destructor
-             */
-            ~Mouse();
-
         private:
-            Scene* scene_;
             EventEmitter eventEmitter_; //!< Event publisher
         };
     }

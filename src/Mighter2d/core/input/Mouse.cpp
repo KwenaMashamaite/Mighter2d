@@ -30,9 +30,9 @@
 #include <iostream>
 
 namespace mighter2d::input {
-    Mouse::Mouse(Scene &scene) : scene_(&scene) {
-        scene_->addSystemEventHandler(this);
-    }
+    Mouse::Mouse(Scene &scene) :
+        ISystemEventHandler(scene)
+    {}
 
     void Mouse::setEnable(bool enable) {
         eventEmitter_.setEventsDispatchEnable(enable);
@@ -145,9 +145,5 @@ namespace mighter2d::input {
                     break;
             }
         }
-    }
-
-    Mouse::~Mouse() {
-        scene_->removeSystemEventHandler(this);
     }
 }

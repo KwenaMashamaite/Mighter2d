@@ -296,13 +296,7 @@ namespace mighter2d {
              */
             void handleEvent(const SystemEvent& event) override;
 
-            /**
-             * @brief Destructor
-             */
-            ~Keyboard();
-
         private:
-            Scene* scene_;                          //!< The scene the keyboard belongs to
             EventEmitter eventEmitter_;             //!< Event publisher
             std::unordered_map<int, bool> wasDown_; //!< The state of a key in the previous frame
             inline static std::unordered_map<std::string, Key> stringKeyPairs_{};
