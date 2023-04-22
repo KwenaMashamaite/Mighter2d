@@ -62,28 +62,42 @@ namespace mighter2d {
          * @brief Handle an overlap between this object and another
          * @param other The collidable that's starting to overlap with
          *              this collidable
+         * @param IoU The percentage of overlap between the two collidables in the range [0, 1]
          *
-         * This function is called automatically once per frame when this collidable
+         * The IoU (Intersection over Union) specifies how much the bounding boxes of the two
+         * collidables overlap. For example, 0 = very small overlap, 0.5 = 50% overlap and 1 = 100%
+         * overlap.
+         *
+         * Note that IoU only works when the bounding boxes of the two collidables are the same size.
+         *
+         * @note This function is called automatically once per frame when this collidable
          * and another collidable start to overlap.
          *
          * @see onOverlapEnd
          */
-        virtual void onOverlapStart(Collidable& other) { MIGHTER2D_UNUSED(other); };
+        virtual void onOverlapStart(Collidable& other, float IoU) { MIGHTER2D_UNUSED(other); MIGHTER2D_UNUSED(IoU);}
 
         /**
          * @brief Handle an overlap stay
          * @param other The collidable that is remaining in contact with this collidable
          *
-         * This function is called automatically once per frame when this collidable and
+         * The IoU (Intersection over Union) specifies how much the bounding boxes of the two
+         * collidables overlap. For example, 0 = very small overlap, 0.5 = 50% overlap and 1 = 100%
+         * overlap.
+         *
+         * Note that IoU only works when the bounding boxes of the two collidables are the same size.
+         *
+         * @note This function is called automatically once per frame when this collidable and
          * another collidable remain in contact after the initial overlap.
          *
          * @see onOverlapStart
          */
-        virtual void onOverlapStay(Collidable& other) { MIGHTER2D_UNUSED(other);};
+        virtual void onOverlapStay(Collidable& other, float IoU) { MIGHTER2D_UNUSED(other); MIGHTER2D_UNUSED(IoU);}
 
         /**
          * @brief Handle an overlap end event
          * @param other The collidable that stopped overlapping with this collidable
+         * @param IoU The percentage of overlap between the two collidables in the range [0, 1]
          *
          * This function is called automatically once per frame when this collidable
          * and another collidable stop overlapping.

@@ -40,6 +40,17 @@ namespace mighter2d::priv {
          * @return True if the two bounding boxes are overlapping, otherwise false
          */
         static bool isColliding(const BoundingBox& boundingBoxA, const BoundingBox& boundingBoxB);
+
+        /**
+         * @brief Get the Union over Intersection (IoU) of the two bounding boxes
+         * @param boundingBoxA The first bounding box
+         * @param boundingBoxB The second bounding box
+         * @return The IoU in the range [0, 1]
+         *
+         * The IoU specifies by how much the two bounding boxes overlap. 0 = no overlap, 0.5 = 50% overlap
+         * and 1 = 100% overlap
+         */
+        static float getIoU(const BoundingBox& boundingBoxA, const BoundingBox& boundingBoxB);
     };
 }
 

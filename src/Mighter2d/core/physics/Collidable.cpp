@@ -46,11 +46,12 @@ namespace mighter2d {
             auto bb1 = getBoundingBox();
             auto bb2 = other.getBoundingBox();
             bool isColliding = priv::CollisionDetector::isColliding(bb1, bb2);
+            float IoU = priv::CollisionDetector::getIoU(bb1, bb2);
 
             if (wasColliding) {
                 if (isColliding) {
-                    this->onOverlapStay(other);
-                    other.onOverlapStay(*this);
+                    this->onOverlapStay(other, IoU);
+                    other.onOverlapStay(*this, IoU);
                 } else {
                     this->removeCollidable(&other);
                     other.removeCollidable(this);
@@ -64,8 +65,8 @@ namespace mighter2d {
                 other.addCollidable(this);
 
                 //Invoke callbacks
-                this->onOverlapStart(other);
-                other.onOverlapStart(*this);
+                this->onOverlapStart(other, IoU);
+                other.onOverlapStart(*this, IoU);
             }
         }
     }

@@ -23,6 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////
 
 #include "CollisionDetector.h"
+#include <algorithm>
 
 namespace mighter2d::priv {
     bool CollisionDetector::isColliding(const mighter2d::BoundingBox &boundingBoxA, const mighter2d::BoundingBox &boundingBoxB) {
@@ -35,5 +36,35 @@ namespace mighter2d::priv {
         }
 
         return false;
+    }
+
+    float getArea(const BoundingBox& boundingBox) {
+        auto [width, height] = boundingBox.getSize();
+        return (width + 1) * (height + 1);
+    }
+
+    float CollisionDetector::getIoU(const BoundingBox &boundingBoxA, const BoundingBox &boundingBoxB) {
+        auto [bbA_x_pos, bbA_y_pos] = boundingBoxA.getPosition();
+        auto [bbA_width, bbA_height] = boundingBoxA.getSize();
+        auto [bbB_x_pos, bbB_y_pos] = boundingBoxB.getPosition();
+        auto [bbB_width, bbB_height] = boundingBoxB.getSize();
+
+        // Calculate the intersection box
+        float x_left = std::max(bbA_x_pos, bbB_x_pos);
+        float y_top = std::max(bbA_y_pos, bbB_y_pos);
+        float x_right = std::min(bbA_x_pos + bbA_width, bbB_x_pos + bbB_width);
+        float y_bottom = std::min(bbA_y_pos + bbA_height, bbB_y_pos + bbB_height);
+
+        if (x_right < x_left || y_bottom < y_top)
+            return 0.0f;
+        else {
+            float intersection_area = (x_right - x_left + 1) * (y_bottom - y_top + 1);
+
+            // Calculate the union box
+            float union_area = getArea(boundingBoxA) + getArea(boundingBoxB) - intersection_area;
+
+            // IoU = intersection_area / union_area
+            return intersection_area / union_area;
+        }
     }
 }
