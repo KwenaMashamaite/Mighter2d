@@ -27,9 +27,32 @@
 #include "Mighter2d/core/scene/Scene.h"
 
 namespace mighter2d {
+    namespace {
+        bool canCollide(Collidable& colA, Collidable& colB) {
+            // Prevent Self collision
+            if (&colA == &colB)
+                return false;
+
+            // Collidables in excluded collision group do not collide (Collision filtering by group)
+            if ((colA.getCollisionExcludeList().contains(colB.getCollisionGroup())) ||
+                (colB.getCollisionExcludeList().contains(colA.getCollisionGroup())))
+            {
+                return false;
+            }
+
+            // Collidables with different collision id's do not collide (collision filtering by id)
+            if (colA.getCollisionId() != colB.getCollisionId())
+                return false;
+
+            // Satisfies collision requirement
+            return true;
+        }
+    }
+
     Collidable::Collidable(Scene &scene) :
         scene_(&scene),
-        sceneDestrucListenerId_(-1)
+        sceneDestrucListenerId_(-1),
+        collisionId_{0}
     {
         scene_->addCollidable(this);
 
@@ -39,8 +62,32 @@ namespace mighter2d {
         });
     }
 
+    void Collidable::setCollisionGroup(const std::string &colGroup) {
+        collisionGroup_ = colGroup;
+    }
+
+    const std::string &Collidable::getCollisionGroup() const {
+        return collisionGroup_;
+    }
+
+    void Collidable::setCollisionId(int id) {
+        collisionId_ = id;
+    }
+
+    int Collidable::getCollisionId() const {
+        return collisionId_;
+    }
+
+    CollisionExcludeList &Collidable::getCollisionExcludeList() {
+        return excludeList_;
+    }
+
+    const CollisionExcludeList &Collidable::getCollisionExcludeList() const {
+        return excludeList_;
+    }
+
     void Collidable::handleCollidable(Collidable& other) {
-        if (this != &other) {
+        if (canCollide(*this, other)) {
             bool wasColliding = hasCollidable(&other);
 
             auto bb1 = getBoundingBox();

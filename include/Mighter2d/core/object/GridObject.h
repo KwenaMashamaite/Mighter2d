@@ -29,6 +29,7 @@
 #include "Mighter2d/core/object/GameObject.h"
 #include "Mighter2d/core/object/CollisionExcludeList.h"
 #include "Mighter2d/core/grid/Grid.h"
+#include "Mighter2d/core/physics/Collidable.h"
 #include <memory>
 
 namespace mighter2d {
@@ -37,7 +38,7 @@ namespace mighter2d {
     /**
      * @brief An object that can be placed in a Grid
      */
-    class MIGHTER2D_API GridObject : public GameObject {
+    class MIGHTER2D_API GridObject : public GameObject, public Collidable {
     public:
         using Ptr = std::unique_ptr<GridObject>;     //!< Unique game object pointer
 
@@ -100,6 +101,12 @@ namespace mighter2d {
         std::string getClassName() const override;
 
         /**
+         * @brief Get the objects bounding box
+         * @return The objects bounding box
+         */
+        const BoundingBox &getBoundingBox() const override;
+
+        /**
          * @brief Set the direction of the object
          * @param dir The direction to be set
          *
@@ -138,84 +145,6 @@ namespace mighter2d {
          * @see setObstacle
          */
         bool isObstacle() const;
-
-        /**
-         * @brief Set the game objects collision id
-         * @param id The id to be set
-         *
-         * A collision id allows game objects to selectively collide with
-         * each other within colliding groups (see setCollisionGroup()).
-         * Game objects with the same collision id will collide with each
-         * other, whilst game objects with different collision id's do not
-         * collide with each other.
-         *
-         * Note that "collision group" filtering takes higher precedence
-         * than "collision id" filtering. This means that regardless of
-         * how collision id's are configured, a collision will never take
-         * place if the collision group of one game object is added to the
-         * other game objects collision group exclude list (see getCollisionExcludeList())
-         *
-         * By default, the collision id is 0. This means that this game
-         * object will collide with any other game object that is not in
-         * its collision group exclude list
-         *
-         * @see setCollisionGroup and getCollisionExcludeList
-         */
-        void setCollisionId(int id);
-
-        /**
-         * @brief Get the collision id
-         * @return The objects collision id
-         *
-         * @see setCollisionId
-         */
-        int getCollisionId() const;
-
-        /**
-         * @brief Set the objects collision group
-         * @param name The collision group to be set
-         *
-         * A collision group allows certain game objects to always collide
-         * or never collide with each other. When a collision group is added
-         * to the object's collision exclusion list (see getCollisionExcludeList()),
-         * the game object will never collide with game objects in that group
-         * (they will pass through each other without generating a collision
-         * event), whereas when not added, the game object will always collide
-         * with game objects whose collision group does not appear in its
-         * exclusion list
-         *
-         * Note that the @em active state (see mighter2d::GameObject::setActive())
-         * takes higher precedence than "collision group" filtering. This means
-         * that, regardless of how the collision groups are configured, a collision
-         * will never take place if the game object is not active
-         *
-         * For example, the following code makes objects in the "Enemies"
-         * collision group to never collide with each other:
-         *
-         * @code
-         * // Assume 'enemies' is a collection of 'mighter2d::GridObject' objects
-         * for (auto& enemy : enemies) {
-         *      enemy.setCollisionGroup("Enemies");
-         *      enemy.getCollisionExcludeList().add("Enemies");
-         * }
-         * @endcode
-         *
-         * By default, the collision group is am empty string. This means that
-         * the object does not belong to any collision group. Therefore, it will
-         * collide with any other game object whose collision id is the same as
-         * theirs
-         *
-         * @see getCollisionGroup, setCollisionId and getCollisionExcludeList
-         */
-        void setCollisionGroup(const std::string& name);
-
-        /**
-         * @brief Get the objects collision group
-         * @return The game objects collision group
-         *
-         * @see setCollisionGroup
-         */
-        const std::string& getCollisionGroup() const;
 
         /**
          * @brief Set the speed of the game object
@@ -262,20 +191,6 @@ namespace mighter2d {
          */
         Grid* getGrid();
         const Grid* getGrid() const;
-
-        /**
-         * @brief Get the game objects collision exclude list
-         * @return The game objects collision exclude list
-         *
-         * This list allows you to specify which game objects this game
-         * object can collide with
-         *
-         * By default, the game object collides with all other objects
-         *
-         * @see getObstacleCollisionFilter
-         */
-        CollisionExcludeList& getCollisionExcludeList();
-        const CollisionExcludeList& getCollisionExcludeList() const;
 
         /**
          * @brief Get the game objects obstacle collision filter
@@ -524,14 +439,11 @@ namespace mighter2d {
         ~GridObject() override;
 
     private:
-        Grid* grid_;                     //!< The grid the object is in
+        Grid* grid_;                         //!< The grid the object is in
         bool isObstacle_;                   //!< A flag indicating whether or not the object is an obstacle
         Vector2i direction_;                //!< The current direction of the object
         Vector2f speed_;                    //!< The speed of the game object
-        CollisionExcludeList excludeList_;           //!< Stores the collision groups of game objects this game object should not collide with
         CollisionExcludeList obstacleColFilter_;     //!< Stores the collision groups of game objects that can collide with an obstacle without being blocked
-        std::string collisionGroup_;        //!< The objects collision group (collision filtering)
-        int collisionId_;                   //!< The objects collision id (collision filtering)
         GridMover* gridMover_;              //!< The objects grid mover
     };
 }

@@ -30,20 +30,19 @@
 namespace mighter2d {
     GridObject::GridObject(Scene &scene) :
         GameObject(scene),
+        Collidable(scene),
         grid_{nullptr},
         isObstacle_{false},
         direction_{0, 0},
-        collisionId_{0},
         gridMover_{nullptr}
     {}
 
     GridObject::GridObject(const GridObject& other) :
         GameObject(other),
+        Collidable(other),
         grid_{other.grid_},
         isObstacle_{other.isObstacle_},
         direction_{other.direction_},
-        collisionGroup_{other.collisionGroup_},
-        collisionId_{other.collisionId_},
         gridMover_{nullptr}
     {}
 
@@ -51,6 +50,7 @@ namespace mighter2d {
         if (this != &rhs) {
             GridObject temp{rhs};
             GameObject::operator=(temp);
+            Collidable::operator=(temp);
             swap(temp);
             gridMover_ = nullptr;
         }
@@ -62,15 +62,16 @@ namespace mighter2d {
         std::swap(grid_, other.grid_);
         std::swap(isObstacle_, other.isObstacle_);
         std::swap(direction_, other.direction_);
-        std::swap(excludeList_, other.excludeList_);
         std::swap(obstacleColFilter_, other.obstacleColFilter_);
-        std::swap(collisionGroup_, other.collisionGroup_);
-        std::swap(collisionId_, other.collisionId_);
         std::swap(gridMover_, other.gridMover_);
     }
 
     std::string GridObject::getClassName() const {
         return "GridObject";
+    }
+
+    const BoundingBox &GridObject::getBoundingBox() const {
+        return BoundingBox(getTransform().getPosition(), getSprite().getGlobalBounds().getSize());
     }
 
     GridObject::Ptr GridObject::create(Scene &scene) {
@@ -101,28 +102,6 @@ namespace mighter2d {
 
     bool GridObject::isObstacle() const {
         return isObstacle_;
-    }
-
-    void GridObject::setCollisionId(int id) {
-        if (collisionId_ != id) {
-            collisionId_ = id;
-            emitChange(Property{"collisionId", collisionId_});
-        }
-    }
-
-    int GridObject::getCollisionId() const {
-        return collisionId_;
-    }
-
-    void GridObject::setCollisionGroup(const std::string &name) {
-        if (collisionGroup_ != name) {
-            collisionGroup_ = name;
-            emitChange(Property{"collisionGroup", collisionGroup_});
-        }
-    }
-
-    const std::string &GridObject::getCollisionGroup() const {
-        return collisionGroup_;
     }
 
     void GridObject::setSpeed(const Vector2f &speed) {
@@ -156,14 +135,6 @@ namespace mighter2d {
 
     const Grid *GridObject::getGrid() const {
         return grid_;
-    }
-
-    CollisionExcludeList &GridObject::getCollisionExcludeList() {
-        return excludeList_;
-    }
-
-    const CollisionExcludeList &GridObject::getCollisionExcludeList() const {
-        return excludeList_;
     }
 
     CollisionExcludeList &GridObject::getObstacleCollisionFilter() {

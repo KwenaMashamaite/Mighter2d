@@ -28,6 +28,7 @@
 #include "Mighter2d/Config.h"
 #include "Mighter2d/common/Vector2.h"
 #include "Mighter2d/core/physics/BoundingBox.h"
+#include "Mighter2d/core/object/CollisionExcludeList.h"
 #include <vector>
 
 namespace mighter2d {
@@ -57,6 +58,105 @@ namespace mighter2d {
          * @param scene The scene the collidable belongs to
          */
         explicit Collidable(Scene& scene);
+
+        /**
+         * @brief Set the objects collision group
+         * @param colGroup The collision group to be set
+         *
+         * A collision group allows certain collidables to always collide
+         * or never collide with each other. When a collision group is added
+         * to the collidables collision exclusion list (see getCollisionExcludeList()),
+         * the collidable will never collide with collidables in that group
+         * (they will pass through each other without generating a collision
+         * event), whereas when not added, the collidable will always collide
+         * with collidables whose collision group does not appear in its colliion
+         * exclusion list.
+         *
+         * For example, the following code makes objects in the "Enemies"
+         * collision group to never collide with each other:
+         *
+         * @code
+         * // Assume 'enemies' is a collection of 'mighter2d::Collidable' objects
+         * for (auto& enemy : enemies) {
+         *      enemy.setCollisionGroup("Enemies");
+         *      enemy.getCollisionExcludeList().add("Enemies");
+         * }
+         * @endcode
+         *
+         * By default, the collision group is am empty string. This means that
+         * the collidable does not belong to any collision group. Therefore, it
+         * will collide with any other collidables whose collision id is the same
+         * as theirs.
+         *
+         * @see getCollisionGroup, setCollisionId and getCollisionExcludeList
+         */
+        void setCollisionGroup(const std::string& colGroup);
+
+        /**
+         * @brief Get the collidables collision group
+         * @return The collidables collision group
+         *
+         * @see setCollisionGroup
+         */
+        const std::string& getCollisionGroup() const;
+
+        /**
+         * @brief Set the collidables collision id
+         * @param id The collision id to be set
+         *
+         * A collision id allows collidables to selectively collide with
+         * each other within colliding groups (see setCollisionGroup()).
+         * Collidables with the same collision id will collide with each
+         * other, whilst those with different collision id's do not
+         * collide with each other.
+         *
+         * Note that "collision group" filtering takes higher precedence
+         * than "collision id" filtering. This means that regardless of
+         * how collision id's are configured, a collision will never take
+         * place if the collision group of one collidable is added to the
+         * other collidables collision group exclude list (see getCollisionExcludeList())
+         *
+         * By default, the collision id is 0. This means that this collidable
+         * will collide with any collidable object that is not in its collision
+         * group exclude list.
+         *
+         * @see setCollisionGroup and getCollisionExcludeList
+         */
+        void setCollisionId(int id);
+
+        /**
+         * @brief Get collidables collision id
+         * @return The collidables collision id
+         *
+         * @see setCollisionId
+         */
+        int getCollisionId() const;
+
+        /**
+         * @brief Get the collidables collision exclude list
+         * @return The collidables collision exclude list
+         *
+         * This list allows you to specify which collidables this collidable
+         * can collide with. This collidable will not collide with any
+         * collidable whose collision group exists in its collision
+         * exclude list. They will simply overlap without generation
+         * a collision event.
+         *
+         * @code Example
+         * // Assume 'enemies' is a collection of 'mighter2d::Collidable' objects
+         * for (auto& enemy : enemies) {
+         *      enemy.setCollisionGroup("Enemies");
+         *      enemy.getCollisionExcludeList().add("Enemies");
+         * }
+         * @endcode
+         *
+         * By default, the collision exclude list is empty, this means that
+         * the collidable can collides with all collidables
+         *
+         * @see setCollisionId, setCollisionGroup
+         */
+        CollisionExcludeList& getCollisionExcludeList();
+        const CollisionExcludeList& getCollisionExcludeList() const;
 
         /**
          * @brief Handle an overlap between this object and another
@@ -154,6 +254,9 @@ namespace mighter2d {
     private:
         Scene* scene_;                         //!< The scene the collidable belongs to
         int sceneDestrucListenerId_;           //!< The id of the scenes destruction listener
+        std::string collisionGroup_;           //!< The collidables collision group (collision filtering)
+        int collisionId_;                      //!< The collidables collision id (collision filtering)
+        CollisionExcludeList excludeList_;     //!< Stores the collision groups of collidables this collidable must not collide with
         std::vector<Collidable*> collidables_; //!< Collidables currently overlapping with this collidable
     };
 }
