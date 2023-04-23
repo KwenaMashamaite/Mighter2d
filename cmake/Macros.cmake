@@ -48,11 +48,11 @@ endfunction()
 function(mighter2d_export_target export_name)
     include(CMakePackageConfigHelpers)
     if(CMAKE_VERSION VERSION_LESS 3.11)
-        set(CVF_VERSION ${MIGHTER2D_VERSION_MAJOR}.${MIGHTER2D_VERSION_MINOR}.${MIGHTER2D_VERSION_PATCH})
+        set(CVF_VERSION ${Mighter2d_VERSION_MAJOR}.${Mighter2d_VERSION_MINOR}.${Mighter2d_VERSION_PATCH})
         configure_file("${PROJECT_SOURCE_DIR}/cmake/MIGHTER2DConfigVersion.cmake.in" "${PROJECT_BINARY_DIR}/MIGHTER2DConfigVersion.cmake" @ONLY)
     else()
         write_basic_package_version_file("${PROJECT_BINARY_DIR}/MIGHTER2DConfigVersion.cmake"
-        VERSION ${MIGHTER2D_VERSION_MAJOR}.${MIGHTER2D_VERSION_MINOR}.${MIGHTER2D_VERSION_PATCH}
+        VERSION ${Mighter2d_VERSION_MAJOR}.${Mighter2d_VERSION_MINOR}.${Mighter2d_VERSION_PATCH}
         COMPATIBILITY SameMinorVersion)
     endif()
 
