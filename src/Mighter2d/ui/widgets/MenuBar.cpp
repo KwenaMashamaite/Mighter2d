@@ -25,6 +25,7 @@
 #include "Mighter2d/ui/widgets/MenuBar.h"
 #include "TGUI/Widgets/MenuBar.hpp"
 #include "Mighter2d/ui/widgets/WidgetImpl.h"
+#include "Mighter2d/utility/Helpers.h"
 
 namespace mighter2d::ui {
     static unsigned int count = 1; // Keeps track of how many widgets of this type have been instantiated
@@ -181,6 +182,10 @@ namespace mighter2d::ui {
 
     std::string MenuBar::getWidgetType() const {
         return "MenuBar";
+    }
+
+    int MenuBar::onMenuItemClick(const Callback<std::string> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "menuItemClick", callback, oneTime);
     }
 
     void MenuBar::initEvents() {

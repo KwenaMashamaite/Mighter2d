@@ -219,6 +219,39 @@ namespace mighter2d {
              */
             ~EditBox() override;
 
+        public:
+            ///////////////////////////////////////////////////////////////////
+            // Event listeners
+            ///////////////////////////////////////////////////////////////////
+
+            /**
+             * @brief Add an event listener to text change event
+             * @param callback The function to be executed when edit box text changes
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event, the callback is
+             * passed the new editbox text
+             *
+             * @see unsubscribe
+             */
+            int onTextChange(const Callback<std::string>& callback, bool oneTime = false);
+
+            /**
+             * @brief Add an event listener to a enter key press event
+             * @param callback The function to be executed when the enter is pressed whilst the edit box is focused
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event, the callback is
+             * passed the text in the edit box
+             *
+             * @see unsubscribe
+             */
+            int onEnterKeyPress(const Callback<std::string>& callback, bool oneTime = false);
+
         private:
             /**
              * @brief Construct an edit box
@@ -252,9 +285,9 @@ namespace mighter2d {
  *
  * Usage Example:
  * @code
- * editBox.on("textChange", mighter2d::Callback<std::string>([](std::string text) {
+ * editBox.onTextChange([](std::string text) {
  *      std::cout << "You entered " << text << "\n";
- * }));
+ * });
  * @endcode
  */
 

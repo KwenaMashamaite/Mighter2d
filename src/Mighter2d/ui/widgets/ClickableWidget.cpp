@@ -24,6 +24,7 @@
 
 #include "Mighter2d/ui/widgets/ClickableWidget.h"
 #include "Mighter2d/ui/widgets/WidgetImpl.h"
+#include "Mighter2d/utility/Helpers.h"
 #include <TGUI/Widgets/ClickableWidget.hpp>
 
 namespace mighter2d::ui {
@@ -67,6 +68,54 @@ namespace mighter2d::ui {
 
     ClickableWidget::ClickableWidget(ClickableWidget&& other) noexcept = default;
     ClickableWidget& ClickableWidget::operator=(ClickableWidget &&rhs) noexcept = default;
+
+    int ClickableWidget::onClick(const Callback<> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "click", callback, oneTime);
+    }
+
+    int ClickableWidget::onClick(const Callback<Vector2f> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "click", callback, oneTime);
+    }
+
+    int ClickableWidget::onLeftMouseDown(const Callback<> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "leftMouseDown", callback, oneTime);
+    }
+
+    int ClickableWidget::onLeftMouseDown(const Callback<Vector2f> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "leftMouseDown", callback, oneTime);
+    }
+
+    int ClickableWidget::onLeftMouseUp(const Callback<> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "leftMouseUp", callback, oneTime);
+    }
+
+    int ClickableWidget::onLeftMouseUp(const Callback<Vector2f> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "leftMouseUp", callback, oneTime);
+    }
+
+    int ClickableWidget::onRightMouseDown(const Callback<> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "rightMouseDown", callback, oneTime);
+    }
+
+    int ClickableWidget::onRightMouseDown(const Callback<Vector2f> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "rightMouseDown", callback, oneTime);
+    }
+
+    int ClickableWidget::onRightMouseUp(const Callback<> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "rightMouseUp", callback, oneTime);
+    }
+
+    int ClickableWidget::onRightMouseUp(const Callback<Vector2f> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "rightMouseUp", callback, oneTime);
+    }
+
+    int ClickableWidget::onRightClick(const Callback<> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "rightClick", callback, oneTime);
+    }
+
+    int ClickableWidget::onRightClick(const Callback<Vector2f> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "rightClick", callback, oneTime);
+    }
 
     void ClickableWidget::initEvents() {
         //Events triggered by left mouse button

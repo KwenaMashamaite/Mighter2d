@@ -136,6 +136,25 @@ namespace mighter2d {
              */
             ~ToggleButton() override;
 
+        public:
+            ///////////////////////////////////////////////////////////////////
+            // Event listeners
+            ///////////////////////////////////////////////////////////////////
+
+            /**
+             * @brief Add an event listener to toggle event
+             * @param callback The function to be executed when the button is toggled
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event, the callbakc is passed
+             * the toggle state of the button
+             *
+             * @see unsubscribe
+             */
+            int onToggle(const Callback<bool>& callback, bool oneTime = false);
+
         private:
             /**
             * @brief Construct a toggle button objet
@@ -169,12 +188,12 @@ namespace mighter2d {
  *
  * Event usage example:
  * @code
- * toggleBtn.on("toggle", mighter2d::Callback<bool>([](bool on) {
+ * toggleBtn.onToggle([](bool on) {
  *      if (on)
  *          std::cout << "Button turned on";
  *      else
  *          std::cout << "Button turned off";
- * }));
+ * });
  * @endcode
  */
 

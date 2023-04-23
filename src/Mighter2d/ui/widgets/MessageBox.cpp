@@ -24,6 +24,7 @@
 
 #include "Mighter2d/ui/widgets/MessageBox.h"
 #include "Mighter2d/ui/widgets/WidgetImpl.h"
+#include "Mighter2d/utility/Helpers.h"
 #include <TGUI/Widgets/MessageBox.hpp>
 
 namespace mighter2d::ui {
@@ -198,6 +199,26 @@ namespace mighter2d::ui {
 
     std::string MessageBox::getWidgetType() const {
         return "MessageBox";
+    }
+
+    int MessageBox::onClose(const Callback<> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "close", callback, oneTime);
+    }
+
+    int MessageBox::onMinimize(const Callback<> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "minimize", callback, oneTime);
+    }
+
+    int MessageBox::onMaximize(const Callback<> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "maximize", callback, oneTime);
+    }
+
+    int MessageBox::onEscapeKeyPress(const Callback<> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "escapeKeyPress", callback, oneTime);
+    }
+
+    int MessageBox::onButtonPress(const Callback<std::string> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "buttonPress", callback, oneTime);
     }
 
     void MessageBox::initEvents() {

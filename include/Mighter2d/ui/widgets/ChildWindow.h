@@ -313,6 +313,63 @@ namespace mighter2d {
              */
             ~ChildWindow() override;
 
+        public:
+            ///////////////////////////////////////////////////////////////////
+            // Event listeners
+            ///////////////////////////////////////////////////////////////////
+
+            /**
+             * @brief Add an event listener to close event
+             * @param callback The function to be executed when window is closed
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event
+             *
+             * @see unsubscribe
+             */
+            int onClose(const Callback<>& callback, bool oneTime = false);
+
+            /**
+             * @brief Add an event listener to minimize event
+             * @param callback The function to be executed when window is minimized
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event
+             *
+             * @see unsubscribe
+             */
+            int onMinimize(const Callback<>& callback, bool oneTime = false);
+
+            /**
+             * @brief Add an event listener to maximize event
+             * @param callback The function to be executed when window is maximized
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event
+             *
+             * @see unsubscribe
+             */
+            int onMaximize(const Callback<>& callback, bool oneTime = false);
+
+            /**
+             * @brief Add an event listener to escape key press event
+             * @param callback The function to be executed when the escape key is pressed whilst the window is focused
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event
+             *
+             * @see unsubscribe
+             */
+            int onEscapeKeyPress(const Callback<>& callback, bool oneTime = false);
+
         private:
             /**
              * @brief Construct a child window
@@ -349,9 +406,13 @@ namespace mighter2d {
  *
  * Usage Example:
  * @code
- * window.on("close", mighter2d::Callback<>([] {
+ * window.onClose([] {
  *      std::cout << "Pop up window closed" << "\n";
- * }));
+ * });
+ *
+ * window.onMinimize([] {
+ *      std::cout << "Window minimized\n";
+ * });
  * @endcode
  */
 

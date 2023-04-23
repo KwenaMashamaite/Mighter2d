@@ -24,6 +24,7 @@
 
 #include "Mighter2d/ui/widgets/Widget.h"
 #include "Mighter2d/ui/widgets/WidgetImpl.h"
+#include "Mighter2d/utility/Helpers.h"
 
 namespace mighter2d::ui {
     Widget::Widget(std::unique_ptr<priv::IWidgetImpl> impl) :
@@ -259,6 +260,38 @@ namespace mighter2d::ui {
 
     const std::shared_ptr<void> Widget::getInternalPtr() const {
         return pimpl_->getInternalPtr();
+    }
+
+    int Widget::onMouseEnter(const Callback<> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "mouseEnter", callback, oneTime);
+    }
+
+    int Widget::onMouseLeave(const Callback<> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "mouseLeave", callback, oneTime);
+    }
+
+    int Widget::onFocus(const Callback<> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "focus", callback, oneTime);
+    }
+
+    int Widget::onUnfocus(const Callback<> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "unfocus", callback, oneTime);
+    }
+
+    int Widget::onAnimationFinish(const Callback<> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "animationFinish", callback, oneTime);
+    }
+
+    int Widget::onNameChange(const Callback<std::string> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "nameChange", callback, oneTime);
+    }
+
+    int Widget::onPositionChange(const Callback<Vector2f> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "positionChange", callback, oneTime);
+    }
+
+    int Widget::onSizeChange(const Callback<Vector2f> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "sizeChange", callback, oneTime);
     }
 
     void Widget::initEvents() {

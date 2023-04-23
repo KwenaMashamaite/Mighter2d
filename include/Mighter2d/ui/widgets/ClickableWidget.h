@@ -71,6 +71,173 @@ namespace mighter2d {
              */
             ~ClickableWidget() override;
 
+        public:
+            ///////////////////////////////////////////////////////////////////
+            // Event listeners
+            ///////////////////////////////////////////////////////////////////
+
+            /**
+             * @brief Add an event listener to a click event
+             * @param callback The function to be executed when widget is clicked
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event
+             *
+             * @see unsubscribe
+             */
+            int onClick(const Callback<>& callback, bool oneTime = false);
+
+            /**
+             * @brief Add an event listener to a click event
+             * @param callback The function to be executed when widget is clicked
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event, the callback
+             * is passed the coordinates of the mouse cursor relative to the widget
+             *
+             * @see unsubscribe
+             */
+            int onClick(const Callback<Vector2f>& callback, bool oneTime = false);
+
+            /**
+             * @brief Add an event listener to a left mouse down event
+             * @param callback The function to be executed when the left mouse is down on the widget
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event
+             *
+             * @see unsubscribe
+             */
+            int onLeftMouseDown(const Callback<>& callback, bool oneTime = false);
+
+            /**
+             * @brief Add an event listener to a left mouse down event
+             * @param callback The function to be executed when the left mouse is down on the widget
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event, the callback
+             * is passed the coordinates of the mouse cursor relative to the widget
+             *
+             * @see unsubscribe
+             */
+            int onLeftMouseDown(const Callback<Vector2f>& callback, bool oneTime = false);
+
+            /**
+             * @brief Add an event listener to a left mouse up event
+             * @param callback The function to be executed when the left mouse is released on the widget
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event
+             *
+             * @see unsubscribe
+             */
+            int onLeftMouseUp(const Callback<>& callback, bool oneTime = false);
+
+            /**
+             * @brief Add an event listener to a left mouse up event
+             * @param callback The function to be executed when the left mouse is released on the widget
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event, the callback
+             * is passed the coordinates of the mouse cursor relative to the widget
+             *
+             * @see unsubscribe
+             */
+            int onLeftMouseUp(const Callback<Vector2f>& callback, bool oneTime = false);
+
+            /**
+             * @brief Add an event listener to a right mouse down event
+             * @param callback The function to be executed when the right mouse is down on the widget
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event
+             *
+             * @see unsubscribe
+             */
+            int onRightMouseDown(const Callback<>& callback, bool oneTime = false);
+
+            /**
+             * @brief Add an event listener to a right mouse down event
+             * @param callback The function to be executed when the right mouse is down on the widget
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event, the callback
+             * is passed the coordinates of the mouse cursor relative to the widget
+             *
+             * @see unsubscribe
+             */
+            int onRightMouseDown(const Callback<Vector2f>& callback, bool oneTime = false);
+
+            /**
+             * @brief Add an event listener to a right mouse up event
+             * @param callback The function to be executed when the right mouse is released on the widget
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event
+             *
+             * @see unsubscribe
+             */
+            int onRightMouseUp(const Callback<>& callback, bool oneTime = false);
+
+            /**
+             * @brief Add an event listener to a right mouse up event
+             * @param callback The function to be executed when the right mouse is released on the widget
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event, the callback
+             * is passed the coordinates of the mouse cursor relative to the widget
+             *
+             * @see unsubscribe
+             */
+            int onRightMouseUp(const Callback<Vector2f>& callback, bool oneTime = false);
+
+            /**
+             * @brief Add an event listener to a right click event
+             * @param callback The function to be executed when widget is right clicked
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event
+             *
+             * @see unsubscribe
+             */
+            int onRightClick(const Callback<>& callback, bool oneTime = false);
+
+            /**
+             * @brief Add an event listener to a right click event
+             * @param callback The function to be executed when widget is right clicked
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event, the callback
+             * is passed the coordinates of the mouse cursor relative to the widget
+             *
+             * @see unsubscribe
+             */
+            int onRightClick(const Callback<Vector2f>& callback, bool oneTime = false);
+
         private:
             /**
              * @brief Initialize the widgets events
@@ -102,11 +269,11 @@ namespace mighter2d {
  * Event usage example:
  * @code
  *
- * widget.on("click", mighter2d::Callback<>([]{
+ * widget.onClick([]{
  *      std::cout << widget clicked << "\n";
- * }));
+ * });
  *
- * widget.on("rightClick", mighter2d::Callback<mighter2d::Vector2f>([](mighter2d::Vector2f mousePos) {
+ * widget.onRightClick([](mighter2d::Vector2f mousePos) {
  *      std::cout << "Widget clicked at {" << mousePos.x << ", " << mousePos.y << "}" << "\n";
  * }));
  * @endcode

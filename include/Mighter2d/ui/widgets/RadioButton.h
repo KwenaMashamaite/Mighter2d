@@ -151,6 +151,51 @@ namespace mighter2d {
              */
             ~RadioButton() override;
 
+        public:
+            ///////////////////////////////////////////////////////////////////
+            // Event listeners
+            ///////////////////////////////////////////////////////////////////
+
+            /**
+             * @brief Add an event listener to a check event
+             * @param callback The function to be executed when widget is checked
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event
+             *
+             * @see unsubscribe
+             */
+            int onCheck(const Callback<>& callback, bool oneTime = false);
+
+            /**
+             * @brief Add an event listener to an uncheck event
+             * @param callback The function to be executed when widget is unchecked
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event
+             *
+             * @see unsubscribe
+             */
+            int onUncheck(const Callback<>& callback, bool oneTime = false);
+
+            /**
+             * @brief Add an event listener to a check change event
+             * @param callback The function to be executed when widget is checked or unchecked
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event, the callback is passed
+             * the check state of the widget
+             *
+             * @see unsubscribe
+             */
+            int onCheckChange(const Callback<bool>& callback, bool oneTime = false);
+
         private:
             /**
              * @brief Create a button
@@ -179,22 +224,22 @@ namespace mighter2d {
  * <tr><th> Name            <th> Argument Type  <th> Description
  * <tr><td> check           <td> void           <td> The radio button was checked
  * <tr><td> uncheck         <td> void           <td> The radio button was unchecked
- * <tr><td> valueChange     <td> bool           <td> The radio button was checked or unchecked.
+ * <tr><td> checkChange     <td> bool           <td> The radio button was checked or unchecked.
  *                                                   Parameter = new state of the radio button
  * </table>
  *
  * Usage Example:
  * @code
- * radioButton.on("check", mighter2d::Callback<>([] {
+ * radioButton.onCheck([] {
  *      std::cout << "Checked" << "\n";
- * }));
+ * });
  *
- * radioButton.on("valueChange", mighter2d::Callback<bool>([](bool checked) {
+ * radioButton.checkChange([](bool checked) {
  *      if (checked)
  *          std::cout << "Checked" << "\n";
  *      else
  *          std::cout << "Unchecked" << "\n";
- * })):
+ * }):
  * @endcode
  */
 

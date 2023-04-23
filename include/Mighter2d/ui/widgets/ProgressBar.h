@@ -210,6 +210,38 @@ namespace mighter2d {
              */
             ~ProgressBar() override;
 
+        public:
+            ///////////////////////////////////////////////////////////////////
+            // Event listeners
+            ///////////////////////////////////////////////////////////////////
+
+            /**
+             * @brief Add an event listener to full event
+             * @param callback The function to be executed when the progress bar is full
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event
+             *
+             * @see unsubscribe
+             */
+            int onFull(const Callback<>& callback, bool oneTime = false);
+
+            /**
+             * @brief Add an event listener to value change event
+             * @param callback The function to be executed when the value of the progress bar changes
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event, the callback is passed the
+             * new value of the progress bar
+             *
+             * @see unsubscribe
+             */
+            int onValueChange(const Callback<unsigned int>& callback, bool oneTime = false);
+
         private:
             /**
              * @brief Construct a progress bar
@@ -242,9 +274,9 @@ namespace mighter2d {
  *
  * Event usage example:
  * @code
- * progressBar.on("full", mighter2d::Callback<>([]() {
+ * progressBar.onFull([] {
  *      std::cout << "Loading complete" << "\n";
- * }));
+ * });
  * @endcode
  */
 

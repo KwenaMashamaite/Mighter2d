@@ -344,6 +344,25 @@ namespace mighter2d {
              */
             ~Tabs() override;
 
+        public:
+            ///////////////////////////////////////////////////////////////////
+            // Event listeners
+            ///////////////////////////////////////////////////////////////////
+
+            /**
+             * @brief Add an event listener to tabs select event
+             * @param callback The function to be executed when a tab is selected
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event, the callback is passed
+             * the text of the selected tab
+             *
+             * @see unsubscribe
+             */
+            int onTabSelect(const Callback<std::string>& callback, bool oneTime = false);
+
         private:
             /**
              * @brief Constructor
@@ -375,9 +394,9 @@ namespace mighter2d {
  *
  * Event usage example:
  * @code
- * tabs.on("tabSelect", mighter2d::Callback<std::string>([](std::string tab) {
+ * tabs.onTabSelect([](std::string tab) {
  *      std::cout << tab << " was selected" << "\n";
- * }));
+ * });
  * @endcode
  */
 

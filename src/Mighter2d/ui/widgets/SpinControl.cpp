@@ -24,6 +24,7 @@
 
 #include "Mighter2d/ui/widgets/SpinControl.h"
 #include "Mighter2d/ui/widgets/WidgetImpl.h"
+#include "Mighter2d/utility/Helpers.h"
 #include <TGUI/Widgets/SpinControl.hpp>
 
 namespace mighter2d::ui {
@@ -136,6 +137,10 @@ namespace mighter2d::ui {
 
     std::string SpinControl::getWidgetType() const {
         return "SpinControl";
+    }
+
+    int SpinControl::onValueChange(const Callback<float> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "valueChange", callback, oneTime);
     }
 
     void SpinControl::initEvents() {

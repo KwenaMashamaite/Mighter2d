@@ -122,6 +122,38 @@ namespace mighter2d {
              */
             ~Panel() override = default;
 
+        public:
+            ///////////////////////////////////////////////////////////////////
+            // Event listeners
+            ///////////////////////////////////////////////////////////////////
+
+            /**
+             * @brief Add an event listener to double click event
+             * @param callback The function to be executed when the panel is double clicked
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event
+             *
+             * @see unsubscribe
+             */
+            int onDoubleClick(const Callback<>& callback, bool oneTime = false);
+
+            /**
+             * @brief Add an event listener to double click event
+             * @param callback The function to be executed when the panel is double clicked
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event, the callback is passed the
+             * coordinates of the mouse cursor relative to the widget
+             *
+             * @see unsubscribe
+             */
+            int onDoubleClick(const Callback<Vector2f>& callback, bool oneTime = false);
+
         private:
             /**
              * @brief Constructor
@@ -161,9 +193,9 @@ namespace mighter2d {
  *
  * Event usage example:
  * @code
- * panel.on("doubleClick", mighter2d::Callback<mighter2d::Vector2f>([](mighter2d::Vector2f mousePos) {
+ * panel.onDoubleClick([](mighter2d::Vector2f mousePos) {
  *      std::cout << "Widget clicked at {" << mousePos.x << ", " << mousePos.y << "}" << "\n";
- * }));
+ * });
  * @endcode
  */
 

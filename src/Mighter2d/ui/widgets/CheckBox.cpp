@@ -24,6 +24,7 @@
 
 #include "Mighter2d/ui/widgets/CheckBox.h"
 #include "Mighter2d/ui/widgets/WidgetImpl.h"
+#include "Mighter2d/utility/Helpers.h"
 #include <TGUI/Widgets/CheckBox.hpp>
 
 namespace mighter2d::ui {
@@ -118,6 +119,18 @@ namespace mighter2d::ui {
         return "CheckBox";
     }
 
+    int CheckBox::onCheck(const Callback<> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "check", callback, oneTime);
+    }
+
+    int CheckBox::onUncheck(const Callback<> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "uncheck", callback, oneTime);
+    }
+
+    int CheckBox::onCheckChange(const Callback<bool> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "checkChange", callback, oneTime);
+    }
+
     void CheckBox::initEvents() {
         pimpl_->checkbox_->onCheck([this] {
             emit("check");
@@ -128,7 +141,7 @@ namespace mighter2d::ui {
         });
 
         pimpl_->checkbox_->onChange([this](bool checked) {
-            emit("valueChange", checked);
+            emit("checkChange", checked);
         });
     }
 

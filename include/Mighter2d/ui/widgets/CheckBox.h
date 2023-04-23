@@ -153,6 +153,51 @@ namespace mighter2d {
              */
             ~CheckBox() override;
 
+        public:
+            ///////////////////////////////////////////////////////////////////
+            // Event listeners
+            ///////////////////////////////////////////////////////////////////
+
+            /**
+             * @brief Add an event listener to a checked event
+             * @param callback The function to be executed when widget is checked
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event
+             *
+             * @see unsubscribe
+             */
+            int onCheck(const Callback<>& callback, bool oneTime = false);
+
+            /**
+             * @brief Add an event listener to an unchecked event
+             * @param callback The function to be executed when widget is unchecked
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event
+             *
+             * @see unsubscribe
+             */
+            int onUncheck(const Callback<>& callback, bool oneTime = false);
+
+            /**
+             * @brief Add an event listener to a checked change event
+             * @param callback The function to be executed when widget is checked or unchecked
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event, the callback is passed
+             * the check state of the widget
+             *
+             * @see unsubscribe
+             */
+            int onCheckChange(const Callback<bool>& callback, bool oneTime = false);
+
         private:
             /**
              * @brief Create the checkbox
@@ -187,11 +232,11 @@ namespace mighter2d {
  *
  * Usage Example:
  * @code
- * checkbox.on("check", mighter2d::Callback<>([] {
+ * checkbox.onCheck([] {
  *      std::cout << "Checked" << "\n";
- * }));
+ * });
  *
- * checkbox.on("valueChange", mighter2d::Callback<bool>([](bool checked) {
+ * checkbox.onCheckChange([](bool checked) {
  *      if (checked)
  *          std::cout << "Checked" << "\n";
  *      else

@@ -24,6 +24,7 @@
 
 #include "Mighter2d/ui/widgets/RadioButton.h"
 #include "Mighter2d/ui/widgets/WidgetImpl.h"
+#include "Mighter2d/utility/Helpers.h"
 #include <TGUI/Widgets/RadioButton.hpp>
 
 namespace mighter2d::ui {
@@ -120,6 +121,18 @@ namespace mighter2d::ui {
         return "RadioButton";
     }
 
+    int RadioButton::onCheck(const Callback<> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "check", callback, oneTime);
+    }
+
+    int RadioButton::onUncheck(const Callback<> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "uncheck", callback, oneTime);
+    }
+
+    int RadioButton::onCheckChange(const Callback<bool> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "checkChange", callback, oneTime);
+    }
+
     void RadioButton::initEvents() {
         pimpl_->button_->onCheck([this]{
             emit("check");
@@ -130,7 +143,7 @@ namespace mighter2d::ui {
         });
 
         pimpl_->button_->onChange([this](bool checked) {
-            emit("valueChange", checked);
+            emit("checkChange", checked);
         });
     }
 

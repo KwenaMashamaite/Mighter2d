@@ -24,6 +24,7 @@
 
 #include "Mighter2d/ui/widgets/ProgressBar.h"
 #include "Mighter2d/ui/widgets/WidgetImpl.h"
+#include "Mighter2d/utility/Helpers.h"
 #include <TGUI/Widgets/ProgressBar.hpp>
 
 namespace mighter2d::ui {
@@ -138,6 +139,14 @@ namespace mighter2d::ui {
 
     std::string ProgressBar::getWidgetType() const {
         return "ProgressBar";
+    }
+
+    int ProgressBar::onFull(const Callback<> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "full", callback, oneTime);
+    }
+
+    int ProgressBar::onValueChange(const Callback<unsigned int> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "valueChange", callback, oneTime);
     }
 
     void ProgressBar::initEvents() {

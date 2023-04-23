@@ -24,6 +24,7 @@
 
 #include "Mighter2d/ui/widgets/Tabs.h"
 #include "Mighter2d/ui/widgets/WidgetImpl.h"
+#include "Mighter2d/utility/Helpers.h"
 #include <TGUI/Widgets/Tabs.hpp>
 
 namespace mighter2d::ui {
@@ -188,6 +189,10 @@ namespace mighter2d::ui {
 
     std::string Tabs::getWidgetType() const {
         return "Tabs";
+    }
+
+    int Tabs::onTabSelect(const Callback<std::string> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "tabSelect", callback, oneTime);
     }
 
     void Tabs::initEvents() {

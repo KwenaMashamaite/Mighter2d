@@ -79,6 +79,14 @@ namespace mighter2d::ui {
         return "Panel";
     }
 
+    int Panel::onDoubleClick(const Callback<> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "doubleClick", callback, oneTime);
+    }
+
+    int Panel::onDoubleClick(const Callback<Vector2f> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "doubleClick", callback, oneTime);
+    }
+
     void Panel::initEvents() {
         auto widget = static_cast<tgui::Panel*>(std::static_pointer_cast<tgui::Widget>(getInternalPtr()).get());
 

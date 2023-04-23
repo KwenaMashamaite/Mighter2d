@@ -24,6 +24,7 @@
 
 #include "Mighter2d/ui/widgets/Slider.h"
 #include "Mighter2d/ui/widgets/WidgetImpl.h"
+#include "Mighter2d/utility/Helpers.h"
 #include <TGUI/Widgets/Slider.hpp>
 
 namespace mighter2d::ui {
@@ -148,6 +149,10 @@ namespace mighter2d::ui {
 
     std::string Slider::getWidgetType() const {
         return "Slider";
+    }
+
+    int Slider::onValueChange(const Callback<float> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "valueChange", callback, oneTime);
     }
 
     void Slider::initEvents() {

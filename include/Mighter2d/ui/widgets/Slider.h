@@ -235,6 +235,25 @@ namespace mighter2d {
              */
             ~Slider() override;
 
+        public:
+            ///////////////////////////////////////////////////////////////////
+            // Event listeners
+            ///////////////////////////////////////////////////////////////////
+
+            /**
+             * @brief Add an event listener to value change event
+             * @param callback The function to be executed when the value of the slider changes
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event, the callback is passed
+             * the new value of the slider
+             *
+             * @see unsubscribe
+             */
+            int onValueChange(const Callback<float>& callback, bool oneTime = false);
+
         private:
             /**
              * @brief Construct a slider

@@ -24,6 +24,7 @@
 
 #include "Mighter2d/ui/widgets/ChildWindow.h"
 #include "Mighter2d/ui/widgets/WidgetImpl.h"
+#include "Mighter2d/utility/Helpers.h"
 #include <TGUI/Widgets/ChildWindow.hpp>
 
 namespace mighter2d::ui {
@@ -177,6 +178,22 @@ namespace mighter2d::ui {
 
     std::string ChildWindow::getWidgetType() const {
         return "ChildWindow";
+    }
+
+    int ChildWindow::onClose(const Callback<> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "close", callback, oneTime);
+    }
+
+    int ChildWindow::onMinimize(const Callback<> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "minimize", callback, oneTime);
+    }
+
+    int ChildWindow::onMaximize(const Callback<> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "maximize", callback, oneTime);
+    }
+
+    int ChildWindow::onEscapeKeyPress(const Callback<> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "escapeKeyPress", callback, oneTime);
     }
 
     void ChildWindow::initEvents() {

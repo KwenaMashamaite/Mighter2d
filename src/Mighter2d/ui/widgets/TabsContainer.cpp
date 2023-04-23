@@ -229,6 +229,10 @@ namespace mighter2d::ui {
         return nullptr;
     }
 
+    int TabsContainer::onSelectionChange(const Callback<int> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "selectionChange", callback, oneTime);
+    }
+
     void TabsContainer::initEvents() {
         pimpl_->tabContainer_->onSelectionChanged([this](int index){
             emit("selectionChange", index);

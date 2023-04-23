@@ -781,6 +781,118 @@ namespace mighter2d {
              */
             ~Widget() override;
 
+        public:
+            ///////////////////////////////////////////////////////////////////
+            // Event listeners
+            ///////////////////////////////////////////////////////////////////
+
+            /**
+             * @brief Add an event listener to a mouse enter event
+             * @param callback The function to be executed when the mouse enters the widget
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event
+             *
+             * @see unsubscribe, onMouseLeave
+             */
+            int onMouseEnter(const Callback<>& callback, bool oneTime = false);
+
+            /**
+             * @brief Add an event listener to a mouse leave event
+             * @param callback The function to be executed when the mouse leaves the widget
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event
+             *
+             * @see unsubscribe, onMouseEnter
+             */
+            int onMouseLeave(const Callback<>& callback, bool oneTime = false);
+
+            /**
+             * @brief Add an event listener to a focus event
+             * @param callback The function to be executed when the widget gains focus
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event
+             *
+             * @see unsubscribe, onUnfocus
+             */
+            int onFocus(const Callback<>& callback, bool oneTime = false);
+
+            /**
+             * @brief Add an event listener to an unfocus event
+             * @param callback The function to be executed when the widget loses focus
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event
+             *
+             * @see unsubscribe, onFocus
+             */
+            int onUnfocus(const Callback<>& callback, bool oneTime = false);
+
+            /**
+             * @brief Add an event listener to an animation finish event
+             * @param callback The function to be executed when widget animation finishes
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event
+             *
+             * @see unsubscribe
+             */
+            int onAnimationFinish(const Callback<>& callback, bool oneTime = false);
+
+            /**
+             * @brief Add an event listener to widget name change event
+             * @param callback The function to be executed when the name of the widget is changed
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event, the callback is
+             * passed the new name of the widget
+             *
+             * @see unsubscribe
+             */
+            int onNameChange(const Callback<std::string>& callback, bool oneTime = false);
+
+            /**
+             * @brief Add an event listener to a position change event
+             * @param callback The function to be executed when widget position changes
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event, the callback is passed
+             * the new position of the widget
+             *
+             * @see unsubscribe
+             */
+            int onPositionChange(const Callback<Vector2f>& callback, bool oneTime = false);
+
+            /**
+             * @brief Add an event listener to a size change event
+             * @param callback The function to be executed when widget size changes
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event, the callback is passed
+             * the new position of the widget
+             *
+             * @see unsubscribe
+             */
+            int onSizeChange(const Callback<Vector2f>& callback, bool oneTime = false);
+
         protected:
             /**
              * @brief Set whether or not the widget is a container
@@ -793,6 +905,8 @@ namespace mighter2d {
              */
             void setAsContainer(bool container);
 
+            EventEmitter eventEmitter_; //!< Widgets event publisher
+
         private:
             /**
              * @brief Initialize events emitted by the widget
@@ -801,7 +915,6 @@ namespace mighter2d {
 
         private:
             std::unique_ptr<priv::IWidgetImpl> pimpl_;
-            EventEmitter eventEmitter_; //!< Widgets event publisher
             std::string name_;          //!< The name of the widget
             bool isContainer_{false};   //!< Stores whether or not a widget inherits from IContainer
         };
@@ -919,17 +1032,13 @@ namespace mighter2d {
  *
  * Usage Example:
  * @code
- * widget.on("mouseEnter", mighter2d::Callback<>([] {
+ * widget.onMouseEnter([] {
  *      std::cout << "Mouse entered widget" << "\n";
- * }));
+ * });
  *
- * widget.on("mouseEnter", mighter2d::Callback<mighter2d::ui::Widget*>([](mighter2d::ui::Widget* widget) {
- *      std::cout << widget->getName() << "\n";
- * }));
- *
- * widget.on("positionChange", mighter2d::Callback<mighter2d::Vector2f>([](mighter2d::Vector2f pos) {
+ * widget.onPositionChange([](mighter2d::Vector2f pos) {
  *      std::cout << "Widget moved to {" << pos.x << ", " << pos.y << "}" << "\n";
- * })):
+ * }):
  * @endcode
  */
 

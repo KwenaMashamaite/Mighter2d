@@ -24,6 +24,7 @@
 
 #include "Mighter2d/ui/widgets/ToggleButton.h"
 #include "Mighter2d/ui/widgets/WidgetImpl.h"
+#include "Mighter2d/utility/Helpers.h"
 #include <TGUI/Widgets/ToggleButton.hpp>
 
 namespace mighter2d::ui {
@@ -135,9 +136,12 @@ namespace mighter2d::ui {
         return "ToggleButton";
     }
 
+    int ToggleButton::onToggle(const Callback<bool> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "toggle", callback, oneTime);
+    }
+
     void ToggleButton::initEvents() {
         pimpl_->getPtr()->onToggle([this](bool checkedStatus) {
-            emit("toggle");
             emit("toggle", checkedStatus);
         });
     }

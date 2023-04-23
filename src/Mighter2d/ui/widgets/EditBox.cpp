@@ -24,6 +24,7 @@
 
 #include "Mighter2d/ui/widgets/EditBox.h"
 #include "Mighter2d/ui/widgets/WidgetImpl.h"
+#include "Mighter2d/utility/Helpers.h"
 #include <TGUI/Widgets/EditBox.hpp>
 
 namespace mighter2d::ui {
@@ -149,6 +150,14 @@ namespace mighter2d::ui {
 
     std::string EditBox::getWidgetType() const {
         return "EditBox";
+    }
+
+    int EditBox::onTextChange(const Callback<std::string> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "textChange", callback, oneTime);
+    }
+
+    int EditBox::onEnterKeyPress(const Callback<std::string> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "enterKeyPress", callback, oneTime);
     }
 
     void EditBox::initEvents() {

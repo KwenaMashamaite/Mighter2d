@@ -25,6 +25,7 @@
 #include "Mighter2d/ui/widgets/Picture.h"
 #include "Mighter2d/core/resources/ResourceManager.h"
 #include "Mighter2d/ui/widgets/WidgetImpl.h"
+#include "Mighter2d/utility/Helpers.h"
 #include <TGUI/Widgets/Picture.hpp>
 
 namespace mighter2d::ui {
@@ -131,6 +132,14 @@ namespace mighter2d::ui {
 
     std::string Picture::getWidgetType() const {
         return "Picture";
+    }
+
+    int Picture::onDoubleClick(const Callback<> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "doubleClick", callback, oneTime);
+    }
+
+    int Picture::onDoubleClick(const Callback<Vector2f> &callback, bool oneTime) {
+        return utility::addEventListener(eventEmitter_, "doubleClick", callback, oneTime);
     }
 
     void Picture::initEvents() {

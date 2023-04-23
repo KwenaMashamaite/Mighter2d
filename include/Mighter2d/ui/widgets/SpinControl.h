@@ -202,6 +202,25 @@ namespace mighter2d {
              */
             ~SpinControl() override;
 
+        public:
+            ///////////////////////////////////////////////////////////////////
+            // Event listeners
+            ///////////////////////////////////////////////////////////////////
+
+            /**
+             * @brief Add an event listener to value change event
+             * @param callback The function to be executed when the value of the spin control changes
+             * @param oneTime True to execute the callback one-time or false to
+             *                execute it every time the event is triggered
+             * @return The event listeners unique identification number
+             *
+             * You can add any number of event handlers to this event, the callback is passed
+             * the new value of the spin control
+             *
+             * @see unsubscribe
+             */
+            int onValueChange(const Callback<float>& callback, bool oneTime = false);
+
         private:
             /**
              * @brief Create a new spin control widget
@@ -239,9 +258,9 @@ namespace mighter2d {
  *
  * Event usage example:
  * @code
- * spinControl.on("valueChange", mighter2d::Callback<float>([](float value) {
+ * spinControl.onValueChange([](float value) {
  *      std::cout << "New value = " << value << "\n";
- * }));
+ * });
  * @endcode
  */
 
