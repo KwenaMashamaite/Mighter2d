@@ -9,7 +9,7 @@ cmake_minimum_required(VERSION 3.17)
 
 # Project name, version and description
 
-project(Mighter2d VERSION 0.1.0 DESCRIPTION "A 2D grid-based game engine using C++17")
+project(Mighter2d VERSION 1.0.0 DESCRIPTION "A 2D scene-based game engine written in C++17")
 
 # MIGHTER2D uses the paths from the cmake GNUInstallDirs module as defaults
 # (https://cmake.org/cmake/help/v3.0/module/GNUInstallDirs.html)

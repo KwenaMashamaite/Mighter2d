@@ -114,8 +114,8 @@ namespace mighter2d {
 } // namespace mighter2d
 
 // Version of the library
-#define MIGHTER2D_VERSION_MAJOR 0
-#define MIGHTER2D_VERSION_MINOR 1
+#define MIGHTER2D_VERSION_MAJOR 1
+#define MIGHTER2D_VERSION_MINOR 0
 #define MIGHTER2D_VERSION_PATCH 0
 
 #endif // MIGHTER2D_CONFIG_H
