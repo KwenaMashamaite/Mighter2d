@@ -27,6 +27,7 @@ set(MIGHTER2D_SRC
     core/input/Keyboard.cpp
     core/input/Mouse.cpp
     core/engine/Engine.cpp
+    core/engine/EngineSettings.cpp
     core/audio/AudioManager.cpp
     core/input/InputManager.cpp
     core/resources/ResourceManager.cpp

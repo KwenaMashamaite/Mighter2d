@@ -26,6 +26,7 @@
 #define MIGHTER2D_ENGINE_H
 
 #include "Mighter2d/Config.h"
+#include "Mighter2d/core/engine/EngineSettings.h"
 #include "Mighter2d/core/audio/AudioManager.h"
 #include "Mighter2d/ui/GuiContainer.h"
 #include "Mighter2d/core/input/InputManager.h"
@@ -56,23 +57,11 @@ namespace mighter2d {
     public:
         /**
          * @brief Constructor
-         * @param gameTitle The name of the game run by the engine
-         * @param settingsFilename The name of the file that contains the engine
-         *                     settings
          * @throws MultipleEngineInstanceException if an Engine instance already exist
          *
-         * If the @a settingsFilename argument is left unspecified the engine
-         * will be constructed with default settings
+         * @note Only one instance of the engine can exist at a time
          */
-        explicit Engine(const std::string &gameTitle, const std::string &settingsFilename = "default");
-
-        /**
-         * @brief Constructor
-         * @param gameName The name of the game run by the engine
-         * @param settings Settings to construct the engine with
-         * @throws MultipleEngineInstanceException if an Engine instance already exist
-         */
-        Engine(const std::string& gameName, const PrefContainer& settings);
+        Engine();
 
         /**
          * @brief Copy constructor
@@ -96,13 +85,13 @@ namespace mighter2d {
 
         /**
          * @brief Initialize the engine
+         * @param settings The settings to initialize the engine with
          *
-         * @warning This function must be called before the engine is run, otherwise
-         * undefined behaviour
+         * @note This function must be called before the engine is run
          *
          * @see run, isInitialized, onInit
          */
-        void initialize();
+        void initialize(const EngineSettings& settings);
 
         /**
          * @brief Check if the engine is initialized or not
@@ -195,8 +184,6 @@ namespace mighter2d {
          /**
           * @brief Get the engines settings
           * @return The engines settings
-          * @throws AccessViolationException If this function is called before
-          *         the engine is initialized
           *
           * Note that this function returns the settings that were used during the
           * initialization of the engine. Modifying then after the engine has been
@@ -204,8 +191,7 @@ namespace mighter2d {
           *
           * @see initialize
           */
-         PrefContainer& getConfigs();
-         const PrefContainer& getConfigs() const;
+         const EngineSettings& getSettings() const;
 
         /**
          * @brief Get the engine level persistent data
@@ -656,20 +642,6 @@ namespace mighter2d {
 
     private:
         /**
-         * @brief Load engine settings from the disk
-         * @throws InvalidArgumentException if anu of settings entries are invalid
-         */
-        void loadSettings();
-
-        /**
-         * @brief Check if all the mandatory settings have been declared
-         *
-         * If any of the mandatory setting is missing, a default value will
-         * be used
-         */
-        void processSettings();
-
-        /**
          * @brief Initialize the render target
          */
         void initRenderTarget();
@@ -720,8 +692,7 @@ namespace mighter2d {
         std::unique_ptr<Window> window_;                   //!< Exposes parts of priv::RenderTarget through its public interface
         std::string gameTitle_;                            //!< The name of the game run by the engine
         std::string settingFile_;                          //!< The filename of the file that contains the engines config entries
-        PrefContainer configs_;                            //!< The engines settings
-        bool isSettingsLoadedFromFile_;                    //!< A flag indicating whether or not config entries are loaded by the engine or are received during construction
+        const EngineSettings* configs_;                    //!< The engines settings
         bool isInitialized_;                               //!< A flag indicating whether or not the engine has been initialized
         bool isRunning_;                                   //!< A flag indicating whether or not the engine is running
         bool isPaused_;                                    //!< A flag indicating whether or not the engine is paused
@@ -745,8 +716,8 @@ namespace mighter2d {
  * @ingroup core
  *
  * mighter2d::Engine is the entry point of Infinite Motion Engine. It is responsible
- * for running, updating and rendering the game world. External code interacts
- * with the engine by pushing and popping mighter2d::Scene at appropriate times
+ * for running running the active game scene. External code interacts with the engine by
+ * pushing and popping mighter2d::Scene at appropriate times
  *
  * Usage example:
  * @code
@@ -756,8 +727,12 @@ namespace mighter2d {
  *          void onStart() override {}
  * };
  *
- * mighter2d::Engine engine{"My awesome game"};
- * engine.initialize();
+ * //Setup engine settings settings
+ * mighter2d::EngineSettings settings{};
+ * settings.setWindowTitle("My cool game");
+ *
+ * mighter2d::Engine engine{};
+ * engine.initialize(settings);
  * engine.pushScene(std::make_unique<TestScene>());
  * engine.run();
  * @endcode

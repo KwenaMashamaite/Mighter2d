@@ -34,35 +34,12 @@
 namespace mighter2d {
     namespace {
         bool isEngineInstantiated = false; // Only one engine instance can exist at a time
-
-        template <class T>
-        void setDefaultValueIfNotSet(PrefContainer& settings, const std::string& preference,
-             PrefType  prefType , T&& defaultValue, const std::string& description)
-        {
-            if (settings.hasPref(preference) && settings.getPref(preference).hasValue())
-                return;
-            else if (!settings.hasPref(preference)) {
-                settings.addPref({preference, prefType, std::forward<T>(defaultValue), description});
-                MIGHTER2D_PRINT_WARNING(R"(Missing config entry ")" + preference + R"(", using default value)")
-            } else {
-                settings.getPref(preference).setValue<T>(std::forward<T>(defaultValue));
-                MIGHTER2D_PRINT_WARNING(R"(Config entry ")" + preference + R"(" defined but it is not assigned any value, using default value)")
-            }
-        }
     }
 
-    Engine::Engine(const std::string &gameName, const PrefContainer &settings) :
-        Engine(gameName, "")
-    {
-        configs_ = settings;
-    }
-
-    Engine::Engine(const std::string &gameTitle, const std::string &settingsFile) :
+    Engine::Engine() :
         privWindow_{std::make_unique<priv::RenderTarget>()},
         window_{new Window(*privWindow_)},
-        gameTitle_{gameTitle},
-        settingFile_{settingsFile},
-        isSettingsLoadedFromFile_(!settingsFile.empty() && settingsFile != "default"),
+        configs_{nullptr},
         isInitialized_{false},
         isRunning_{false},
         isPaused_{false},
@@ -76,12 +53,10 @@ namespace mighter2d {
             isEngineInstantiated = true;
     }
 
-    void Engine::initialize() {
+    void Engine::initialize(const EngineSettings& settings) {
         if (!isInitialized_) {
-            if (isSettingsLoadedFromFile_)
-                loadSettings();
+            configs_ = &settings;
 
-            processSettings();
             initResourceManager();
             initRenderTarget();
 
@@ -96,41 +71,23 @@ namespace mighter2d {
         return isInitialized_;
     }
 
-    void Engine::loadSettings() {
-        configs_.load(settingFile_);
-    }
-
-    void Engine::processSettings() {
-        setDefaultValueIfNotSet(configs_, "WINDOW_TITLE", PrefType::String, std::string("Untitled"), "The title of the render window");
-        setDefaultValueIfNotSet(configs_, "WINDOW_ICON", PrefType::String, std::string("OS"), "The icon of the render window");
-        setDefaultValueIfNotSet(configs_, "WINDOW_WIDTH", PrefType::Int, 600, "The width of the render window");
-        setDefaultValueIfNotSet(configs_, "WINDOW_HEIGHT", PrefType::Int, 600, "The height of the render window");
-        setDefaultValueIfNotSet(configs_, "FPS_LIMIT", PrefType::Int, 60, "The frames per second limit of the render window");
-        setDefaultValueIfNotSet(configs_, "FULLSCREEN", PrefType::Bool, false, "Indicates whether or not the render window should be created in full screen mode");
-        setDefaultValueIfNotSet(configs_, "V_SYNC", PrefType::Bool, false, "Indicates whether or not vertical synchronization should be enabled");
-        setDefaultValueIfNotSet(configs_, "FONTS_DIR", PrefType::String, std::string(""), "The directory in which fonts can be found");
-        setDefaultValueIfNotSet(configs_, "TEXTURES_DIR", PrefType::String, std::string(""), "The directory in which textures/images can be found");
-        setDefaultValueIfNotSet(configs_, "SOUND_EFFECTS_DIR", PrefType::String, std::string(""), "The directory in which sound effects can be found");
-        setDefaultValueIfNotSet(configs_, "MUSIC_DIR", PrefType::String, std::string(""), "The directory in which music can be found");
-    }
-
     void Engine::initRenderTarget() {
-        auto title = configs_.getPref("WINDOW_TITLE").getValue<std::string>();
-        auto width = configs_.getPref("WINDOW_WIDTH").getValue<int>();
-        auto height = configs_.getPref("WINDOW_HEIGHT").getValue<int>();
+        auto title = configs_->getWindowTitle();
+        auto width = configs_->getWindowWidth();
+        auto height = configs_->getWindowHeight();
 
         MIGHTER2D_ASSERT(width > 0, "The width of the window cannot be negative")
         MIGHTER2D_ASSERT(height > 0, "The height of the window cannot be negative")
 
         // Create the window
         privWindow_->create(title, width, height, window_->getStyle());
-        window_->setFullScreen(configs_.getPref("FULLSCREEN").getValue<bool>());
-        window_->setFrameRateLimit(configs_.getPref("FPS_LIMIT").getValue<int>());
-        window_->setVerticalSyncEnable(configs_.getPref("V_SYNC").getValue<bool>());
+        window_->setFullScreen(configs_->getWindowFullscreenEnabled());
+        window_->setFrameRateLimit(configs_->getWindowFPSLimit());
+        window_->setVerticalSyncEnable(configs_->getWindowVerticalSyncEnabled());
 
         // Set the window icon
-        if (configs_.getPref("WINDOW_ICON").getValue<std::string>() != "OS")
-            privWindow_->setIcon(configs_.getPref("WINDOW_ICON").getValue<std::string>());
+        if (auto icon = configs_->getWindowIcon(); icon != "OS")
+            privWindow_->setIcon(icon);
 
         // Shutdown engine when window close event is triggered
         window_->defaultWinCloseHandlerId_ = window_->onClose([this] {
@@ -151,11 +108,11 @@ namespace mighter2d {
 
     void Engine::initResourceManager() {
         resourceManager_ = ResourceManager::getInstance();
-        resourceManager_->setPathFor(ResourceType::Font, configs_.getPref("FONTS_DIR").getValue<std::string>());
-        resourceManager_->setPathFor(ResourceType::Texture, configs_.getPref("TEXTURES_DIR").getValue<std::string>());
-        resourceManager_->setPathFor(ResourceType::Image, configs_.getPref("TEXTURES_DIR").getValue<std::string>());
-        resourceManager_->setPathFor(ResourceType::SoundEffect, configs_.getPref("SOUND_EFFECTS_DIR").getValue<std::string>());
-        resourceManager_->setPathFor(ResourceType::Music, configs_.getPref("MUSIC_DIR").getValue<std::string>());
+        resourceManager_->setPathFor(ResourceType::Font, configs_->getFontsDirectory());
+        resourceManager_->setPathFor(ResourceType::Texture, configs_->getTexturesDirectory());
+        resourceManager_->setPathFor(ResourceType::Image, configs_->getTexturesDirectory());
+        resourceManager_->setPathFor(ResourceType::SoundEffect, configs_->getSoundEffectsDirectory());
+        resourceManager_->setPathFor(ResourceType::Music, configs_->getMusicDirectory());
     }
 
     void Engine::processEvents() {
@@ -373,11 +330,10 @@ namespace mighter2d {
         sceneManager_->clear();
         sceneManager_->clearCachedScenes();
         eventEmitter_.clear();
-        isSettingsLoadedFromFile_ = false;
+        configs_ = nullptr;
         elapsedTime_ = Time::Zero;
         gameTitle_.clear();
         settingFile_.clear();
-        configs_.clear();
         dataSaver_.clear();
         diskDataSaver_.clear();
         resourceManager_.reset();
@@ -424,15 +380,11 @@ namespace mighter2d {
         return elapsedTime_;
     }
 
-    PrefContainer &Engine::getConfigs() {
-        return const_cast<PrefContainer&>(std::as_const(*this).getConfigs());
-    }
-
-    const PrefContainer &Engine::getConfigs() const {
+    const EngineSettings &Engine::getSettings() const {
         if (!isInitialized_)
-            throw AccessViolationException("mighter2d::Engine::getConfigs() must not be called before the engine is initialized, see mighter2d::Engine::initialize()");
+            throw AccessViolationException("mighter2d::Engine::getSettings() must not be called before the engine is initialized, see mighter2d::Engine::initialize()");
         else
-            return configs_;
+            return *configs_;
     }
 
     const std::string &Engine::getGameName() const {
