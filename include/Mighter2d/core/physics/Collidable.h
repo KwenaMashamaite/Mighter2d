@@ -133,6 +133,31 @@ namespace mighter2d {
         int getCollisionId() const;
 
         /**
+         * @brief Set whether or not the collidable is static
+         * @param isStatic True to set static, otherwise false
+         *
+         * Static collidables do not collide with other static collidables
+         * regardless of the collision group or collision id. For example,
+         * two walls may overlap but should not generate a collision.
+         *
+         * Note that setting a collidable that does not move throughout the
+         * game as static can significantly improve performance
+         *
+         * By default, the collidable is not static
+         *
+         * @see setCollisionGroup, setCollisionId, isStatic
+         */
+        void setStatic(bool isStatic);
+
+        /**
+         * @brief Check if the collidable is static or not
+         * @return True if static, otherwise false
+         *
+         * @see setStatic
+         */
+        bool isStatic() const;
+
+        /**
          * @brief Get the collidables collision exclude list
          * @return The collidables collision exclude list
          *
@@ -256,6 +281,7 @@ namespace mighter2d {
         int sceneDestrucListenerId_;           //!< The id of the scenes destruction listener
         std::string collisionGroup_;           //!< The collidables collision group (collision filtering)
         int collisionId_;                      //!< The collidables collision id (collision filtering)
+        bool isStatic_;                        //!< A flag indicating whether or not the collidable is static (i.e immovable)
         CollisionExcludeList excludeList_;     //!< Stores the collision groups of collidables this collidable must not collide with
         std::vector<Collidable*> collidables_; //!< Collidables currently overlapping with this collidable
     };

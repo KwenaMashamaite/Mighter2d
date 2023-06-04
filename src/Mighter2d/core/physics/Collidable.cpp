@@ -33,6 +33,10 @@ namespace mighter2d {
             if (&colA == &colB)
                 return false;
 
+            // Prevent static collision
+            if (colA.isStatic() && colB.isStatic())
+                return false;
+
             // Collidables in excluded collision group do not collide (Collision filtering by group)
             if ((colA.getCollisionExcludeList().contains(colB.getCollisionGroup())) ||
                 (colB.getCollisionExcludeList().contains(colA.getCollisionGroup())))
@@ -52,7 +56,8 @@ namespace mighter2d {
     Collidable::Collidable(Scene &scene) :
         scene_(&scene),
         sceneDestrucListenerId_(-1),
-        collisionId_{0}
+        collisionId_{0},
+        isStatic_{false}
     {
         scene_->addCollidable(this);
 
@@ -76,6 +81,14 @@ namespace mighter2d {
 
     int Collidable::getCollisionId() const {
         return collisionId_;
+    }
+
+    void Collidable::setStatic(bool isStatic) {
+        isStatic_ = isStatic;
+    }
+
+    bool Collidable::isStatic() const {
+        return isStatic_;
     }
 
     CollisionExcludeList &Collidable::getCollisionExcludeList() {
