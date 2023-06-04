@@ -290,29 +290,13 @@ namespace mighter2d::ui {
                 scene_->getWindow().removeDestructionListener(winDestructListenerId_);
         });
 
-        scene.getStateObserver().onReady([this] {
-            pimpl_->setTarget(scene_->getEngine().getRenderTarget());
-
-            Window& window = scene_->getWindow();
-
-            // Inactive scene gui become buggy or unresponsive to the mouse cursor
-            // when the window is resized because the resize event is only dispatched
-            // to the active scene.
-            winResizeHandlerId_ = window.onResize([this](Vector2u size) {
-                if (!scene_->isActive()) {
-                    SystemEvent winResizeEvent{};
-                    winResizeEvent.type = SystemEvent::Resized;
-                    winResizeEvent.size.width = size.x;
-                    winResizeEvent.size.height = size.y;
-
-                    handleEvent(winResizeEvent);
-                }
+        if (scene.isReady()) {
+            onSceneReady();
+        } else {
+            scene.getStateObserver().onReady([this] {
+                onSceneReady();
             });
-
-            winDestructListenerId_ = window.onDestruction([this] {
-                winResizeHandlerId_ = winDestructListenerId_ = -1;
-            });
-        });
+        }
 
         // Reset gui state
         static auto resetGui = [](ui::GuiContainer& gui) {
@@ -511,6 +495,30 @@ namespace mighter2d::ui {
 
     void GuiContainer::draw(priv::RenderTarget&) const {
         pimpl_->draw();
+    }
+
+    void GuiContainer::onSceneReady() {
+        pimpl_->setTarget(scene_->getEngine().getRenderTarget());
+
+        Window& window = scene_->getWindow();
+
+        // Inactive scene gui become buggy or unresponsive to the mouse cursor
+        // when the window is resized because the resize event is only dispatched
+        // to the active scene.
+        winResizeHandlerId_ = window.onResize([this](Vector2u size) {
+            if (!scene_->isActive()) {
+                SystemEvent winResizeEvent{};
+                winResizeEvent.type = SystemEvent::Resized;
+                winResizeEvent.size.width = size.x;
+                winResizeEvent.size.height = size.y;
+
+                handleEvent(winResizeEvent);
+            }
+        });
+
+        winDestructListenerId_ = window.onDestruction([this] {
+            winResizeHandlerId_ = winDestructListenerId_ = -1;
+        });
     }
 
     GuiContainer::~GuiContainer() {

@@ -179,6 +179,10 @@ namespace mighter2d {
         return backgroundScene_ != nullptr;
     }
 
+    bool Scene::isReady() const {
+        return isInitialized_;
+    }
+
     bool Scene::isStarted() const {
         return isStarted_;
     }

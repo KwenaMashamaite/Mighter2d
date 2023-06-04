@@ -303,6 +303,14 @@ namespace mighter2d {
         std::string getClassName() const override;
 
         /**
+         * @brief Check if the scene is initialized (ready to be used) or not
+         * @return True if ready, otherwise false
+         *
+         * @see onReady
+         */
+        bool isReady() const;
+
+        /**
          * @brief Check if the scene has been started or not
          * @return True if the scene is started, otherwise false
          *
@@ -438,6 +446,8 @@ namespace mighter2d {
          *         the scene is initialized
          *
          * Note that all scenes refer to the same Engine instance
+         *
+         * @see onReady, isReady
          */
         Engine& getEngine();
         const Engine& getEngine() const;
@@ -449,6 +459,8 @@ namespace mighter2d {
          *         the scene is initialized
          *
          * Note that all scenes refer to the same game Window instance
+         *
+         * @see onReady, isReady
          */
         Window& getWindow();
         const Window& getWindow() const;
@@ -479,7 +491,7 @@ namespace mighter2d {
          * rendered last. You can add other cameras to the scene using
          * getCameras()
          *
-         * @see getCameras
+         * @see onReady, isReady
          */
         Camera& getCamera();
         const Camera& getCamera() const;
@@ -497,7 +509,7 @@ namespace mighter2d {
          * @note The cache only stores data, while the engine is running. When
          * the engine is shutdown, the data in the cache is destroyed
          *
-         * @see getSCache
+         * @see getSCache, onReady, isReady
          */
         PropertyContainer& getCache();
         const PropertyContainer& getCache() const;
@@ -517,7 +529,7 @@ namespace mighter2d {
          * @note The cache only stores data, while the engine is running. When
          * the engine is shutdown, the data in the cache is destroyed
          *
-         * @see getCache
+         * @see getCache, onReady, isReady
          */
         PrefContainer& getSCache();
         const PrefContainer& getSCache() const;

@@ -540,6 +540,12 @@ namespace mighter2d {
             ~GuiContainer();
 
         private:
+            /**
+             * @brief Add scene ready behavior
+             */
+            void onSceneReady();
+
+        private:
             Scene* scene_;
             int winResizeHandlerId_;
             int winDestructListenerId_;
