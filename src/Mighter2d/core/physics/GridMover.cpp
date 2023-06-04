@@ -365,9 +365,18 @@ namespace mighter2d {
         return true;
     }
 
+    // @TODO: Remove collision detection from this class (should probably be handled by the grid class)
     bool GridMover::canCollide(GridObject* other) const {
         // Prevent Self collision
         if (other == target_)
+            return false;
+
+        // Collision disabled
+        if (!(target_->isOverlapDetectionEnabled() || other->isOverlapDetectionEnabled()))
+            return false;
+
+        // Prevent static collision
+        if (target_->isStatic() && other->isStatic())
             return false;
 
         // Inactive objects do not collide (collision filtering by inactivity)
