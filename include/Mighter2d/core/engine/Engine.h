@@ -100,9 +100,17 @@ namespace mighter2d {
          * @warning This function must be called before the engine is run, otherwise
          * undefined behaviour
          *
-         * @see run
+         * @see run, isInitialized, onInit
          */
         void initialize();
+
+        /**
+         * @brief Check if the engine is initialized or not
+         * @return True if the engine is initialized, otherwise false
+         *
+         * @see initialize
+         */
+        bool isInitialized() const;
 
         /**
          * @brief Start the main loop

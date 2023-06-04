@@ -92,6 +92,10 @@ namespace mighter2d {
         }
     }
 
+    bool Engine::isInitialized() const {
+        return isInitialized_;
+    }
+
     void Engine::loadSettings() {
         configs_.load(settingFile_);
     }
