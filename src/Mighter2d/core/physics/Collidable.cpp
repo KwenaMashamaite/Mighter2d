@@ -93,7 +93,11 @@ namespace mighter2d {
             auto bb1 = getBoundingBox();
             auto bb2 = other.getBoundingBox();
             bool isColliding = priv::CollisionDetector::isColliding(bb1, bb2);
-            float IoU = priv::CollisionDetector::getIoU(bb1, bb2);
+            float IoU = 0.0;
+
+            if (isColliding) {
+                IoU = priv::CollisionDetector::getIoU(bb1, bb2);
+            }
 
             if (wasColliding) {
                 if (isColliding) {
