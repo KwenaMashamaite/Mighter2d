@@ -33,6 +33,10 @@ namespace mighter2d {
             if (&colA == &colB)
                 return false;
 
+            // Collision disabled
+            if (!(colA.isOverlapDetectionEnabled() || colB.isOverlapDetectionEnabled()))
+                return false;
+
             // Prevent static collision
             if (colA.isStatic() && colB.isStatic())
                 return false;
@@ -57,7 +61,8 @@ namespace mighter2d {
         scene_(&scene),
         sceneDestrucListenerId_(-1),
         collisionId_{0},
-        isStatic_{false}
+        isStatic_{false},
+        isOverlapDetEnabled_{true}
     {
         scene_->addCollidable(this);
 
@@ -65,6 +70,14 @@ namespace mighter2d {
         sceneDestrucListenerId_ = scene_->onDestruction([this] {
             scene_ = nullptr;
         });
+    }
+
+    void Collidable::setOverlapDetectionEnable(bool enable) {
+        isOverlapDetEnabled_ = enable;
+    }
+
+    bool Collidable::isOverlapDetectionEnabled() const {
+        return isOverlapDetEnabled_;
     }
 
     void Collidable::setCollisionGroup(const std::string &colGroup) {

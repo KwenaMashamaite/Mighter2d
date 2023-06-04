@@ -60,6 +60,34 @@ namespace mighter2d {
         explicit Collidable(Scene& scene);
 
         /**
+         * @brief Set whether or not this collidable can overlap with other collidables
+         * @param enable True to enable overlap detection, otherwise false
+         *
+         * Overlap detection allows this collidable to register a collision between itself
+         * and any collidable it overlaps with. When overlap detection is enabled, collision
+         * resolution callbacks are invoked (onOverlapBegin(), onOverlapStay(), onOverlapEnd() )
+         * on both collidables when an overlap is detected (or no longer detected). When it is
+         * disabled, the collidables just overlap without invoking their collision resolution
+         * callbacks (that is, collision detection is disabled).
+         *
+         * Note that overlap detection takes higher precedence than all the collision
+         * filters (collision group, collision id etc...).
+         *
+         * By default, overlap detection is enabled
+         *
+         * @see setCollisionGroup, setCollisionId, setStatic
+         */
+        void setOverlapDetectionEnable(bool enable);
+
+        /**
+         * @brief Check if overlap detection is enabled or not
+         * @return True if enabled, otherwise false
+         *
+         * @see setOverlapDetectionEnable
+         */
+        bool isOverlapDetectionEnabled() const;
+
+        /**
          * @brief Set the objects collision group
          * @param colGroup The collision group to be set
          *
@@ -282,6 +310,7 @@ namespace mighter2d {
         std::string collisionGroup_;           //!< The collidables collision group (collision filtering)
         int collisionId_;                      //!< The collidables collision id (collision filtering)
         bool isStatic_;                        //!< A flag indicating whether or not the collidable is static (i.e immovable)
+        bool isOverlapDetEnabled_;             //!< A flag indicating whether or not overlap detection is enabled
         CollisionExcludeList excludeList_;     //!< Stores the collision groups of collidables this collidable must not collide with
         std::vector<Collidable*> collidables_; //!< Collidables currently overlapping with this collidable
     };
