@@ -355,10 +355,9 @@ namespace mighter2d {
             if (backgroundScene_)
                 backgroundScene_->postUpdate();
 
-            for (auto* collidable : collidableList_) {
-                for (auto* otherCollidable : collidableList_) {
-                    if (collidable != otherCollidable)
-                        collidable->handleCollidable(*otherCollidable);
+            for (int i = 0; i < collidableList_.size(); i++) {
+                for (int j = i + 1; j < collidableList_.size(); j++) {
+                    collidableList_[i]->handleCollidable(*collidableList_[j]);
                 }
             }
         }
