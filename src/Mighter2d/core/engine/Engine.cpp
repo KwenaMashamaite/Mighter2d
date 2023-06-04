@@ -77,17 +77,19 @@ namespace mighter2d {
     }
 
     void Engine::initialize() {
-        if (isSettingsLoadedFromFile_)
-            loadSettings();
+        if (!isInitialized_) {
+            if (isSettingsLoadedFromFile_)
+                loadSettings();
 
-        processSettings();
-        initResourceManager();
-        initRenderTarget();
+            processSettings();
+            initResourceManager();
+            initRenderTarget();
 
-        eventDispatcher_ = GlobalEventEmitter::instance();
-        isInitialized_ = true;
+            eventDispatcher_ = GlobalEventEmitter::instance();
+            isInitialized_ = true;
 
-        eventEmitter_.emit("initialize");
+            eventEmitter_.emit("initialize");
+        }
     }
 
     void Engine::loadSettings() {
