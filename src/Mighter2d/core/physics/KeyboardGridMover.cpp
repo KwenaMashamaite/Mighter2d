@@ -27,7 +27,7 @@
 namespace mighter2d {
     KeyboardGridMover::KeyboardGridMover(Grid &grid, GridObject* target) :
         GridMover(Type::KeyboardControlled, grid, target),
-        keyboard_(getScene()),
+        keyboard_(nullptr),
         trigger_(MovementTrigger::None),
         onTriggerHandlerId_{-1, -1},
         triggerKeys_{Key::A, Key::D, Key::W, Key::S}
@@ -40,8 +40,6 @@ namespace mighter2d {
                 newDir = Unknown;
             }
         });
-
-        setMovementTrigger(MovementTrigger::OnKeyDown);
     }
 
     KeyboardGridMover::Ptr KeyboardGridMover::create(Grid &grid, GridObject *target) {
@@ -50,6 +48,15 @@ namespace mighter2d {
 
     std::string KeyboardGridMover::getClassName() const {
         return "KeyboardGridMover";
+    }
+
+    void KeyboardGridMover::setKeyboard(Keyboard &keyboard) {
+        keyboard_ = &keyboard;
+        setMovementTrigger(MovementTrigger::OnKeyDown);
+    }
+
+    bool KeyboardGridMover::isKeyboardSet() const {
+        return keyboard_ != nullptr;
     }
 
     void KeyboardGridMover::setMovementTrigger(MovementTrigger trigger) {
@@ -99,14 +106,14 @@ namespace mighter2d {
         };
 
         if (trigger_ == MovementTrigger::OnKeyDownHeld) {
-            onTriggerHandlerId_.first = keyboard_.onKeyDown(moveEntity);
-            onTriggerHandlerId_.second = keyboard_.onKeyHeld(moveEntity);
+            onTriggerHandlerId_.first = keyboard_->onKeyDown(moveEntity);
+            onTriggerHandlerId_.second = keyboard_->onKeyHeld(moveEntity);
         } else if (trigger_ == MovementTrigger::OnKeyDown)
-            onTriggerHandlerId_.first = keyboard_.onKeyDown(moveEntity);
+            onTriggerHandlerId_.first = keyboard_->onKeyDown(moveEntity);
         else if (trigger_ == MovementTrigger::OnKeyUp)
-            onTriggerHandlerId_.first = keyboard_.onKeyUp(moveEntity);
+            onTriggerHandlerId_.first = keyboard_->onKeyUp(moveEntity);
         else if (trigger_ == MovementTrigger::OnKeyHeld)
-            onTriggerHandlerId_.first = keyboard_.onKeyHeld(moveEntity);
+            onTriggerHandlerId_.first = keyboard_->onKeyHeld(moveEntity);
     }
 
     void KeyboardGridMover::removeInputEventListeners() {
@@ -116,17 +123,17 @@ namespace mighter2d {
                     MIGHTER2D_ASSERT(false, "Internal Error: KeyboardGridMover event handler subscribed with no movement trigger")
                     break;
                 case MovementTrigger::OnKeyDown:
-                    keyboard_.unsubscribe(KeyboardEvent::KeyDown, onTriggerHandlerId_.first);
+                    keyboard_->unsubscribe(KeyboardEvent::KeyDown, onTriggerHandlerId_.first);
                     break;
                 case MovementTrigger::OnKeyUp:
-                    keyboard_.unsubscribe(KeyboardEvent::KeyUp, onTriggerHandlerId_.first);
+                    keyboard_->unsubscribe(KeyboardEvent::KeyUp, onTriggerHandlerId_.first);
                     break;
                 case MovementTrigger::OnKeyHeld:
-                    keyboard_.unsubscribe(KeyboardEvent::KeyHeld, onTriggerHandlerId_.first);
+                    keyboard_->unsubscribe(KeyboardEvent::KeyHeld, onTriggerHandlerId_.first);
                     break;
                 case MovementTrigger::OnKeyDownHeld:
-                    keyboard_.unsubscribe(KeyboardEvent::KeyDown, onTriggerHandlerId_.first);
-                    keyboard_.unsubscribe(KeyboardEvent::KeyHeld, onTriggerHandlerId_.second);
+                    keyboard_->unsubscribe(KeyboardEvent::KeyDown, onTriggerHandlerId_.first);
+                    keyboard_->unsubscribe(KeyboardEvent::KeyHeld, onTriggerHandlerId_.second);
                     break;
             }
 

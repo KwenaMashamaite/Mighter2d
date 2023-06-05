@@ -97,6 +97,22 @@ namespace mighter2d {
         std::string getClassName() const override;
 
         /**
+         * @brief Set the keyboard to for input detection
+         * @param keyboard The keyboard to detect input from
+         *
+         * @see setKeys, isKeyboardSet
+         */
+        void setKeyboard(Keyboard& keyboard);
+
+        /**
+         * @brief Check if the keyboard is set
+         * @return True if the keyboard is set, otherwise false
+         *
+         * @see setKeyboard
+         */
+        bool isKeyboardSet() const;
+
+        /**
          * @brief Set the key event that triggers the targets movement
          * @param trigger The targets movement trigger
          *
@@ -104,7 +120,10 @@ namespace mighter2d {
          * determine the direction of motion. The default movement trigger is
          * MovementTrigger::OnKeyDown
          *
-         * @see setKeys
+         * @warning The keyboard must be set first before calling this function,
+         * otherwise undefined behavior
+         *
+         * @see setKeys, setKeyboard
          */
         void setMovementTrigger(MovementTrigger trigger);
 
@@ -125,7 +144,7 @@ namespace mighter2d {
          *  mighter2d::Keyboard::Key::S = move target down and
          *  mighter2d::Keyboard::Key::D = move target right
          *
-         * @see setMovementTrigger
+         * @see setMovementTrigger, setKeyboard
          */
         void setKeys(const TriggerKeys& triggerKeys);
 
@@ -174,7 +193,7 @@ namespace mighter2d {
         void removeInputEventListeners();
 
     private:
-        input::Keyboard keyboard_;               //!< Detects keyboard inputs
+        input::Keyboard* keyboard_;              //!< Detects keyboard inputs
         MovementTrigger trigger_;                //!< Key event that triggers target movement
         std::pair<int, int> onTriggerHandlerId_; //!< Movement trigger Handler id
         std::pair<bool, Direction> newDir_;      //!< A flag indicating whether or not the direction was changed while target was moving
