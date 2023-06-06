@@ -73,7 +73,8 @@ namespace mighter2d::audio {
 
     void AudioManager::playAll() {
         playingAudio_.forEach([](Audio* audio) {
-            audio->play();
+            if (audio->isPaused())
+                audio->play();
         });
     }
 
