@@ -141,8 +141,10 @@ namespace mighter2d::priv {
             if (resumePrev) {
                 if (newTopScene->isStarted())
                     newTopScene->resume();
-                else
+                else {
+                    newTopScene->init(*engine_);
                     newTopScene->start();
+                }
             }
         }
     }
