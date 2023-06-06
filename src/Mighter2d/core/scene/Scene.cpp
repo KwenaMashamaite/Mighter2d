@@ -402,7 +402,7 @@ namespace mighter2d {
     }
 
     void Scene::render() {
-        if (isActive_ && camera_->isDrawable()) {
+        if (isStarted_ && camera_->isDrawable()) {
             if (backgroundScene_ && backgroundScene_->isDrawable())
                 backgroundScene_->render();
 
